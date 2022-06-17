@@ -1,0 +1,10 @@
+Executable  = /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/improved_launch_Dijets.sh
+Arguments  = $(Process)
+Log = log/log_$(Process).txt
+
+Output = out/out_$(Process).txt
+
+Error = error/err_$(Process).txt
+#+RequestRunTime=500000
+Queue 500
+
