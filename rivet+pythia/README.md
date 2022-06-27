@@ -179,5 +179,18 @@ rivet --ignore-beams -o postdron${rnd}.yoda -a CMS_2016_I1487277 -a MC_JETS post
 rm posthadron${rnd}.fifo prehadron${rnd}.fifo
 cp prehadron${rnd}.yoda prehadron${rnd}.yoda ../COMPLETE_YODAS/
 cd ${current_dir}
+```
 
+**rivet_condor.sub**
+```
+Executable  = /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/mkfifo_parallel.sh
+Arguments  = $(Process)
+Log = rivet_logs/log_$(Process).txt
+
+Output = rivet_out/out_$(Process).txt
+
+Error = rivet_error/err_$(Process).txt
+#+RequestRunTime=500000
+Queue 500
+```
 
