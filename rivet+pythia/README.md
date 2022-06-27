@@ -2,6 +2,7 @@ FIFO - first in, first out
 
 Do `rivet --help` and `agile-runmc --help` to test that you have ruvet working.
 With `pwgevents.lhe` in directory.
+
 ```
 #!/bin/bash
 ./main42 main42_prehadron.cmnd prehadron.fifo &
@@ -10,8 +11,8 @@ rivet --ignore-beams -o prehadron.yoda -a CMS_2016_I1487277 -a MC_JETS prehadron
 
 Here is Simone's **launch.sh** for rivet to process the lhe files
 
-````
 
+```
 #!/bin/bash
 echo "shell" $0
 rnd=$(($1 + 1))
@@ -60,6 +61,7 @@ Example: currentlt working in /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dije
 `main42  main42.cmnd  minnlo_0001.yoda  out  pwgevents.lhe  rivet_fifo_onefile.sh`
 
 **rivet_fifo_onefile.sh**
+
 ```
 #!/bin/bash
 echo "shell" $0
@@ -99,8 +101,8 @@ Go to `/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/run_nominal/rivet_py
  * I made `out_posthadron` and `out_posthadron` directories, copied pwgevents.lhe and main42 to each.
 * Then I copied main42_posthadron.cmnd to out_posthadron and the same to prehadron
 * I then ran `rivet_fifo_onefile.sh` where once the directories in it are for prehadron, and again where the directories/files in it are those corresponding to post hadron.
-```
 
+```
 #!/bin/bash
 echo "shell" $0
 rnd=$(($1 + 1))
