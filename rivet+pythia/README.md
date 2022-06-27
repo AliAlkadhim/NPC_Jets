@@ -1,3 +1,8 @@
+---
+header-includes:
+  - \usepackage{algorithm2e}
+---
+
 FIFO - first in, first out
 ------
 
