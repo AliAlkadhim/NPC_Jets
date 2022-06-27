@@ -181,6 +181,8 @@ cp prehadron${rnd}.yoda prehadron${rnd}.yoda ../COMPLETE_YODAS/
 cd ${current_dir}
 ```
 
+`mkdir -p rivet_logs rivet_error rivet_out`
+
 **rivet_condor.sub**
 ```
 Executable  = /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/mkfifo_parallel.sh
