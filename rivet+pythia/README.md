@@ -158,3 +158,25 @@ for each run in Number_of_runs, do
   cp prehadron$(i).yoda prehadron$(i).yoda ../COMPLETE_YODAS/
   
 ```
+
+## Implementation (in `/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250`)
+
+**mkfifo_parallel.sh**
+
+```
+#!/bin/bash
+echo "shell" $0
+rnd=$(($1 + 1))
+current_dir=$(pwd)
+cd /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/run_${rnd}
+
+cp /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/main_scripts/* .
+./main42 main42_prehadron.cmnd prehadron${rnd}.fifo &
+rivet --ignore-beams -o prehadron${rnd}.yoda -a CMS_2016_I1487277 -a MC_JETS prehadron${rnd}.fifo
+./main42 main42_posthadron.cmnd posthadron${rnd}.fifo &
+rivet --ignore-beams -o postdron${rnd}.yoda -a CMS_2016_I1487277 -a MC_JETS posthadron${rnd}.fifo
+rm posthadron${rnd}.fifo prehadron${rnd}.fifo
+cp prehadron${rnd}.yoda prehadron${rnd}.yoda ../COMPLETE_YODAS/
+cd ${current_dir}
+
+
