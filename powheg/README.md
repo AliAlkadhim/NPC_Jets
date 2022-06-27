@@ -1,3 +1,5 @@
+# `POWHEG` in parallel
+
 The base working directory for parallel powheg is `/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets`, go there.
 
 There you will see **improved_launch_Dijets.sh**. This file's contents are written bellow. The idea is that each time this script is run (by condor, in parallel), the counter `rnd` is appended by 1. Therefore, each run is associated with the value of `rnd`. Each time this is run, the script makes a new directory associated with `rnd`, it copies the `powheg.input` to that run's directory, it goes to that run's directory, it sources the powheg setup script, it changes the `iseed` value in the powheg input in that run's directory, it then executes `Dijets` script, and it exists the directory.
