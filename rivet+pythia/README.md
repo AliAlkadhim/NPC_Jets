@@ -212,3 +212,17 @@ Error = rivet_error/err_$(Process).txt
 Queue 500
 ```
 
+------
+
+
+`yodamerge`
+
+`yodamerge_tmp.py -o merged_prehadron.yoda run1.yoda run2.yoda run3.yoda`
+
+`yodamerge_tmp.py -o posthadron_merged.yoda post*`
+---------
+
+compare histos
+`rivet-cmphistos posthadron_merged.yoda:'Title=PS+MPI+HAD' prehadron_merged.yoda:'Title=PS'`
+-------
+`make-plots --png *.dat`
