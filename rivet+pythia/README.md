@@ -9,33 +9,7 @@ With `pwgevents.lhe` in directory.
 rivet --ignore-beams -o prehadron.yoda -a CMS_2016_I1487277 -a MC_JETS prehadron.fifo
 ```
 
-Here is Simone's **launch.sh** for rivet to process the lhe files
 
-
-```
-#!/bin/bash
-echo "shell" $0
-rnd=$(($1 + 1))
-rnd=$(printf "%04d\n" $rnd)
-echo $rnd
-
-cd out
-
-source /afs/desy.de/user/a/amoroso/cmsarea/powheg/POWHEG-BOX-V2/Zj/ZjMiNNLO/shower/installnew.sh
-export RIVET_ANALYSIS_PATH=/afs/desy.de/user/a/amoroso/cmsarea/powheg/POWHEG-BOX-V2/Zj/ZjMiNNLO/shower/routines/
-
-lhefile=/afs/desy.de/user/a/amoroso/cmsarea/powheg/POWHEG-BOX-V2/Zj/ZjMiNNLO/testrun/Zmumu13_Q0_unzipped/pwgevents-$rnd.lhe
-#lhefile=/afs/desy.de/user/a/amoroso/cmsarea/powheg/POWHEG-BOX-V2/hvq/decay-dilep/pwgevents.lhe
-echo $lhefile
-sed  's|pwgevents.lhe|'${lhefile}'|g' /afs/desy.de/user/a/amoroso/cmsarea/powheg/POWHEG-BOX-V2/Zj/ZjMiNNLO/shower/main42.cmnd.backup > main42_$rnd.cmnd
-
-
-mkfifo myfifo_$rnd
-./../main42_weights main42_$rnd.cmnd myfifo_$rnd &
-rivet  --ignore-beams -o minnlo_$rnd.yoda -a ATLAS_2020_I1788444,CMS_2018_I1667854  myfifo_$rnd
-rm -r myfifo_$rnd
-
-```
 
 
 ------
