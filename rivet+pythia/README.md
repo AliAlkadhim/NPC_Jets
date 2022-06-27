@@ -3,7 +3,14 @@ FIFO - first in, first out
 Do `rivet --help` and `agile-runmc --help` to test that you have ruvet working.
 With `pwgevents.lhe` in directory.
 
+
+The starting directory for my `rivet+pythia` workflow is `/afs/desy.de/user/a/aalkadhi/poweheg/rivet+pythia/13TeV_10k_NNPDF`.
+
+
+
 ```
+**mkfifo_from_lhe.sh**
+
 #!/bin/bash
 ./main42 main42_prehadron.cmnd prehadron.fifo &
 rivet --ignore-beams -o prehadron.yoda -a CMS_2016_I1487277 -a MC_JETS prehadron.fifo
@@ -14,7 +21,8 @@ rivet --ignore-beams -o prehadron.yoda -a CMS_2016_I1487277 -a MC_JETS prehadron
 
 ------
 
-use pythia to generate hepmc events going to the fifo
+use pythia to generate hepmc events going to the fifo. 
+
 
 `./main42 main42.cmnd tut_fifo.fifo &` where I have pwgevents.lhe and main42 files in that directory
 
