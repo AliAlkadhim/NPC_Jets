@@ -1,24 +1,4 @@
 FIFO - first in, first out
-
-Do `rivet --help` and `agile-runmc --help` to test that you have ruvet working.
-With `pwgevents.lhe` in directory.
-
-
-The starting directory for my `rivet+pythia` workflow is `/afs/desy.de/user/a/aalkadhi/poweheg/rivet+pythia/13TeV_10k_NNPDF`.
-
-
-
-```
-**mkfifo_from_lhe.sh**
-
-#!/bin/bash
-./main42 main42_prehadron.cmnd prehadron.fifo &
-rivet --ignore-beams -o prehadron.yoda -a CMS_2016_I1487277 -a MC_JETS prehadron.fifo
-```
-
-
-
-
 ------
 
 use pythia to generate hepmc events going to the fifo. 
@@ -37,12 +17,34 @@ The CMS QCD incl.jet rivet analysis is `CMS_2016_I1487277` For example, `rivet -
 
 -----------
 
+
+Do `rivet --help` and `agile-runmc --help` to test that you have ruvet working.
+With `pwgevents.lhe` in directory.
+
 ### Rivet/pythia for one `.lhe` file.
+
+The starting directory for my `rivet+pythia` workflow is `/afs/desy.de/user/a/aalkadhi/poweheg/rivet+pythia/13TeV_10k_NNPDF`.
+
+
+The script below, **mkfifo_from_lhe.sh**, makes an output `.yoda` histogram file from an existing `pwgevent.lhe` file that exists in the same directory, by using a fifo pipe, whire hepmc is not saved. You can in principle delete the `.fifo` file if you sure that the `.yoda` output file is what you want. 
+
+```
+#!/bin/bash
+./main42 main42_prehadron.cmnd prehadron.fifo &
+rivet --ignore-beams -o prehadron.yoda -a CMS_2016_I1487277 -a MC_JETS prehadron.fifo
+```
+
+
+
+
+
+
+
 
 Example: currentlt working in /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/run_nominal/rivet_pythia , where here I have
 `main42  main42.cmnd  minnlo_0001.yoda  out  pwgevents.lhe  rivet_fifo_onefile.sh`
 
-**rivet_fifo_onefile.sh**
+**rivet_fifo_many_lhe_files.sh**
 
 ```
 #!/bin/bash
@@ -77,7 +79,6 @@ rm -r myfifo_onefile.fifo
 
 
 
-## Questions for Valentina: So what is the workflow like for one file?
 
 Go to `/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/run_nominal/rivet_pythia`
  * I made `out_posthadron` and `out_posthadron` directories, copied pwgevents.lhe and main42 to each.
@@ -137,3 +138,23 @@ compare histos
 `yodamerge`
 
 `yodamerge_tmp.py run1.yoda run2.yoda run3.yoda`
+
+
+----------------
+
+# Rivet Analysis with condor for many `.lhe` files
+
+Here the assumption is that you have a directory composed of many sub-directories, each corresponding to a powheg run with a corresponding powheg `pwgevents.lhe` file, such as in `/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250` (for a tutorial on how this was generated, see the powheg tutorials). We want to write an executable (ending in `.sh`) that implements the following algorithm:
+```
+for each run in Number_of_runs, do
+  cd to run_i
+  source rivet+pythia setup
+  cp ../main scripts to that directory
+  ./main42 main42_prehadron.cmnd prehadron$(i).fifo &
+  rivet --ignore-beams -o prehadron$(i).yoda -a CMS_2016_I1487277 -a MC_JETS prehadron$(i).fifo
+  ./main42 main42_posthadron.cmnd posthadron$(i).fifo &
+  rivet --ignore-beams -o postdron$(i).yoda -a CMS_2016_I1487277 -a MC_JETS posthadron$(i).fifo
+  rm posthadron$(i).fifo prehadron$(i).fifo
+  cp prehadron$(i).yoda prehadron$(i).yoda ../COMPLETE_YODAS/
+  
+```
