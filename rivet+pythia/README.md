@@ -169,6 +169,7 @@ echo "shell" $0
 rnd=$(($1 + 1))
 current_dir=$(pwd)
 cd /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/run_${rnd}
+source /afs/desy.de/user/a/amoroso/cmsarea/powheg/POWHEG-BOX-V2/Zj/ZjMiNNLO/shower/installnew.sh
 
 cp /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/main_scripts/* .
 ./main42 main42_prehadron.cmnd prehadron${rnd}.fifo &
