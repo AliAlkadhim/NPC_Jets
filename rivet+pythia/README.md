@@ -1,5 +1,5 @@
 
-FIFO - first in, first out
+Using `rivet+pythia` with FIFO (first in, first out) pipe
 ------
 
 use pythia to generate hepmc events going to the fifo. 
