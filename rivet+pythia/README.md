@@ -151,6 +151,7 @@ compare histos
 
 Here the assumption is that you have a directory composed of many sub-directories, each corresponding to a powheg run with a corresponding powheg `pwgevents.lhe` file, such as in `/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250` (for a tutorial on how this was generated, see the powheg tutorials). We want to write an executable (ending in `.sh`) that implements the following algorithm:
 ```
+\begin{algorithm}[H]
 for each run in Number_of_runs, do
   cd to run_i
   source rivet+pythia setup
@@ -161,6 +162,7 @@ for each run in Number_of_runs, do
   rivet --ignore-beams -o postdron$(i).yoda -a CMS_2016_I1487277 -a MC_JETS posthadron$(i).fifo
   rm posthadron$(i).fifo prehadron$(i).fifo
   cp prehadron$(i).yoda prehadron$(i).yoda ../COMPLETE_YODAS/
+ \end{algorithm}[H]
   
 ```
 
