@@ -167,18 +167,33 @@ for each run in Number_of_runs, do
 #!/bin/bash
 echo "shell" $0
 rnd=$(($1 + 1))
-current_dir=$(pwd)
+rnd=$(printf "%01d\n" $rnd)
+
+#current_dir=$(pwd)
+current_dir=/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/
 cd /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/run_${rnd}
 source /afs/desy.de/user/a/amoroso/cmsarea/powheg/POWHEG-BOX-V2/Zj/ZjMiNNLO/shower/installnew.sh
 
 cp /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/main_scripts/* .
+#PREHADRON
 ./main42 main42_prehadron.cmnd prehadron${rnd}.fifo &
-rivet --ignore-beams -o prehadron${rnd}.yoda -a CMS_2016_I1487277 -a MC_JETS prehadron${rnd}.fifo
-./main42 main42_posthadron.cmnd posthadron${rnd}.fifo &
-rivet --ignore-beams -o postdron${rnd}.yoda -a CMS_2016_I1487277 -a MC_JETS posthadron${rnd}.fifo
-rm posthadron${rnd}.fifo prehadron${rnd}.fifo
-cp prehadron${rnd}.yoda prehadron${rnd}.yoda ../COMPLETE_YODAS/
+rivet --ignore-beams -o prehadron${rnd}.yoda -a CMS_2021_I1972986 prehadron${rnd}.fifo
+rm prehadron${rnd}.fifo
+cp prehadron${rnd}.yoda /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
+
+#POSTHADRON
+#./main42 main42_posthadron.cmnd posthadron${rnd}.fifo &
+#rivet --ignore-beams -o posthadron${rnd}.yoda -a CMS_2021_I1972986 posthadron${rnd}.fifo
+#rm posthadron${rnd}.fifo
+#cp posthadron${rnd}.yoda /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
+
+#BOTH
+#rm posthadron${rnd}.fifo prehadron${rnd}.fifo
+#cp prehadron${rnd}.yoda posthadron${rnd}.yoda /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
+#rm prehadron${rnd}.fifo
+#cp prehadron${rnd}.yoda /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
 cd ${current_dir}
+
 ```
 
 `mkdir -p rivet_logs rivet_error rivet_out`
