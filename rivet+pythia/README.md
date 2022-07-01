@@ -1,18 +1,26 @@
 
-Using `rivet+pythia` with FIFO (first in, first out) pipe
-------
+Rivet can be run two ways:
+1. On `hepmc` files directly, with `rivet -a MC_JETS test.hepmc` (where `test.hepmc` was produced with `./main42.cc main42.cmnd hepmcout.hepmc`). The CMS QCD incl.jet rivet analysis is `CMS_2021_I1972986` For example, 
 
-use pythia to generate hepmc events going to the fifo. 
+`rivet -a CMS_2021_I1972986 --ignore-beams retest_pre_hadron.hepmc`
 
-
-`./main42 main42.cmnd tut_fifo.fifo &` where I have pwgevents.lhe and main42 files in that directory
-
-Now attach Rivet to the other end of the pipe:
-
-`rivet -a MC_GENERIC -a MC_JETS tut_fifo.fifo`
+This is inconvenient as the hepmc files are huge and will take forever to run. The second, preferred way is to use a FIFO (first in, first out) pipe
 
 
-The CMS QCD incl.jet rivet analysis is `CMS_2016_I1487277` For example, `rivet -a MC_JETS,CMS_2016_I1487277 --ignore-beams retest_pre_hadron.hepmc`
+
+2. use pythia to generate hepmc events going to the fifo. 
+
+
+`./main42 main42.cmnd tut_fifo.fifo &` 
+
+where I have pwgevents.lhe and main42 files in that directory. Now attach Rivet to the other end of the pipe:
+
+`rivet -a CMS_2021_I1972986 -a MC_JETS tut_fifo.fifo`
+
+This produces a Rivet.yoda file. To produce all the plots as an html file, do
+
+`rivet-mkhtml --mc-errs Rivet.yoda`  
+
 
 
 
