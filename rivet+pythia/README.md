@@ -252,12 +252,17 @@ Queue 1000
 `yodamerge_tmp.py -o merged_prehadron.yoda run1.yoda run2.yoda run3.yoda`
 
 ### Make a merged yoda for the post hadron yoda files
-`cd COMPLETE_YODAS/PREHADRON`
+`cd COMPLETE_YODAS/PREHADRON && source /afs/desy.de/user/a/aalkadhi/poweheg/rivet+pythia/installnew.sh`
+
 `yodamerge_tmp.py -o posthadron_merged.yoda post*`
 
 ### Make a merged yoda for the pre hadron yoda files
-`cd COMPLETE_YODAS/POSTHADRON`
+
+`cd COMPLETE_YODAS/POSTHADRON && source /afs/desy.de/user/a/aalkadhi/poweheg/rivet+pythia/installnew.sh`
+
 `yodamerge_tmp.py -o prehadron_merged.yoda pre*`
+
+
 ---------
 
 compare histos
