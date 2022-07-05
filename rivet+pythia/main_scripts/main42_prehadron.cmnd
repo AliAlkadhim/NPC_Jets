@@ -1,0 +1,92 @@
+! File: main42.cmnd
+! This file contains commands to be read in for a Pythia8 run.
+! Lines not beginning with a letter or digit are comments.
+! Names are case-insensitive  -  but spellings-sensitive!
+! The changes here are illustrative, not always physics-motivated.
+
+! 1) Settings that will be used in a main program.
+Main:numberOfEvents = 50000          ! number of events to generate
+Main:timesAllowErrors = 500          ! abort run after this many flawed events
+
+! 2) Settings related to output in init(), next() and stat().
+Init:showChangedSettings = on      ! list changed settings
+Init:showAllSettings = off         ! list all settings
+Init:showChangedParticleData = on  ! list changed particle data
+Init:showAllParticleData = off     ! list all particle data
+Next:numberCount = 1000            ! print message every n events
+Next:numberShowLHA = 1             ! print LHA information n times
+Next:numberShowInfo = 1            ! print event information n times
+Next:numberShowProcess = 1         ! print process record n times
+Next:numberShowEvent = 1           ! print event record n times
+Stat:showPartonLevel = on          ! additional statistics on MPI
+
+!SpaceShower:pTmaxMatch=1
+!TimeShower:pTmaxMatch=1
+SpaceShower:pTmaxMatch=2
+TimeShower:pTmaxMatch=2
+POWHEG:veto = 1
+POWHEG:pTdef = 1 
+POWHEG:emitted = 0 
+POWHEG:pTemt = 0 
+POWHEG:pThard = 0 
+POWHEG:vetoCount = 10 
+POWHEG:nFinal = 2
+
+
+! 5b) Alternative beam and process selection from a Les Houches Event File.
+! NOTE: to use this option, comment out the lines in section 5a above
+! and uncomment the ones below. Section 3 is ignored for frameType = 4.
+Beams:frameType = 4                ! read info from a LHEF
+#BELOW IS THE ACTUAL LHE FILE FROM POWHEG
+Beams:LHEF=pwgevents.lhe
+
+! 6) Other settings. Can be expanded as desired.
+! Note: may overwrite some of the values above, so watch out.
+ParticleDecays:limitTau0 = on      ! set long-lived particle stable ...
+ParticleDecays:tau0Max = 10        ! ... if c*tau0 > 10 mm
+
+
+UncertaintyBands:doVariations=off
+!UncertaintyBands:List = {                                                                                                                                    
+!        radHi fsr:muRfac=0.5 isr:muRfac=0.5,                                                                                                           
+!        radLo fsr:muRfac=2.0 isr:muRfac=2.0,                                                                                                           
+!        fsrHi fsr:muRfac=0.5, 
+!        fsrLo fsr:muRfac=2.0, 
+!        isrHi isr:muRfac=0.5, 
+!        isrLo isr:muRfac=2.0, 
+!        isr:PDF:plus=1,                                                                                                                                      
+!        isr:PDF:minus=1,                                                                                                                                     
+!        hardHi fsr:cNS=2.0 isr:cNS=2.0,                                                                                                                      
+!        hardLo fsr:cNS=-2.0 isr:cNS=-2.0,
+!        isrHardHi isr:cNS=2.0,
+!        isrHardLo isr:cNS=-2.0,
+!        fsrHardHi fsr:cNS=2.0,
+!        fsrHardLo fsr:cNS=-2.0
+!    }                                                                                                                                                        
+
+TimeShower:alphaSorder=2
+TimeShower:alphaSvalue=0.118
+TimeShower:alphaSuseCMW=on
+SpaceShower:alphaSuseCMW=on
+SpaceShower:alphaSorder=2
+SpaceShower:alphaSvalue=0.118
+
+SpaceShower:dipoleRecoil=on
+!SpaceShower:rapidityOrder=on
+!SpaceShower:phiIntAsym=on
+
+TimeShower:QEDshowerByL = off
+SpaceShower:QEDshowerByQ = on
+SpaceShower:QEDshowerByL = off
+TimeShower:QEDshowerByQ = off
+
+TimeShower:QCDshower=on
+SpaceShower:QCDshower=on
+
+#SWITCH the 3 below to have non-pert correction
+
+
+
+PartonLevel:MPI=off
+HadronLevel:all=off
+BeamRemnants:primordialKT=on
