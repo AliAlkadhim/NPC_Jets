@@ -252,9 +252,11 @@ Queue 1000
 `yodamerge_tmp.py -o merged_prehadron.yoda run1.yoda run2.yoda run3.yoda`
 
 ### Make a merged yoda for the post hadron yoda files
+`cd COMPLETE_YODAS/PREHADRON`
 `yodamerge_tmp.py -o posthadron_merged.yoda post*`
 
 ### Make a merged yoda for the pre hadron yoda files
+`cd COMPLETE_YODAS/POSTHADRON`
 `yodamerge_tmp.py -o prehadron_merged.yoda pre*`
 ---------
 
