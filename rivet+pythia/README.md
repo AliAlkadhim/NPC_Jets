@@ -168,7 +168,9 @@ for each run in Number_of_runs, do
   
 ```
 
-## Implementation (in `/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250`)
+## Implementation in `/nfs/dust/cms/user/aalkadhi/suppr_250_2` 
+
+Use DUST for extra storage. (prevous implementation was in `/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250`)
 
 **mkfifo_parallel.sh**
 
@@ -179,29 +181,51 @@ rnd=$(($1 + 1))
 rnd=$(printf "%01d\n" $rnd)
 
 #current_dir=$(pwd)
-current_dir=/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/
-cd /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/run_${rnd}
-source /afs/desy.de/user/a/amoroso/cmsarea/powheg/POWHEG-BOX-V2/Zj/ZjMiNNLO/shower/installnew.sh
+# ON AFS
+#current_dir=/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250_2/
+# ON DUST
+current_dir=/nfs/dust/cms/user/aalkadhi/suppr_250_2/
+#go to the run directory
+cd /nfs/dust/cms/user/aalkadhi/suppr_250_2/run_${rnd}
 
-cp /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/main_scripts/* .
+#remove everything but the pwgevents.lhe files
+rm powheg.input
+#source env
+source /afs/desy.de/user/a/aalkadhi/poweheg/rivet+pythia/installnew.sh
+#copy main pythia script to this directory
+cp /nfs/dust/cms/user/aalkadhi/suppr_250_2/main_scripts/* .
+
 #PREHADRON
-./main42 main42_prehadron.cmnd prehadron${rnd}.fifo &
-rivet --ignore-beams -o prehadron${rnd}.yoda -a CMS_2021_I1972986 prehadron${rnd}.fifo
-rm prehadron${rnd}.fifo
-cp prehadron${rnd}.yoda /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
+#make a fifo associated with that run in that run directory. First generate the hepmc events into fi$
+#./main42 main42_prehadron.cmnd prehadron${rnd}.fifo &
+#then attach the analysis at the opposite end
+#rivet --ignore-beams -o prehadron${rnd}.yoda -a CMS_2021_I1972986 prehadron${rnd}.fifo
+#rivet --ignore-beams -o prehadron${rnd}.yoda -a CMS_2016_I1487277 prehadron${rnd}.fifo
+#remove the fifo file
+#rm prehadron${rnd}.fifo
+#copy the yoda hist file into COMPLETE_YODAS dir
+#mv prehadron${rnd}.yoda /nfs/dust/cms/user/aalkadhi/suppr_250_2/COMPLETE_YODAS/PREHADRON/
 
 #POSTHADRON
-#./main42 main42_posthadron.cmnd posthadron${rnd}.fifo &
-#rivet --ignore-beams -o posthadron${rnd}.yoda -a CMS_2021_I1972986 posthadron${rnd}.fifo
-#rm posthadron${rnd}.fifo
-#cp posthadron${rnd}.yoda /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
+#make a fifo associated with that run in that run directory. First generate the hepmc events into fi$
+./main42 main42_posthadron.cmnd posthadron${rnd}.fifo &
+#then attach the analysis at the opposite end
+rivet --ignore-beams -o posthadron${rnd}.yoda -a CMS_2021_I1972986 posthadron${rnd}.fifo
+#rivet --ignore-beams -o prehadron${rnd}.yoda -a CMS_2016_I1487277 posthadron${rnd}.fifo
+#remove the fifo file
+rm posthadron${rnd}.fifo
+#copy the yoda hist file into COMPLETE_YODAS dir
+mv posthadron${rnd}.yoda /nfs/dust/cms/user/aalkadhi/suppr_250_2/COMPLETE_YODAS/POSTHADRON/
 
-#BOTH
+
+#BOTH (Don't do)
 #rm posthadron${rnd}.fifo prehadron${rnd}.fifo
-#cp prehadron${rnd}.yoda posthadron${rnd}.yoda /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
+#cp prehadron${rnd}.yoda posthadron${rnd}.yoda #/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
 #rm prehadron${rnd}.fifo
-#cp prehadron${rnd}.yoda /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
-cd ${current_dir}
+#cp prehadron${rnd}.yoda #/afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/COMPLETE_YODAS/
+
+#Finally, go back to current_dir
+cd /nfs/dust/cms/user/aalkadhi/suppr_250_2/
 
 ```
 
@@ -209,15 +233,15 @@ cd ${current_dir}
 
 **rivet_condor.sub**
 ```
-Executable  = /afs/desy.de/user/a/aalkadhi/poweheg/parallel_Dijets/suppr_250/mkfifo_parallel.sh
+Executable  = /nfs/dust/cms/user/aalkadhi/suppr_250_2/mkfifo_parallel.sh
 Arguments  = $(Process)
-Log = rivet_logs/log_$(Process).txt
+Log = rivet_log/log_$(Process).txt
 
 Output = rivet_out/out_$(Process).txt
 
 Error = rivet_error/err_$(Process).txt
 #+RequestRunTime=500000
-Queue 500
+Queue 1000
 ```
 
 ------
@@ -227,7 +251,11 @@ Queue 500
 
 `yodamerge_tmp.py -o merged_prehadron.yoda run1.yoda run2.yoda run3.yoda`
 
+### Make a merged yoda for the post hadron yoda files
 `yodamerge_tmp.py -o posthadron_merged.yoda post*`
+
+### Make a merged yoda for the pre hadron yoda files
+`yodamerge_tmp.py -o prehadron_merged.yoda pre*`
 ---------
 
 compare histos
