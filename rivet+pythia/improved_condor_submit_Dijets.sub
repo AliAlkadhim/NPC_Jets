@@ -1,0 +1,10 @@
+Executable  = /nfs/dust/cms/user/aalkadhi/suppr_250_2/improved_launch_Dijets.sh
+Arguments  = $(Process)
+Log = log/log_$(Process).txt
+
+Output = out/out_$(Process).txt
+
+Error = error/err_$(Process).txt
+#+RequestRunTime=500000
+Queue 1000
+
