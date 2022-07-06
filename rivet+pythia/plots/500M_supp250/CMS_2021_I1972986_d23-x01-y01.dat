@@ -52,8 +52,7 @@ LineColor=red
 LineStyle=solid
 Path=/merged_posthadron_500M_supp250.yoda/CMS_2021_I1972986/d23-x01-y01
 ScaledBy=4.75950687701148649e-07
-Titile=PS+MPI+HAD
-Title=merged_posthadron_500M_supp250
+Title=PS+MPI+HAD
 # xlow	 xhigh	 val	 errminus	 errplus
 9.700000e+01	1.330000e+02	1.414619e+04	4.598196e+02	4.598196e+02
 1.330000e+02	1.740000e+02	2.844449e+03	3.650642e+01	3.650642e+01
