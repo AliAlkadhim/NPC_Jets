@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.rcParams.update({
+    "text.usetex": True})
 
 import numpy as np
-np.seterr(all='ignore') 
 
 #MAPPING DICTIONARY BETWEEN The histo name and the rapidity bin ranges
 
@@ -45,20 +47,32 @@ def get_bin_entries_list(filename, hist_name):
                     begin_table_ind +=1
                     
     
-    return np.array(bins_list),np.array( entries_list)
+    return np.array(bins_list, dtype='float64'), np.array( entries_list, dtype='float64') + 1.e-9 
 
 
 
 
+AK4_NAMES=[    
+'d01-x01-y01', #0<y < 0.5
+ 'd02-x01-y01' , 
+  'd03-x01-y01', 
+   'd04-x01-y01']
+
+
+AK4_LABELS = ['$0<|y|<0.5$', '$0.5<|y|<1.0$','$1.0<|y|<1.5$','$1.5<|y|<2.0$']
 
 if __name__ == '__main__':
-    filename = 'posthadron_merged_50M.yoda'
-    hist_name = 'd21-x01-y01'
-    bins_list, entries_list= get_bin_entries_list(filename,hist_name)
-    ratio = entries_list/entries_list
-    ratio[ratio == np.inf] = 0
-    plt.step(bins_list, ratio, label=hist_name)
+    post_filename = 'merged_posthadron_500M_supp250.yoda'
+    pre_filename = 'merged_prehadron_500M_supp250.yoda'
+    # For some reason for loop doesn't work with plt.step()
+
+    pre_bins_list, pre_entries_list= get_bin_entries_list(pre_filename,AK4_NAMES[2])
+    post_bins_list, post_entries_list= get_bin_entries_list(post_filename,AK4_NAMES[2])
+    NPC = post_entries_list/pre_entries_list
+
+    plt.step(pre_bins_list, NPC, label=AK4_LABELS[2], where='mid')
     plt.legend()
+    plt.title('AK4')
     plt.show()
 
 
