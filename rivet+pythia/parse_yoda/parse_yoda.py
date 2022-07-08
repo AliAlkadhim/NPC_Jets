@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 import matplotlib
+
+import mplhep as hep
+hep.style.use("CMS") 
+
 matplotlib.rcParams.update({
     "text.usetex": True})
-
 import numpy as np
 import pandas as pd
 
@@ -11,26 +14,42 @@ import pandas as pd
 
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 
-
 MAP_DICT = { 
     #AK4 JETS
     'd01-x01-y01' : {'y_range':(0,0.5), 
-                                'n_bins': 22},
+                                'n_bins': 22,
+                                'ylabel':'AK4 $0<|y|<0.5$'},
 
  'd02-x01-y01' :  {'y_range':(0.5,1), 
-                                'n_bins': 21},
+                                'n_bins': 21,
+                                'ylabel':'AK4 $0.5<|y|<1.0$'},
 
   'd03-x01-y01':  {'y_range':(1,1.5), 
-                                'n_bins': 19},
+                                'n_bins': 19,
+                                'ylabel': 'AK4 $1.0<|y|<1.5$'},
 
    'd04-x01-y01': {'y_range':(1.5,2), 
-                                'n_bins': 15},
+                                'n_bins': 15,
+                                'ylabel': 'AK4 $1.5<|y|<2.0$'},
 
-   #AK7 JETS
-    # 'd21-x01-y01': '0_0-5', 
-    # 'd22-x01-y01':'0-5_1',
-    # 'd23-x01-y01':'1_1-5',
-    # 'd24-x01-y01':'1-5_2'
+   
+
+   #AK 7
+    'd21-x01-y01': {'y_range':(0,0.5), 
+                                'n_bins': 22,
+                                'ylabel':'AK7 $0<|y|<0.5$'},
+    
+    'd22-x01-y01': {'y_range':(0.5,1), 
+                                'n_bins': 21,
+                                'ylabel':'AK7 $0.5<|y|<1.0$'},
+
+    'd23-x01-y01': {'y_range':(1,1.5), 
+                                'n_bins': 19,
+                                'ylabel': 'AK7 $1.0<|y|<1.5$'},
+
+    'd24-x01-y01': {'y_range':(1.5,2), 
+                                'n_bins': 15,
+                                'ylabel': 'AK7 $1.5<|y|<2.0$'}
 
 
 }
@@ -71,11 +90,13 @@ def get_bin_entries_list(filename, hist_name, n_bins):
 
 
 
-AK4_LABELS = ['$0<|y|<0.5$', '$0.5<|y|<1.0$','$1.0<|y|<1.5$','$1.5<|y|<2.0$']
+
 
 if __name__ == '__main__':
     post_filename = 'merged_posthadron_500M_supp250.yoda'
+    # post_filename='../plots/suppr800_bornktmin600_100M/suppr800_bornktmin600_100M_posthadron_merged.yoda'
     pre_filename = 'merged_prehadron_500M_supp250.yoda'
+    # pre_filename='../plots/suppr800_bornktmin600_100M/suppr800_bornktmin600_100M_prehadron_merged.yoda'
     # For some reason for loop doesn't work with plt.step()
     #SINGLE TEST
     # pre_bins_list, pre_entries_list= get_bin_entries_list(pre_filename,AK4_NAMES[0], MAP_DICT[AK4_NAMES[0]]['n_bins'])
@@ -95,19 +116,21 @@ if __name__ == '__main__':
 
 
     plt.figure() 
-    for hist_ind, hist in enumerate(AK4_NAMES):
+
+    for hist_ind, hist in enumerate(MAP_DICT.keys()):
         pre_bins_list, pre_entries_list= get_bin_entries_list(pre_filename,hist, MAP_DICT[hist]['n_bins'])
         post_bins_list, post_entries_list= get_bin_entries_list(post_filename,hist, MAP_DICT[hist]['n_bins'])
 
         NPC = post_entries_list/pre_entries_list
         
-        plt.step(pre_bins_list, NPC, label=AK4_LABELS[hist_ind], where='mid')
-        plt.ylim(-1,1.5)
+        plt.step(pre_bins_list, NPC, label=MAP_DICT[hist]['ylabel'], where='mid')
+        plt.ylim(-0.5,1.2)
         plt.xlabel('$p_T$')
         plt.ylabel('NP C')
         plt.legend()
-        plt.title('AK4')
+        plt.title('bornkt min 10, born suppression factor 800',fontsize=15)
        
+    plt.savefig('../plots/500M_supp250/allbins_suppr250_bornktmin10_500M.png')
     plt.show()
 
 
