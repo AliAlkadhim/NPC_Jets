@@ -14,6 +14,7 @@ import pandas as pd
 
 parser=argparse.ArgumentParser(description='directory')
 parser.add_argument('--D', required=True)
+parser.add_argument('--Matrix', type=bool, required=False, default=False, help='if True, generate a matrix of the NPC in the (x,y)=(hadron,parton) space')
 args = parser.parse_args()
 
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
@@ -71,8 +72,8 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986/'
-begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986/'
+begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986/'
+begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986/'
 
 
 
@@ -116,16 +117,38 @@ def return_bins_pre_post(one_hist):
 
 
 
-for hist_ind, hist in enumerate(MAP_DICT.keys()):
 
-    bins, pre, post = return_bins_pre_post(hist)
-    NPC = post/pre
-    plt.step(bins, NPC, label=MAP_DICT[hist]['ylabel'], where='mid')
-    plt.xlabel('$p_T$ [GeV]')
-    plt.ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$')
-    plt.title('bornktmin 600, bornsuppfact 800',font='MonoSpace')
-    plt.ylim(-0.5,3)
-    plt.legend()
-    plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
+if not args.Matrix:
+    for hist_ind, hist in enumerate(MAP_DICT.keys()):
 
-plt.show()
+        bins, pre, post = return_bins_pre_post(hist)
+        NPC = post/pre
+        
+        plt.step(bins, NPC, label=MAP_DICT[hist]['ylabel'], where='mid')
+        plt.xlabel('$p_T$ [GeV]')
+        plt.ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$')
+        plt.title('bornktmin 300, bornsuppfact 800',font='MonoSpace')
+        plt.ylim(-0.5,3)
+        plt.legend()
+        plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
+
+    plt.show()
+
+elif args.Matrix:
+    average_pre=[]
+    average_post=[]
+    average_NPC = []
+    average_bins=[]
+    # for hist_ind, hist in enumerate(MAP_DICT.keys()):
+    #     bins, pre, post = return_bins_pre_post(hist)
+    #     NPC = post/pre
+    # print(average_bins)
+
+    bins, pre, post = return_bins_pre_post(list(MAP_DICT)[0])
+    post_2d, pre_2d = np.meshgrid(post, pre)
+    NPC = post_2d/pre_2d
+    print(NPC)
+    H= plt.pcolormesh(post_2d, pre_2d, NPC, vmin=- np.abs(NPC).max(), vmax=np.abs(NPC).max(), cmap ='Greens')
+    #x: post, y: pre
+    plt.colorbar(H)
+    plt.show()
