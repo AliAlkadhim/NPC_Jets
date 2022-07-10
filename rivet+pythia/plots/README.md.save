@@ -8,6 +8,4 @@ in this directory. For example,
 
 
 TODO:
-* make 2d hist for the NPC, where x: post-hadron, y: pre-hadron
-	* And compare runs with MPS(86) switch in pythia on or off 
-
+make 2d hist with x:*  post-hadron and y: pre-hadron
