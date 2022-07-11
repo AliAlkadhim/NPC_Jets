@@ -72,8 +72,8 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986/'
-begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986/'
+begin_post_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_posthadron_merged.yoda/CMS_2021_I1972986/'
+begin_pre_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_prehadron_merged.yoda/CMS_2021_I1972986/'
 
 
 
@@ -127,7 +127,7 @@ if not args.Matrix:
         plt.step(bins, NPC, label=MAP_DICT[hist]['ylabel'], where='mid')
         plt.xlabel('$p_T$ [GeV]')
         plt.ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$')
-        plt.title('bornktmin 300, bornsuppfact 800',font='MonoSpace')
+        plt.title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
         plt.ylim(-0.5,3)
         plt.legend()
         plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
