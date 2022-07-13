@@ -2,13 +2,14 @@ import matplotlib.pyplot as plt
 import matplotlib
 import argparse
 
-import mplhep as hep
-hep.style.use("CMS") 
+
 
 matplotlib.rcParams.update({
     "text.usetex": True})
 import numpy as np
 import pandas as pd
+import mplhep as hep
+hep.style.use("CMS") 
 
 #MAPPING DICTIONARY BETWEEN The histo name and the rapidity bin ranges
 
@@ -23,19 +24,23 @@ MAP_DICT_AK4 = {
     #AK4 JETS
     'd01-x01-y01' : {'y_range':(0,0.5), 
                                 'n_bins': 22,
-                                'ylabel':'AK4 $0<|y|<0.5$'},
+                                'ylabel':'AK4 $0<|y|<0.5$',
+                                'color':'tab:orange'},
 
  'd02-x01-y01' :  {'y_range':(0.5,1), 
                                 'n_bins': 21,
-                                'ylabel':'AK4 $0.5<|y|<1.0$'},
+                                'ylabel':'AK4 $0.5<|y|<1.0$',
+                                'color':'navy'},
 
   'd03-x01-y01':  {'y_range':(1,1.5), 
                                 'n_bins': 19,
-                                'ylabel': 'AK4 $1.0<|y|<1.5$'},
+                                'ylabel': 'AK4 $1.0<|y|<1.5$',
+                                'color':'tab:green'},
 
    'd04-x01-y01': {'y_range':(1.5,2), 
                                 'n_bins': 16, #15 for ordinary, 16 for RAW
-                                'ylabel': 'AK4 $1.5<|y|<2.0$'}
+                                'ylabel': 'AK4 $1.5<|y|<2.0$',
+                                'color':'tab:red'}
 }
 
 
@@ -45,19 +50,23 @@ MAP_DICT_AK7 = {
    #AK 7
     'd21-x01-y01': {'y_range':(0,0.5), 
                                 'n_bins': 22,
-                                'ylabel':'AK7 $0<|y|<0.5$'},
+                                'ylabel':'AK7 $0<|y|<0.5$',
+                                'color':'tab:orange'},
     
     'd22-x01-y01': {'y_range':(0.5,1), 
                                 'n_bins': 21,
-                                'ylabel':'AK7 $0.5<|y|<1.0$'},
+                                'ylabel':'AK7 $0.5<|y|<1.0$',
+                                'color':'navy'},
 
     'd23-x01-y01': {'y_range':(1,1.5), 
                                 'n_bins': 19,
-                                'ylabel': 'AK7 $1.0<|y|<1.5$'},
+                                'ylabel': 'AK7 $1.0<|y|<1.5$',
+                                'color':'tab:green'},
 
     'd24-x01-y01': {'y_range':(1.5,2), 
                                 'n_bins': 16, #15 for ordinary, 16 for RAW
-                                'ylabel': 'AK7 $1.5<|y|<2.0$'}
+                                'ylabel': 'AK7 $1.5<|y|<2.0$',
+                                'color':'tab:red'}
 
 
 }
@@ -109,8 +118,8 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_posthadron_merged.yoda/CMS_2021_I1972986/'
-begin_pre_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_prehadron_merged.yoda/CMS_2021_I1972986/'
+begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986/'
+begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986/'
 
 
 
@@ -182,14 +191,14 @@ if not args.Matrix:
         error_NPC_4 = factor_4 * np.sqrt((post_error_4/post_4)**2 + (pre_error_4/pre_4)**2)
         print('error_NPC_4',error_NPC_4)
 
-        axs[hist_ind_4,0].step(bins_4, NPC_4, label=MAP_DICT_AK4[hist_4]['ylabel'], where='mid')
-        axs[hist_ind_4, 0].errorbar(bins_4, NPC_4, yerr = error_NPC_4)
-        axs[hist_ind_4, 0].set_xlabel('$p_T$ [GeV]')
-        axs[hist_ind_4,0].set_ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$', fontsize=30)
-        # axs[hist_ind_4,0].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
-        axs[hist_ind_4,0].set_ylim(-0.1,2.8)
-        axs[hist_ind_4,0].set_xlim(0,2000)
-        axs[hist_ind_4,0].legend()
+        axs[hist_ind_4,0].step(bins_4, NPC_4, label=MAP_DICT_AK4[hist_4]['ylabel'], where='mid',linewidth=2, color=MAP_DICT_AK4[hist_4]['color'])
+        axs[hist_ind_4, 0].errorbar(bins_4, NPC_4, yerr = error_NPC_4, fmt='none', c='black', linewidth=2, capsize=3)
+        axs[hist_ind_4, 0].set_xlabel('$p_T$ [GeV]', fontsize=21)
+        axs[hist_ind_4,0].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
+        axs[hist_ind_4,0].set_ylim(-0.1,max(NPC_4)*1.2)
+        axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
+        axs[hist_ind_4,0].legend(loc='best',fontsize=19)
+        axs[hist_ind_4,0].grid(axis='x')
         
     for hist_ind_7, hist_7 in enumerate(MAP_DICT_AK7.keys()):
 
@@ -202,23 +211,24 @@ if not args.Matrix:
         print('error_NPC_7',error_NPC_7)
 
 
-        axs[hist_ind_7,1].step(bins_7, NPC_7, label=MAP_DICT_AK7[hist_7]['ylabel'], where='mid')
-        axs[hist_ind_7, 1].errorbar(bins_7, NPC_7, yerr = error_NPC_7)
+        axs[hist_ind_7,1].step(bins_7, NPC_7, label=MAP_DICT_AK7[hist_7]['ylabel'], where='mid',linewidth=2, color=MAP_DICT_AK7[hist_7]['color'])
+        axs[hist_ind_7, 1].errorbar(bins_7, NPC_7, yerr = error_NPC_7, fmt='none', c='black',linewidth=2,capsize=3)
         
-        axs[hist_ind_7,1].set_xlabel('$p_T$ [GeV]')
-        axs[hist_ind_7,1].set_ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$', fontsize=30)
+        axs[hist_ind_7,1].set_xlabel('$p_T$ [GeV]', fontsize=21)
+        axs[hist_ind_7,1].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
         # axs[hist_ind_7,1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
-        axs[hist_ind_7,1].set_ylim(-0.1,2.8)
-        axs[hist_ind_7,1].set_xlim(0,2000)
-        axs[hist_ind_7,1].legend()
-        
+        axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
+        axs[hist_ind_7,1].set_xlim(min(bins_4),max(bins_7))
+        axs[hist_ind_7,1].legend(loc='best', fontsize=19)
+        axs[hist_ind_4,0].grid(axis='x')
 
         
-        plt.tight_layout()
-    # plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
+        # plt.tight_layout()
     
-    plt.title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
     
+    fig.suptitle('bornktmin 600, bornsuppfact 800',font='MonoSpace')
+    plt.tight_layout()
+    plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
     plt.show()
 
 elif args.Matrix:
