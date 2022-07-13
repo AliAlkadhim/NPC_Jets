@@ -1,4 +1,4 @@
-To use my parser(s), first uncmment which histogram files you want to parse in `parse_dat.py`, then do
+The plots which contain the corrections from all bins are labeleld `ALLBINS...`. To use my parser(s), first uncmment which histogram files you want to parse in `parse_dat.py`, then do
 
 `python parse_dat.py --D <DIRECTORY NAME>`
 
