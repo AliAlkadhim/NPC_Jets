@@ -118,8 +118,8 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986/'
-begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986/'
+begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986/'
+begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986/'
 
 
 
@@ -220,13 +220,13 @@ if not args.Matrix:
         axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
         axs[hist_ind_7,1].set_xlim(min(bins_4),max(bins_7))
         axs[hist_ind_7,1].legend(loc='best', fontsize=19)
-        axs[hist_ind_4,0].grid(axis='x')
+        axs[hist_ind_7,1].grid(axis='x')
 
         
         # plt.tight_layout()
     
     
-    fig.suptitle('bornktmin 600, bornsuppfact 800',font='MonoSpace')
+    fig.suptitle('bornktmin 300, bornsuppfact 800',font='MonoSpace')
     plt.tight_layout()
     plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
     plt.show()
