@@ -167,7 +167,7 @@ def return_bins_pre_post(one_hist):
 
 
 if not args.Matrix:
-    fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(20,10))
+    fig, axs = plt.subplots(nrows=4, ncols=2, figsize=(20,10))
     for hist_ind_4, hist_4 in enumerate(MAP_DICT_AK4.keys()):
 
         bins_4, pre_4, post_4, pre_error_4 , post_error_4 = return_bins_pre_post(hist_4)
@@ -182,13 +182,14 @@ if not args.Matrix:
         error_NPC_4 = factor_4 * np.sqrt((post_error_4/post_4)**2 + (pre_error_4/pre_4)**2)
         print('error_NPC_4',error_NPC_4)
 
-        axs[0].step(bins_4, NPC_4, label=MAP_DICT_AK4[hist_4]['ylabel'], where='mid')
-        axs[0].errorbar(bins_4, NPC_4, yerr = error_NPC_4)
-        axs[0].set_xlabel('$p_T$ [GeV]')
-        axs[0].set_ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$', fontsize=30)
-        axs[0].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
-        axs[0].set_ylim(0.1,2.8)
-        axs[0].legend()
+        axs[hist_ind_4,0].step(bins_4, NPC_4, label=MAP_DICT_AK4[hist_4]['ylabel'], where='mid')
+        axs[hist_ind_4, 0].errorbar(bins_4, NPC_4, yerr = error_NPC_4)
+        axs[hist_ind_4, 0].set_xlabel('$p_T$ [GeV]')
+        axs[hist_ind_4,0].set_ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$', fontsize=30)
+        # axs[hist_ind_4,0].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
+        axs[hist_ind_4,0].set_ylim(-0.1,2.8)
+        axs[hist_ind_4,0].set_xlim(0,2000)
+        axs[hist_ind_4,0].legend()
         
     for hist_ind_7, hist_7 in enumerate(MAP_DICT_AK7.keys()):
 
@@ -201,16 +202,23 @@ if not args.Matrix:
         print('error_NPC_7',error_NPC_7)
 
 
-        axs[1].step(bins_7, NPC_7, label=MAP_DICT_AK7[hist_7]['ylabel'], where='mid')
-        axs[1].set_xlabel('$p_T$ [GeV]')
-        axs[1].set_ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$', fontsize=30)
-        axs[1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
-        axs[1].set_ylim(0.1,2.8)
-        axs[1].legend()
+        axs[hist_ind_7,1].step(bins_7, NPC_7, label=MAP_DICT_AK7[hist_7]['ylabel'], where='mid')
+        axs[hist_ind_7, 1].errorbar(bins_7, NPC_7, yerr = error_NPC_7)
         
+        axs[hist_ind_7,1].set_xlabel('$p_T$ [GeV]')
+        axs[hist_ind_7,1].set_ylabel(r'$\frac{\sigma^{PS+MPI+HAD}}{\sigma^{PS}}$', fontsize=30)
+        # axs[hist_ind_7,1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
+        axs[hist_ind_7,1].set_ylim(-0.1,2.8)
+        axs[hist_ind_7,1].set_xlim(0,2000)
+        axs[hist_ind_7,1].legend()
         
+
+        
+        plt.tight_layout()
     # plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
-    # plt.tight_layout()
+    
+    plt.title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
+    
     plt.show()
 
 elif args.Matrix:
