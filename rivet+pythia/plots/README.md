@@ -10,4 +10,7 @@ in this directory. For example,
 TODO:
 * make 2d hist for the NPC, where x: post-hadron, y: pre-hadron
 	* And compare runs with MPS(86) switch in pythia on or off 
+* Add uncertainties to my ALLBINS plots (trivial).
+* Combine results to make one continuous spectrum at all $p_T$.
+
 
