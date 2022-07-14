@@ -118,8 +118,8 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986/'
-begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986/'
+begin_post_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_posthadron_MSTP_merged.yoda/CMS_2021_I1972986/'
+begin_pre_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_prehadron_MSTP_merged.yoda/CMS_2021_I1972986/'
 
 
 
@@ -163,9 +163,9 @@ def return_bins_pre_post(one_hist):
                     post_error =  f_readlines[begin_post_table_ind].split()[3]
                     post_errors_list.append(post_error)
                     begin_post_table_ind +=1 
-    bins, pre, post = np.array(bins_list, dtype='float64'),  np.array(pre_entries_list, dtype='float64') + 1.e-9 ,  np.array(post_entries_list, dtype='float64')
-    pre_errors = np.array(pre_errors_list, dtype='float64') + 1.e-9
-    post_errors = np.array(post_errors_list, dtype='float64') + 1.e-9 
+    bins, pre, post = np.array(bins_list, dtype='float64'),  np.array(pre_entries_list, dtype='float64') + 1.e-20 ,  np.array(post_entries_list, dtype='float64') + 1.e-20
+    pre_errors = np.array(pre_errors_list, dtype='float64') + 1.e-20
+    post_errors = np.array(post_errors_list, dtype='float64') + 1.e-20 
     # print('BINS', bins)
     # print('PRE', pre)
     # print('POST', post)
@@ -195,7 +195,8 @@ if not args.Matrix:
         axs[hist_ind_4, 0].errorbar(bins_4, NPC_4, yerr = error_NPC_4, fmt='none', c='black', linewidth=2, capsize=3)
         axs[hist_ind_4, 0].set_xlabel('$p_T$ [GeV]', fontsize=21)
         axs[hist_ind_4,0].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
-        axs[hist_ind_4,0].set_ylim(-0.1,max(NPC_4)*1.2)
+        # axs[hist_ind_4,0].set_ylim(-0.1,max(NPC_4)*1.2)
+        axs[hist_ind_4,0].set_ylim(-0.1,2)
         axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
         axs[hist_ind_4,0].legend(loc='best',fontsize=19)
         axs[hist_ind_4,0].grid(axis='x')
@@ -217,7 +218,8 @@ if not args.Matrix:
         axs[hist_ind_7,1].set_xlabel('$p_T$ [GeV]', fontsize=21)
         axs[hist_ind_7,1].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
         # axs[hist_ind_7,1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
-        axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
+        # axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
+        axs[hist_ind_7,1].set_ylim(-0.1,2)
         axs[hist_ind_7,1].set_xlim(min(bins_4),max(bins_7))
         axs[hist_ind_7,1].legend(loc='best', fontsize=19)
         axs[hist_ind_7,1].grid(axis='x')
@@ -226,7 +228,7 @@ if not args.Matrix:
         # plt.tight_layout()
     
     
-    fig.suptitle('bornktmin 300, bornsuppfact 800',font='MonoSpace')
+    fig.suptitle('bornktmin 10, bornsuppfact 250 MSTP(86)=1',font='MonoSpace')
     plt.tight_layout()
     plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
     plt.show()
