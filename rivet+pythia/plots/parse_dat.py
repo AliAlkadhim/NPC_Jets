@@ -118,8 +118,8 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_1B_ParsiParams_posthadron_merged.yoda/CMS_2021_I1972986/'
-begin_pre_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_1B_ParsiParams_prehadron_merged.yoda/CMS_2021_I1972986/'
+begin_post_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_posthadron_MSTP_merged.yoda/CMS_2021_I1972986/'
+begin_pre_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_prehadron_MSTP_merged.yoda/CMS_2021_I1972986/'
 
 
 
@@ -235,9 +235,9 @@ if not args.Matrix:
         # plt.tight_layout()
     
     
-    fig.suptitle('bornktmin 10, bornsuppfact 250, 1 B events',font='MonoSpace')
+    fig.suptitle('bornktmin 10, bornsuppfact 250, MSTP(86)=1, 100 M events',font='MonoSpace')
     plt.tight_layout()
-    plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
+    plt.savefig(args.D+'/ALLBINS_Low_pT_range_'+args.D+'.png')
     plt.show()
 
 elif args.Matrix:
