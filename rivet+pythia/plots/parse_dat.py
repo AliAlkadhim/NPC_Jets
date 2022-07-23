@@ -118,8 +118,8 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_posthadron_MSTP_merged.yoda/CMS_2021_I1972986/'
-begin_pre_hist_string ='BEGIN HISTO1D /suppr250_bornktmin10_100M_ParsiParams_prehadron_MSTP_merged.yoda/CMS_2021_I1972986/'
+begin_post_hist_string ='BEGIN HISTO1D /suppr160_bornktmin5_1B_ParsiParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986/'
+begin_pre_hist_string ='BEGIN HISTO1D /suppr160_bornktmin5_1B_ParsiParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986/'
 
 
 
@@ -142,7 +142,8 @@ def return_bins_pre_post(one_hist):
             #PRE
             if begin_pre_hist_string in line:
                 begin_pre_hist_ind = line_ind
-                begin_pre_table_ind = line_ind + 7
+                # +8 if --mc-errs, +7 if no -mc-errs
+                begin_pre_table_ind = line_ind + 8
                 
                 for i in range(n_bins):
                     bin_val = f_readlines[begin_pre_table_ind].split()[0]
@@ -155,7 +156,7 @@ def return_bins_pre_post(one_hist):
             #POST
             if begin_post_hist_string in line:
                 begin_post_hist_ind = line_ind
-                begin_post_table_ind = line_ind + 7
+                begin_post_table_ind = line_ind + 8
                 for i in range(n_bins):
                     #bins already fetcheds
                     post_entries_val =  f_readlines[begin_post_table_ind].split()[2]
@@ -197,9 +198,11 @@ if not args.Matrix:
         axs[hist_ind_4, 0].set_xlabel('$p_T$ [GeV]', fontsize=21)
         axs[hist_ind_4,0].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
         # axs[hist_ind_4,0].set_ylim(-0.1,max(NPC_4)*1.2)
-        axs[hist_ind_4,0].set_ylim(0.6,1.45)
-        # axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
-        axs[hist_ind_4,0].set_xlim(90, 700)
+        # axs[hist_ind_4,0].set_ylim(0.85,1.2)
+        axs[hist_ind_4,0].set_ylim(0.3,1.6)
+        #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
+        axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
+        # axs[hist_ind_4,0].set_xlim(100, 2500)
         axs[hist_ind_4,0].axhline(y=1, color='black', linestyle='--')
 
         axs[hist_ind_4,0].legend(loc='best',fontsize=19)
@@ -223,9 +226,11 @@ if not args.Matrix:
         axs[hist_ind_7,1].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
         # axs[hist_ind_7,1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
         # axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
-        axs[hist_ind_7,1].set_ylim(0.6,1.45)
-        # axs[hist_ind_7,1].set_xlim(min(bins_4),max(bins_7))
-        axs[hist_ind_7,1].set_xlim(90,700)
+        # axs[hist_ind_7,1].set_ylim(0.85,1.2)
+        axs[hist_ind_7,1].set_ylim(0.3,1.6)
+        #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
+        axs[hist_ind_7,1].set_xlim(min(bins_7),max(bins_7))
+        # axs[hist_ind_7,1].set_xlim(100,2500)
         axs[hist_ind_7,1].axhline(y=1, color='black', linestyle='--')
 
         axs[hist_ind_7,1].legend(loc='best', fontsize=19)
@@ -235,9 +240,9 @@ if not args.Matrix:
         # plt.tight_layout()
     
     
-    fig.suptitle('bornktmin 10, bornsuppfact 250, MSTP(86)=1, 100 M events',font='MonoSpace')
+    fig.suptitle('bornktmin 5, bornsuppfact 160, MSTP(86)=1, 1B events',font='MonoSpace')
     plt.tight_layout()
-    plt.savefig(args.D+'/ALLBINS_Low_pT_range_'+args.D+'.png')
+    plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
     plt.show()
 
 elif args.Matrix:
