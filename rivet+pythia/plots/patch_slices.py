@@ -6,12 +6,12 @@ import argparse
 
 
 
-matplotlib.rcParams.update({
-    "text.usetex": True})
+# matplotlib.rcParams.update({
+#     "text.usetex": True})
 import numpy as np
 import pandas as pd
 import mplhep as hep
-hep.style.use("CMS") 
+# hep.style.use("CMS") 
 
 MAP_DICT = { 
     #AK4 JETS
@@ -79,7 +79,7 @@ bornsuppfactor bornktmin
 160 5 : NR
 250 10: R (R in some, NR in some of the range)
 400 15: NR
-800 30: R (R in some, NR in some)
+800 30: R (R in some, NR in some) MOSTLY NR
 800 300: R
 800 600: R
 1,800 75: R
@@ -92,7 +92,8 @@ bornsuppfactor bornktmin
 #Reasonable pt slices composed of pairs of (bornsuppfactor, bornktmin)
 slices=[(250, 10), (800,300),(800,600),(1800,75),(3200,150),(11000,1250)]
  #FIRST RAPIDITY BIN IS 'd01-x01-y01'
-SLICES = {1:{'pairs':(250, 10),
+SLICES = {
+    1:{'pairs':(250, 10),
                         'dir':'suppr250_bornktmin10_1B_ParsiParams',
                         'begin_pre_hist_string' :'BEGIN HISTO1D /suppr250_bornktmin10_1B_ParsiParams_prehadron_merged.yoda/CMS_2021_I1972986',
                         'begin_post_hist_string' :'BEGIN HISTO1D /suppr250_bornktmin10_1B_ParsiParams_posthadron_merged.yoda/CMS_2021_I1972986'
@@ -104,10 +105,16 @@ SLICES = {1:{'pairs':(250, 10),
                         'begin_post_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986'
 
 },
-3:{'pairs':(800,600),
-                        'dir':'suppr1800_bornktmin75_1B_ParsiParams_MSTP',
-                        'begin_pre_hist_string' :'BEGIN HISTO1D /suppr1800_bornktmin75_1B_ParsiParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986',
-                        'begin_post_hist_string' :'BEGIN HISTO1D /suppr1800_bornktmin75_1B_ParsiParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
+3:{'pairs':(1800,75),
+                        'dir':'suppr11000_bornktmin1250_1B_ParsiParams_MSTP',
+                        'begin_pre_hist_string' :'BEGIN HISTO1D /suppr11000_bornktmin1250_1B_ParsiParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986',
+                        'begin_post_hist_string' :'BEGIN HISTO1D /suppr11000_bornktmin1250_1B_ParsiParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
+
+
+# 3:{'pairs':(1800,75),
+#                         'dir':'suppr1800_bornktmin75_1B_ParsiParams_MSTP',
+#                         'begin_pre_hist_string' :'BEGIN HISTO1D /suppr1800_bornktmin75_1B_ParsiParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986',
+#                         'begin_post_hist_string' :'BEGIN HISTO1D /suppr1800_bornktmin75_1B_ParsiParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
 
 }
 
@@ -127,36 +134,42 @@ begin_file_string = 'CMS_2021_I1972986_'
 
 def return_bins_pre_post(rapidity_bin, slice):
     file_string = SLICES[slice]['dir'] + '/' + begin_file_string+ rapidity_bin +'.dat'
-    print(file_string)
+    print('FILE ', file_string)
     n_bins=MAP_DICT[rapidity_bin]['n_bins']
     with open(file_string, 'r') as f:
+        # print(f.read())
+        file_content = f.read()
+        s='ErrorBars=1'#count the number of times this string is in the file, which is written when you do --mc-errs in rivet
+
+        number_of_s = file_content.count(s)
+        print(number_of_s)
+        if number_of_s==3:
+            line_add_num=8
+        else:
+            line_add_num=7
+        f.seek(0)
+        f_readlines=f.readlines()
         bins_list=[]
         pre_entries_list=[]
         post_entries_list = []
         pre_errors_list = []
         post_errors_list=[]
-        file_content = f.read()
-        s='ErrorBars=1'#count the number of times this string is in the file, which is written when you do --mc-errs in rivet
-        number_of_s = file_content.count(s)
-        if number_of_s==3:
-            line_add_num=8
-        else:
-            line_add_num=7
+        
+
+
 
         #Errors are calculated with propagation of errors
         # Delta (post/pre) = |post/pre| sqrt{([Delta post]/post)^2 + ([Delta pre]/pre)^2 }
         #where delta is the uncertainties (errors)
-        f_readlines=f.readlines()
+        # print('SLICES', SLICES[1]['begin_pre_hist_string'])
         for line_ind, line in enumerate(f_readlines):
-
-            
-            #PRE
-            if SLICES[slice]['begin_pre_hist_string'] in line:
+            if str(SLICES[slice]['begin_pre_hist_string']) in line:
                 begin_pre_hist_ind = line_ind
                 # +8 if --mc-errs, +7 if no -mc-errs
                 begin_pre_table_ind = line_ind + line_add_num
                 
                 for i in range(n_bins):
+                    print( f_readlines[begin_pre_table_ind])
                     bin_val = f_readlines[begin_pre_table_ind].split()[0]
                     bins_list.append(bin_val)
                     pre_entries_val =  f_readlines[begin_pre_table_ind].split()[2]
@@ -165,14 +178,16 @@ def return_bins_pre_post(rapidity_bin, slice):
                     pre_errors_list.append(float(pre_error))
                     begin_pre_table_ind +=1 
             #POST
-            if SLICES[slice]['begin_post_hist_string'] in line:
+            if str(SLICES[slice]['begin_post_hist_string']) in line:
                 begin_post_hist_ind = line_ind
                 begin_post_table_ind = line_ind + line_add_num
                 for i in range(n_bins):
                     #bins already fetcheds
+                    print( f_readlines[begin_post_table_ind])
                     post_entries_val =  f_readlines[begin_post_table_ind].split()[2]
                     post_entries_list.append(post_entries_val)
                     post_error =  f_readlines[begin_post_table_ind].split()[3]
+                
                     post_errors_list.append(float(post_error))
                     begin_post_table_ind +=1 
     bins, pre, post = np.array(bins_list, dtype=float),  np.array(pre_entries_list, dtype=float) + 1.e-20 ,  np.array(post_entries_list, dtype=float) + 1.e-20
@@ -182,18 +197,39 @@ def return_bins_pre_post(rapidity_bin, slice):
     factor_4 = np.abs(np.divide(post,pre))
     error_ratio = factor_4 * np.sqrt((post_errors/post)**2 + (pre_errors/pre)**2)
 
-
+    print('ratio = ', ratio)
+    print('error on ratio = ', error_ratio)
     return bins, ratio, error_ratio
 
 rapidity_bin =  'd01-x01-y01'
+
+
+
+
 bins_1, ratio_1, error_ratio_1 = return_bins_pre_post(rapidity_bin, 1)
 bins_2, ratio_2, error_ratio_2 = return_bins_pre_post(rapidity_bin, 2)
 bins_3, ratio_3, error_ratio_3 = return_bins_pre_post(rapidity_bin, 3)
 
-# bin_vals=bins_1
 
-# patched_ratio=np.empty(len(bin_vals))
-# patched_ratio[0:3]=error_ratio_1[0:3]
-# patched_ratio[3:12]=error_ratio_3[3:12]
-# patched_ratio[12:]=err
-print(bins_1)
+# if __name__ == '__main__':
+    # return_bins_pre_post(rapidity_bin, 1)
+
+bin_vals=bins_1
+
+patched_ratio_error=np.empty(len(bin_vals))
+patched_ratio_error[0:3]=error_ratio_1[0:3]
+patched_ratio_error[3:12]=error_ratio_2[3:12]
+patched_ratio_error[12:]=error_ratio_3[12:]
+
+patched_ratio=np.empty(len(bin_vals))
+patched_ratio[0:3]=ratio_1[0:3]
+patched_ratio[3:12]=ratio_2[3:12]
+patched_ratio[12:]=ratio_3[12:]
+
+fig, axs = plt.subplots(1,2)
+axs=axs.flatten()
+axs[0].scatter(bin_vals, patched_ratio, label='NP Correction patched ratio')
+axs[1].scatter(bin_vals, patched_ratio_error, label='NP Correction Patched Error')
+for i in range(len(axs)):
+    axs[i].legend()
+plt.show()
