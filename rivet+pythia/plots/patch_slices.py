@@ -11,7 +11,7 @@ import argparse
 import numpy as np
 import pandas as pd
 import mplhep as hep
-# hep.style.use("CMS") 
+hep.style.use("CMS") 
 
 MAP_DICT = { 
     #AK4 JETS
@@ -116,8 +116,20 @@ SLICES = {
 #                         'begin_pre_hist_string' :'BEGIN HISTO1D /suppr1800_bornktmin75_1B_ParsiParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986',
 #                         'begin_post_hist_string' :'BEGIN HISTO1D /suppr1800_bornktmin75_1B_ParsiParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
 
-}
+},
+4:{'pairs':(11000,1250),
+                        'dir':'suppr11000_bornktmin1250_1B_ParsiParams_MSTP',
+                        'begin_pre_hist_string' :'BEGIN HISTO1D /suppr11000_bornktmin1250_1B_ParsiParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986',
+                        'begin_post_hist_string' :'BEGIN HISTO1D /suppr11000_bornktmin1250_1B_ParsiParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
 
+},
+
+5:{'pairs':(800,300),
+                        'dir':'suppr800_bornktmin300_100M_ParisParams',
+                        'begin_pre_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986',
+                        'begin_post_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin300_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986'
+
+}
 
 }
 def divide_lists(l1,l2):
@@ -150,6 +162,7 @@ def return_bins_pre_post(rapidity_bin, slice):
         f.seek(0)
         f_readlines=f.readlines()
         bins_list=[]
+        bins_high_list=[]
         pre_entries_list=[]
         post_entries_list = []
         pre_errors_list = []
@@ -172,6 +185,7 @@ def return_bins_pre_post(rapidity_bin, slice):
                     print( f_readlines[begin_pre_table_ind])
                     bin_val = f_readlines[begin_pre_table_ind].split()[0]
                     bins_list.append(bin_val)
+                    bins_high_list.append(f_readlines[begin_pre_table_ind].split()[1])
                     pre_entries_val =  f_readlines[begin_pre_table_ind].split()[2]
                     pre_entries_list.append(pre_entries_val)
                     pre_error =  f_readlines[begin_pre_table_ind].split()[3]
@@ -183,14 +197,13 @@ def return_bins_pre_post(rapidity_bin, slice):
                 begin_post_table_ind = line_ind + line_add_num
                 for i in range(n_bins):
                     #bins already fetcheds
-                    print( f_readlines[begin_post_table_ind])
                     post_entries_val =  f_readlines[begin_post_table_ind].split()[2]
                     post_entries_list.append(post_entries_val)
                     post_error =  f_readlines[begin_post_table_ind].split()[3]
                 
                     post_errors_list.append(float(post_error))
                     begin_post_table_ind +=1 
-    bins, pre, post = np.array(bins_list, dtype=float),  np.array(pre_entries_list, dtype=float) + 1.e-20 ,  np.array(post_entries_list, dtype=float) + 1.e-20
+    bins, bins_high, pre, post = np.array(bins_list, dtype=float),   np.array(bins_high_list, dtype=float), np.array(pre_entries_list, dtype=float) + 1.e-20 ,  np.array(post_entries_list, dtype=float) + 1.e-20
     pre_errors = np.array(pre_errors_list,dtype=float)+ 1.e-20
     post_errors = np.array(post_errors_list,dtype=float)+ 1.e-20
     ratio = np.array(post/pre, dtype=float)
@@ -199,37 +212,102 @@ def return_bins_pre_post(rapidity_bin, slice):
 
     print('ratio = ', ratio)
     print('error on ratio = ', error_ratio)
-    return bins, ratio, error_ratio
-
-rapidity_bin =  'd01-x01-y01'
+    return bins, bins_high, ratio, error_ratio
 
 
 
 
-bins_1, ratio_1, error_ratio_1 = return_bins_pre_post(rapidity_bin, 1)
-bins_2, ratio_2, error_ratio_2 = return_bins_pre_post(rapidity_bin, 2)
-bins_3, ratio_3, error_ratio_3 = return_bins_pre_post(rapidity_bin, 3)
 
 
-# if __name__ == '__main__':
-    # return_bins_pre_post(rapidity_bin, 1)
 
-bin_vals=bins_1
 
-patched_ratio_error=np.empty(len(bin_vals))
-patched_ratio_error[0:3]=error_ratio_1[0:3]
-patched_ratio_error[3:12]=error_ratio_2[3:12]
-patched_ratio_error[12:]=error_ratio_3[12:]
 
-patched_ratio=np.empty(len(bin_vals))
-patched_ratio[0:3]=ratio_1[0:3]
-patched_ratio[3:12]=ratio_2[3:12]
-patched_ratio[12:]=ratio_3[12:]
+#WORKFLOW FOR 1 BIN
 
-fig, axs = plt.subplots(1,2)
-axs=axs.flatten()
-axs[0].scatter(bin_vals, patched_ratio, label='NP Correction patched ratio')
-axs[1].scatter(bin_vals, patched_ratio_error, label='NP Correction Patched Error')
-for i in range(len(axs)):
-    axs[i].legend()
+# jet_pt=[  97, 133,  174,  220,  272,  330,  395,  468,  548,  638,  737,  846, 967, 1101, 1248, 1410, 1588, 1784, 2000, 2238, 2500, 2787, 3103] # is the same as bins_1=bins_2=.... but with xhigh too
+# jet_pt_centers=(np.array(jet_pt)[1:]+np.array(jet_pt)[:-1])/2
+# jet_pt_centers = [ 115,   153.5,  197,   246,   301,   362.5,  431.5,  508,   593,   687.5, 791.5,  906.5, 1034,  1174.5, 1329,  1499,  1686,  1892,  2119,  2369, 2643.5, 2945 ]
+# print(len(jet_pt_centers))
+# print('jet pt centers', jet_pt_centers)
+
+cutoff1=1174.5
+
+def get_patched_corrections(rapidity_bin):
+    """Get the patched NP corrections, currently using:
+    Jet pt 0-1101 : ratio_2 (which uses (bornsuppfactor, bornktmin) = (800,600) )
+    Jet pt 1101 - 2787 : ratio_4 (which uses (bornsuppfactor, bornktmin) = (11000,1250) )
+    
+    """
+    bins_1, bins_high_1, ratio_1, error_ratio_1 = return_bins_pre_post(rapidity_bin, 1)
+    bins_2, bins_high_2, ratio_2, error_ratio_2 = return_bins_pre_post(rapidity_bin, 2)
+    bins_3, bins_high_3, ratio_3, error_ratio_3 = return_bins_pre_post(rapidity_bin, 3)
+    bins_4, bins_high_4, ratio_4, error_ratio_4 = return_bins_pre_post(rapidity_bin, 4)
+    bins_5, bins_high_5, ratio_5, error_ratio_5 = return_bins_pre_post(rapidity_bin, 5)
+
+    #Get the bins and then bin centers (pt) of each rapidity file
+    # print('BINS HIGH', bins_high_1[-1])
+    jet_pt=list(bins_1)
+    jet_pt.append(bins_high_1[-1])
+    print('JET PT= ', jet_pt)
+    jet_pt_centers=(np.array(jet_pt)[1:]+np.array(jet_pt)[:-1])/2
+
+    patched_ratio=np.empty(len(jet_pt_centers))
+    
+    index_1101 = list(jet_pt_centers).index(cutoff1)
+    # patched_ratio[0:index_1101]=ratio_2[0:index_1101]
+    patched_ratio[0:index_1101]=ratio_2[0:index_1101]
+
+
+    patched_ratio[index_1101:]=ratio_4[index_1101:]
+    
+
+    patched_ratio_error=np.empty(len(jet_pt_centers))
+    
+    # patched_ratio_error[0:index_1101]=error_ratio_2[0:index_1101]
+    patched_ratio_error[0:index_1101]=error_ratio_2[0:index_1101]
+
+    patched_ratio_error[index_1101:]=error_ratio_4[index_1101:]
+
+
+    patched_ratio_relative_unc = np.array(patched_ratio_error)/np.array(patched_ratio)
+    return jet_pt_centers, patched_ratio, patched_ratio_error, patched_ratio_relative_unc    
+
+
+
+
+
+# patched_ratio, patched_ratio_error, patched_ratio_relative_unc = get_patched_corrections(rapidity_bin =  'd01-x01-y01')
+nrows, ncols = 4, 2
+fig, axs = plt.subplots(nrows, ncols,figsize=(15,15))
+for rapidity_bin_i, rapidity_bin in enumerate(MAP_DICT_AK4.keys()):
+    print(rapidity_bin)
+
+    jet_pt_centers, patched_ratio, patched_ratio_error, patched_ratio_relative_unc = get_patched_corrections(rapidity_bin)
+
+
+    
+    # axs=axs.flatten()
+    axs[rapidity_bin_i,0].scatter(jet_pt_centers, patched_ratio, label=MAP_DICT_AK4[rapidity_bin]['ylabel'], color=MAP_DICT_AK4[rapidity_bin]['color'])
+    axs[rapidity_bin_i,0].set_ylim((0.9,1.1))
+    axs[rapidity_bin_i, 0].set_ylabel('Patched NPC',fontsize=16)
+    axs[rapidity_bin_i, 0].text(x=cutoff1-600, y=0.95, s=r'$(800,600)$',size=12,color='r')
+    axs[rapidity_bin_i, 0].text(x=cutoff1+100, y=0.95, s=r'$(11000,1250)$',size=12,color='r')
+    
+    axs[rapidity_bin_i, 1].scatter(jet_pt_centers, patched_ratio_relative_unc, label=MAP_DICT_AK4[rapidity_bin]['ylabel'],  color=MAP_DICT_AK4[rapidity_bin]['color'])
+    axs[rapidity_bin_i,1].set_ylim((0,patched_ratio_relative_unc.max()+0.01))
+    axs[rapidity_bin_i, 1].set_ylabel(r'$\Delta_{rel}$ Patched NPC',fontsize=15)
+    axs[rapidity_bin_i, 1].text(x=cutoff1-600, y=0.004, s=r'$(800,600)$',size=12,color='r')
+    axs[rapidity_bin_i, 1].text(x=cutoff1+100, y=0.004, s=r'$(11000,1250)$',size=12,color='r')
+    for i in range(nrows):
+        # axs[i].legend(loc='best')
+        for j in range(ncols):
+            axs[i, j].set_xlabel(r'Jet $p_T$ [GeV]', fontsize=18)
+            axs[i,j].axvline(x=cutoff1, color='r')
+
+            axs[i,j].legend( loc='upper right', fontsize=15)
+
+
+plt.tight_layout(pad=2.0)
+plt.savefig('patched/2_4.png')
+
 plt.show()
