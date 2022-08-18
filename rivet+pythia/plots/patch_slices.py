@@ -122,12 +122,29 @@ SLICES = {
                         'begin_post_hist_string' :'BEGIN HISTO1D /suppr250_bornktmin10_1B_ParsiParams_posthadron_merged.yoda/CMS_2021_I1972986'
 
 },
+#WITH PARIS PARAMS, WITH MSTP
+# 2:{'pairs':(800,600),
+#                         'dir':'suppr800_bornktmin600_1B_ParisParams_MSTP',
+#                         'begin_pre_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986/',
+#                         'begin_post_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986/'
+# },
+
+#NO PARIS PARAMS AND NO MSTP
+# 2:{'pairs':(800,600),
+#                         'dir':'suppr800_bornktmin600_100M',
+#                         'begin_pre_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin600_100M_prehadron_merged.yoda/CMS_2021_I1972986/',
+#                         'begin_post_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin600_100M_posthadron_merged.yoda/CMS_2021_I1972986'
+
+# },
+
+#PARIS PARAMS WITHOUT MSTP
 2:{'pairs':(800,600),
                         'dir':'suppr800_bornktmin600_100M_ParisParams',
-                        'begin_pre_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986',
+                        'begin_pre_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_prehadron_merged.yoda/CMS_2021_I1972986/',
                         'begin_post_hist_string' :'BEGIN HISTO1D /suppr800_bornktmin600_100M_ParisParams_posthadron_merged.yoda/CMS_2021_I1972986'
 
 },
+
 3:{'pairs':(1800,75),
                         'dir':'suppr11000_bornktmin1250_1B_ParsiParams_MSTP',
                         'begin_pre_hist_string' :'BEGIN HISTO1D /suppr11000_bornktmin1250_1B_ParsiParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986',
@@ -155,6 +172,10 @@ SLICES = {
 }
 
 }
+AK='4'
+IMG_TITLE='2_4_AK'+AK+'_100M_Monash2013_WitharisParams_WithoutMSTP'
+FIG_TITLE='Pythia Monash 2013 (Default), 100M Events in Slice (800,600), 1B Events in Slice (11000,1250); With ParisParams, Without MSTP'
+
 def divide_lists(l1,l2):
     ratio=[]
     for i,j in zip(l1,l2):
@@ -302,9 +323,12 @@ def get_patched_corrections(rapidity_bin):
 # patched_ratio, patched_ratio_error, patched_ratio_relative_unc = get_patched_corrections(rapidity_bin =  'd01-x01-y01')
 nrows, ncols = 4, 2
 fig, axs = plt.subplots(nrows, ncols,figsize=(15,15))
-fig.suptitle('Pythia Monash 2013 (Default)',fontsize=30)
+fig.suptitle(FIG_TITLE,fontsize=20)
 
-ADK_DICT=MAP_DICT_AK4
+if AK=='4':
+    ADK_DICT=MAP_DICT_AK4
+elif AK=='7':
+    ADK_DICT=MAP_DICT_AK7
 
 for rapidity_bin_i, rapidity_bin in enumerate(ADK_DICT.keys()):
     print(rapidity_bin)
@@ -314,10 +338,12 @@ for rapidity_bin_i, rapidity_bin in enumerate(ADK_DICT.keys()):
 
     
     # axs=axs.flatten()
-    axs[rapidity_bin_i,0].scatter(jet_pt_centers, patched_ratio, label=ADK_DICT[rapidity_bin]['ylabel'], color=ADK_DICT[rapidity_bin]['color'])
+    axs[rapidity_bin_i,0].scatter(jet_pt_centers, patched_ratio, label=ADK_DICT[rapidity_bin]['ylabel'], color=ADK_DICT[rapidity_bin]['color'] )
+    axs[rapidity_bin_i,0].errorbar(jet_pt_centers, patched_ratio, yerr= patched_ratio_relative_unc,fmt='none', c='black', linewidth=2, capsize=2)
+
     axs[rapidity_bin_i,0].set_ylim((0.9,1.1))
     axs[rapidity_bin_i, 0].set_ylabel('Patched NPC',fontsize=16)
-    axs[rapidity_bin_i, 0].text(x=cutoff1-600, y=0.95, s=r'$(800,600)$',size=12,color='r')
+    axs[rapidity_bin_i, 0].text(x=cutoff1-600, y=0.95, s=r'$(800,600)$',size=12,color ='r')
     axs[rapidity_bin_i, 0].text(x=cutoff1+100, y=0.95, s=r'$(11000,1250)$',size=12,color='r')
     
     axs[rapidity_bin_i, 1].scatter(jet_pt_centers, patched_ratio_relative_unc, label=ADK_DICT[rapidity_bin]['ylabel'],  color=ADK_DICT[rapidity_bin]['color'])
@@ -336,6 +362,6 @@ for rapidity_bin_i, rapidity_bin in enumerate(ADK_DICT.keys()):
 
 plt.tight_layout(pad=2.0)
 
-plt.savefig('patched/2_4_AK4_Monash2013.png')
+plt.savefig('patched/'+IMG_TITLE+'.png')
 
 plt.show()
