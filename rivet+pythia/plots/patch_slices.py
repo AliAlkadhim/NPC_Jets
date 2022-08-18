@@ -72,6 +72,29 @@ MAP_DICT_AK4 = {
                                 'color':'tab:red'}
 }
 
+MAP_DICT_AK7 = {
+
+   #AK 7
+    'd21-x01-y01': {'y_range':(0,0.5), 
+                                'n_bins': 22,
+                                'ylabel':'AK7 $0<|y|<0.5$',
+                                'color':'tab:orange'},
+    
+    'd22-x01-y01': {'y_range':(0.5,1), 
+                                'n_bins': 21,
+                                'ylabel':'AK7 $0.5<|y|<1.0$',
+                                'color':'navy'},
+
+    'd23-x01-y01': {'y_range':(1,1.5), 
+                                'n_bins': 19,
+                                'ylabel': 'AK7 $1.0<|y|<1.5$',
+                                'color':'tab:green'},
+
+    'd24-x01-y01': {'y_range':(1.5,2), 
+                                'n_bins': 16, #15 for ordinary, 16 for RAW
+                                'ylabel': 'AK7 $1.5<|y|<2.0$',
+                                'color':'tab:red'}
+}
 
 '''For the weughted average method to work, the uncertainties or standard deviations on the ratios
 have to be reasonable.
@@ -279,7 +302,11 @@ def get_patched_corrections(rapidity_bin):
 # patched_ratio, patched_ratio_error, patched_ratio_relative_unc = get_patched_corrections(rapidity_bin =  'd01-x01-y01')
 nrows, ncols = 4, 2
 fig, axs = plt.subplots(nrows, ncols,figsize=(15,15))
-for rapidity_bin_i, rapidity_bin in enumerate(MAP_DICT_AK4.keys()):
+fig.suptitle('Pythia Monash 2013 (Default)',fontsize=30)
+
+ADK_DICT=MAP_DICT_AK4
+
+for rapidity_bin_i, rapidity_bin in enumerate(ADK_DICT.keys()):
     print(rapidity_bin)
 
     jet_pt_centers, patched_ratio, patched_ratio_error, patched_ratio_relative_unc = get_patched_corrections(rapidity_bin)
@@ -287,13 +314,13 @@ for rapidity_bin_i, rapidity_bin in enumerate(MAP_DICT_AK4.keys()):
 
     
     # axs=axs.flatten()
-    axs[rapidity_bin_i,0].scatter(jet_pt_centers, patched_ratio, label=MAP_DICT_AK4[rapidity_bin]['ylabel'], color=MAP_DICT_AK4[rapidity_bin]['color'])
+    axs[rapidity_bin_i,0].scatter(jet_pt_centers, patched_ratio, label=ADK_DICT[rapidity_bin]['ylabel'], color=ADK_DICT[rapidity_bin]['color'])
     axs[rapidity_bin_i,0].set_ylim((0.9,1.1))
     axs[rapidity_bin_i, 0].set_ylabel('Patched NPC',fontsize=16)
     axs[rapidity_bin_i, 0].text(x=cutoff1-600, y=0.95, s=r'$(800,600)$',size=12,color='r')
     axs[rapidity_bin_i, 0].text(x=cutoff1+100, y=0.95, s=r'$(11000,1250)$',size=12,color='r')
     
-    axs[rapidity_bin_i, 1].scatter(jet_pt_centers, patched_ratio_relative_unc, label=MAP_DICT_AK4[rapidity_bin]['ylabel'],  color=MAP_DICT_AK4[rapidity_bin]['color'])
+    axs[rapidity_bin_i, 1].scatter(jet_pt_centers, patched_ratio_relative_unc, label=ADK_DICT[rapidity_bin]['ylabel'],  color=ADK_DICT[rapidity_bin]['color'])
     axs[rapidity_bin_i,1].set_ylim((0,patched_ratio_relative_unc.max()+0.01))
     axs[rapidity_bin_i, 1].set_ylabel(r'$\Delta_{rel}$ Patched NPC',fontsize=15)
     axs[rapidity_bin_i, 1].text(x=cutoff1-600, y=0.004, s=r'$(800,600)$',size=12,color='r')
@@ -303,11 +330,12 @@ for rapidity_bin_i, rapidity_bin in enumerate(MAP_DICT_AK4.keys()):
         for j in range(ncols):
             axs[i, j].set_xlabel(r'Jet $p_T$ [GeV]', fontsize=18)
             axs[i,j].axvline(x=cutoff1, color='r')
-
+            axs[i,j].axhline(y=1, color='black', linestyle='--')
             axs[i,j].legend( loc='upper right', fontsize=15)
 
 
 plt.tight_layout(pad=2.0)
-plt.savefig('patched/2_4.png')
+
+plt.savefig('patched/2_4_AK4_Monash2013.png')
 
 plt.show()
