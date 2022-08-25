@@ -76,7 +76,7 @@ tree->Branch("phiPartonJets", &phiPartonJets, "phiPartonJets/D");
 tree->Branch("phiHadronJets", &phiHadronJets, "phiHadronJets/D");
 
   // Number of events, generated and listed ones.
-  int nEvent    = 1000;
+  int nEvent    = 50000;
   int nListEvts = 1;
   int nListJets = 5;
 
@@ -101,7 +101,7 @@ pythia.readFile(argv[1]);
   hadronLevelEvent.init("Hadron Level event record", &pythia.particleData);
 
   //  Parameters for the jet finders. Need select = 1 to catch partons.
-  double radius   = 0.54;
+  double radius   = 0.4;
   double pTjetMin = 10.;
   double etaMax   = 4.;
   int select      = 1;

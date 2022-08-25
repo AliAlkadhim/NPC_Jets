@@ -1,7 +1,7 @@
 To see example results, go to `rivet+pythia/plots`. If you want to reproduce or learn more, keep reading
 
 
-This is meant to be run on `naf`, althought with some modifications it can also be run on `lxplus`. Further, it is highly recommended to be run on `DUST` for higher storage capacity than `afs` (1 TB starting!)
+This is meant to be run on `naf`, althought with some modifications it can also be run on `lxplus`. Further, it is highly recommended to be run on `DUST` for higher storage capacity than `afs` (1 TB starting! Do `mydust-quota` to see your available space)
 
 Most of my workflow can be replicated from a sample run in the folder "template_run"
 

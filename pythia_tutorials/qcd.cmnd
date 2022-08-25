@@ -4,7 +4,7 @@
 ! Names are case-insensitive  -  but spelling-sensitive!
 ! ---------------------------------------------------------------------
 ! 1)
-Main:numberOfEvents   = 10000	   ! number of events to generate/read
+! Main:numberOfEvents   = 10000	   ! number of events to generate/read
 Main:timesAllowErrors =  1000      ! abort run after this many flawed events
 ! ---------------------------------------------------------------------
 ! 2)
