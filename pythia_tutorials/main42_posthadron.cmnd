@@ -88,5 +88,8 @@ SpaceShower:QCDshower=on
 
 
 PartonLevel:MPI=on
+PartonLevel:ISR = on               ! Initial state radiation
+PartonLevel:FSR = on               ! Final state radiation
+
 HadronLevel:all=on
 BeamRemnants:primordialKT=on

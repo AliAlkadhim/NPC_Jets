@@ -313,7 +313,7 @@ int main() {
     for (int i = 0; i < event.size(); ++i) {
       int status = event[i].statusAbs();
 
-      // Find any unrecognized particle codes.
+      // Find any unrecognized particle codes. 71 - 79 : partons in preparation of hadronization process. 71 : copied partons to collect into contiguous colour singlet
       int id = event[i].id();
       if (id == 0 || !pdt.isParticle(id))
         cout << " Error! Unknown code id = " << id << "\n";

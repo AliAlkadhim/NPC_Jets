@@ -6,7 +6,8 @@ import pprint
 
 
 matplotlib.rcParams.update({
-    "text.usetex": True})
+    "text.usetex": True,
+    "font.size":15})
 import numpy as np
 import pandas as pd
 import mplhep as hep
@@ -15,10 +16,10 @@ hep.style.use("CMS")
 #MAPPING DICTIONARY BETWEEN The histo name and the rapidity bin ranges
 
 parser=argparse.ArgumentParser(description='directory')
-parser.add_argument('--D', required=True)
+parser.add_argument('--slice', required=True)
 parser.add_argument('--Matrix', type=bool, required=False, default=False, help='if True, generate a matrix of the NPC in the (x,y)=(hadron,parton) space')
 args = parser.parse_args()
-D=args.D
+SLICE=args.slice
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 
 MAP_DICT_AK4 = { 
@@ -108,10 +109,26 @@ MAP_DICT = {
 }
 begin_file_string = 'CMS_2021_I1972986_'
 
-post_yoda = 'suppr250_bornktmin10_1B_ParsiParams_posthadron_merged.yoda'
-pre_yoda='suppr250_bornktmin10_1B_ParsiParams_prehadron_merged.yoda'
-one_hist= 'BEGIN YODA_HISTO1D_V2 /CMS_2021_I1972986/' + 'd01-x01-y01'
-two_hist= 'BEGIN YODA_HISTO1D_V2 /CMS_2021_I1972986/' + 'd02-x01-y01'
+
+
+if SLICE=='250_10':
+    dir = 'suppr250_bornktmin10_1B_ParsiParams'
+    fig_title=r'$(250,10) $, 1B Events, AK4 $0 \le | y| \le 0.5$'
+    post_yoda = 'suppr250_bornktmin10_1B_ParsiParams_posthadron_merged.yoda'
+    pre_yoda='suppr250_bornktmin10_1B_ParsiParams_prehadron_merged.yoda'
+    one_hist= 'BEGIN YODA_HISTO1D_V2 /RAW/CMS_2021_I1972986/' + 'd01-x01-y01'
+    two_hist= 'BEGIN YODA_HISTO1D_V2 /RAW/CMS_2021_I1972986/' + 'd02-x01-y01'
+
+elif SLICE=='800_600':
+    dir = 'suppr800_bornktmin600_1B_ParisParams_MSTP'
+    fig_title='$(800,600) $, 1B Events, AK4 $0 \le | y| \le 0.5$'
+    post_yoda = 'suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda'
+    pre_yoda='suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda'
+    one_hist= 'BEGIN YODA_HISTO1D_V2 /RAW/CMS_2021_I1972986/' + 'd01-x01-y01'
+    two_hist= 'BEGIN YODA_HISTO1D_V2 /RAW/CMS_2021_I1972986/' + 'd02-x01-y01'
+
+
+
 n_bins=MAP_DICT[ 'd01-x01-y01']['n_bins']
 
 def get_hists_from_yoda(yoda_file):
@@ -120,14 +137,14 @@ def get_hists_from_yoda(yoda_file):
     sumw2_l=[]
     edges_low_l=[]
     counts_l = []
-    with open(D+'/%s' % yoda_file, 'r') as f:
+    with open(dir+'/%s' % yoda_file, 'r') as f:
             f_readlines=f.readlines()
             for line_ind, line in enumerate(f_readlines):
                 if one_hist in line:
                     begin_hist_ind = line_ind
                     # print(begin_hist_ind)
                 # f.seek(0)
-                    being_data_ind = begin_hist_ind+13
+                    being_data_ind = begin_hist_ind+12
                     # pprint.pprint(f_readlines[being_data_ind:being_data_ind+n_bins])
                     for i in range(n_bins):
                         edge_low = f_readlines[being_data_ind].split()[0]
@@ -140,10 +157,10 @@ def get_hists_from_yoda(yoda_file):
                         sumw2 = f_readlines[being_data_ind].split()[3]
                         sumw2_l.append(sumw2)
                         count = f_readlines[being_data_ind].split()[-1]
-                        counts_l.append(count)
-                        print(count)
+                        counts_l.append(float(count) + 1.e-10)
+                        print('COUNTS = ', count)
                         being_data_ind +=1
-    return counts_l, edges_low_l, sumw_l, sumw2_l
+    return np.array(counts_l,dtype=float), np.array(edges_low_l,dtype=float),  np.array(sumw_l,dtype=float), np.array(sumw2_l,dtype=float)
 
 # print('len(edges_low_l)',len(edges_low_l))
 # print(',len(sumw_l)',len(sumw_l))                    
@@ -156,15 +173,40 @@ def get_hists_from_yoda(yoda_file):
 counts_l_post, edges_low_l_post, sumw_l_post, sumw2_l_post = get_hists_from_yoda(yoda_file=post_yoda)
 counts_l_pre, edges_low_l_pre, sumw_l_pre, sumw2_l_pre= get_hists_from_yoda(yoda_file=pre_yoda)
 ################################### PLOTTING ###################################
-plt.scatter(edges_low_l_post, sumw_l_post, label='sum $w$ per bin, post')
-plt.scatter(edges_low_l_pre, sumw_l_pre, label='sum $w$ per bin, pre')
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10,10), gridspec_kw={'height_ratios': [2,1.5]})
+fig.suptitle(fig_title)
+ax1.step(edges_low_l_post, sumw_l_post, where='mid', linewidth=1, label='$\sum w$  post')
+ax1.step(edges_low_l_pre, sumw_l_pre,where='mid', linewidth=1, label='$\sum w$  pre')
+
+ax1.set_xticklabels([])
+ax1.set_ylabel(r'$\sum w$')
+ax1.set_yscale('log')
 ratio=np.array(counts_l_post,dtype=float)/np.array(counts_l_pre,dtype=float)
-plt.scatter(edges_low_l_pre, ratio, label=r'ratio=$\frac{counts_{post}}{counts_{pre}}$')
 
-plt.legend()
-plt.show()
+Neff_post = (sumw2_l_post)/sumw_l_post
+Neff_pre = (sumw2_l_pre)/sumw_l_pre
+
+ax2.scatter(edges_low_l_post, Neff_post, linewidth=0.5, label=r'$N_{eff}$ post',alpha=0.4, color='r')
+ax2.scatter(edges_low_l_pre, Neff_pre, linewidth=0.5, label=r'$N_{eff}$ pre',alpha=0.4, color='blue')
+
+ax2.scatter(edges_low_l_post, counts_l_post, linewidth=0.5, label=r'$\sigma$ post',alpha=0.4, color='black')
+ax2.scatter(edges_low_l_pre, counts_l_pre, linewidth=0.5, label=r'$\sigma$ pre',alpha=0.4, color='green')
 
 
+ax2.set_ylabel(r'$N_{eff}$')
+ax2.set_yscale('log')
+# ax2.set_ylabel(r'NP ratio=$\frac{counts_{post}}{counts_{pre}}$')
+# ax2.scatter(edges_low_l_pre, ratio/ratio,color='k', linewidth=0.4)
+# ax2.set_ylim((0,2))
+
+fig.subplots_adjust(wspace=0.5, hspace=0.2)
+# ax1.legend();#
+ax2.set_xlabel(r'$p_T$  [GeV]')
+ax2.legend(fontsize=12)
+ax1.legend()
+# plt.gca().set_position([0, 0, 1, 1])
+# plt.show()
+plt.savefig('weights_counts/'+str(SLICE)+'_1B_Neff.png')
 
 # if __name__ == '__main__':
     #Lets use --D suppr250_bornktmin10_1B_ParsiParams

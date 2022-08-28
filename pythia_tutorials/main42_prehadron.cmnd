@@ -46,7 +46,7 @@ ParticleDecays:limitTau0 = on      ! set long-lived particle stable ...
 ParticleDecays:tau0Max = 10        ! ... if c*tau0 > 10 mm
 
 
-UncertaintyBands:doVariations=off
+! Beams:doVariations=off
 !UncertaintyBands:List = {                                                                                                                                    
 !        radHi fsr:muRfac=0.5 isr:muRfac=0.5,                                                                                                           
 !        radLo fsr:muRfac=2.0 isr:muRfac=2.0,                                                                                                           
@@ -88,5 +88,7 @@ SpaceShower:QCDshower=on
 
 
 PartonLevel:MPI=off
+
+
 HadronLevel:all=off
-BeamRemnants:primordialKT=on
+! BeamRemnants:primordialKT=on
