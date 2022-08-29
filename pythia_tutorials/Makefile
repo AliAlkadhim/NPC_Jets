@@ -69,7 +69,7 @@ mymain01 mymain02 mymain03 mymain04 mymain05 mymain06 mymain07 mymain08 mymain09
 $(PREFIX_LIB)/libpythia8.a
 	$(CXX) $< -o $@ $(CXX_COMMON) $(GZIP_INC) $(GZIP_FLAGS)
 
-myroot01 PartonHadronJets PartonHadronJets_noMPI_from_30s_status PartonHadronJets_noMPI_from_info : $$@.cc $(PREFIX_LIB)/libpythia8.a 
+myroot01 PartonHadronJets PartonHadronJets_noMPI_from_30s_status PartonHadronJets_noMPI_from_info pythia_stanalone_NP_tworuns_pre pythia_stanalone_NP_tworuns_post : $$@.cc $(PREFIX_LIB)/libpythia8.a 
 	$(CXX) $< -o $@ $(CXX_COMMON) $(GZIP_INC) $(ROOT_INCLUDE) \
 	 `$(ROOTBIN)root-config --cflags`\
 	 -Wl,-rpath,$(ROOT_LIB) `$(ROOT_BIN)root-config --glibs`

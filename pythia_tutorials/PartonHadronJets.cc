@@ -82,7 +82,7 @@ void getHadronLevelEvent( Event& event, Event& hadronLevelEvent) {
 int main(int argc, char* argv[]) {
 
 // make root file and ttree
-TFile *Jetsoutput  = new TFile("Jetsoutput.root", "recreate");
+TFile *Jetsoutput  = new TFile("Jetsoutput_2.root", "recreate");
 TTree *tree = new TTree("tree", "tree");
 
 // delcalre the variables for hadrons and partons
@@ -101,7 +101,7 @@ tree->Branch("phiPartonJets", &phiPartonJets, "phiPartonJets/D");
 tree->Branch("phiHadronJets", &phiHadronJets, "phiHadronJets/D");
 
   // Number of events, generated and listed ones.
-  int nEvent    =10;
+  int nEvent    =50000;
   int nListEvts = 1;// number of Event objects that you want to list (display in stdout)
   int nListJets = 5;//number of Slowjet objects you want to list (diplay)
 
@@ -134,7 +134,7 @@ pythia.readFile(argv[1]);
   // Initialize SlowJEt objects
   //Set up anti-kT clustering, comparing parton and hadron levels. -1=antikt
   SlowJet antiKTpartons( -1, radius, pTjetMin, etaMax, select);
-  SlowJet antiKThadrons( -1, radius, pTjetMin, etaMax, select);
+  SlowJet antiKThadrons( -1, radius, pTjetMin, etaMax);
 
   // Begin event loop. Generate event. Skip if error.
   for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
