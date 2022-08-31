@@ -18,7 +18,10 @@ parser.add_argument('--D', required=True)
 parser.add_argument('--Matrix', type=bool, required=False, default=False, help='if True, generate a matrix of the NPC in the (x,y)=(hadron,parton) space')
 args = parser.parse_args()
 
+RANGE=(0.9,1.15)
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
+TUNE='CUETP8M1-NNPDF2.3LO'
+
 
 MAP_DICT_AK4 = { 
     #AK4 JETS
@@ -118,8 +121,8 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986'
-begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986/'
+begin_post_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
+begin_pre_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986'
 
 
 
@@ -136,6 +139,17 @@ def return_bins_pre_post(one_hist):
         #Errors are calculated with propagation of errors
         # Delta (post/pre) = |post/pre| sqrt{([Delta post]/post)^2 + ([Delta pre]/pre)^2 }
         #where delta is the uncertainties (errors)
+        file_content = f.read()
+        s='ErrorBars=1'#count the number of times this string is in the file, which is written when you do --mc-errs in rivet
+
+        number_of_s = file_content.count(s)
+        # print(number_of_s)
+        if number_of_s==3:
+            line_add_num=8
+        else:
+            line_add_num=7
+        f.seek(0)
+
         f_readlines=f.readlines()
         for line_ind, line in enumerate(f_readlines):
             
@@ -143,7 +157,7 @@ def return_bins_pre_post(one_hist):
             if begin_pre_hist_string in line:
                 begin_pre_hist_ind = line_ind
                 # +8 if --mc-errs, +7 if no -mc-errs
-                begin_pre_table_ind = line_ind + 8
+                begin_pre_table_ind = line_ind +line_add_num
                 
                 for i in range(n_bins):
                     bin_val = f_readlines[begin_pre_table_ind].split()[0]
@@ -156,7 +170,7 @@ def return_bins_pre_post(one_hist):
             #POST
             if begin_post_hist_string in line:
                 begin_post_hist_ind = line_ind
-                begin_post_table_ind = line_ind + 8
+                begin_post_table_ind = line_ind + line_add_num
                 for i in range(n_bins):
                     #bins already fetcheds
                     post_entries_val =  f_readlines[begin_post_table_ind].split()[2]
@@ -199,7 +213,7 @@ if not args.Matrix:
         axs[hist_ind_4,0].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
         # axs[hist_ind_4,0].set_ylim(-0.1,max(NPC_4)*1.2)
         # axs[hist_ind_4,0].set_ylim(0.85,1.2)
-        axs[hist_ind_4,0].set_ylim(0.3,1.6)
+        axs[hist_ind_4,0].set_ylim(RANGE)
         #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
         axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
         # axs[hist_ind_4,0].set_xlim(100, 2500)
@@ -227,7 +241,7 @@ if not args.Matrix:
         # axs[hist_ind_7,1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
         # axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
         # axs[hist_ind_7,1].set_ylim(0.85,1.2)
-        axs[hist_ind_7,1].set_ylim(0.3,1.6)
+        axs[hist_ind_7,1].set_ylim(RANGE)
         #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
         axs[hist_ind_7,1].set_xlim(min(bins_7),max(bins_7))
         # axs[hist_ind_7,1].set_xlim(100,2500)
@@ -240,9 +254,9 @@ if not args.Matrix:
         # plt.tight_layout()
     
     
-    fig.suptitle('bornktmin 600, bornsuppfact 800, MSTP(86)=1, 1B events',font='MonoSpace')
+    fig.suptitle('$(800,600)$, $10^9$ events, Tune: CUETP8M1-NNPDF2.3LO',font='MonoSpace')
     plt.tight_layout()
-    plt.savefig(args.D+'/ALLBINS_'+args.D+'.png')
+    plt.savefig(args.D+'/ALLBINS_'+args.D+TUNE+'.png')
     plt.show()
 
 elif args.Matrix:

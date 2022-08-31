@@ -134,6 +134,7 @@ pythia.readFile(argv[1]);
   // Initialize SlowJEt objects
   //Set up anti-kT clustering, comparing parton and hadron levels. -1=antikt
   SlowJet antiKTpartons( -1, radius, pTjetMin, etaMax, select);
+  //make sure you don't put select=-1 for hadron jets
   SlowJet antiKThadrons( -1, radius, pTjetMin, etaMax);
 
   // Begin event loop. Generate event. Skip if error.

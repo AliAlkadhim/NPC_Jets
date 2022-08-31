@@ -28,7 +28,7 @@ def tworuns(filepre, filepost):
             # print('pt=', pt)
 
 
-            r=(0,200)
+            r=(10,200)
             b=22
 
             Partonptcounts, Partonptedges = np.histogram(ptpre, bins=b, range=r)
@@ -81,5 +81,5 @@ def tworuns(filepre, filepost):
             # plt.savefug('pythia_standalone_
             fig.suptitle('Pythia Standalone, $10^6$ Events')
             plt.savefig('Pythia_Standalone_NP_TwoRuns_1M.png')
-
+            # plt.show()
 tworuns(filepre='TwoTime_pre_1M.root',filepost='TwoTime_post_1M.root')
