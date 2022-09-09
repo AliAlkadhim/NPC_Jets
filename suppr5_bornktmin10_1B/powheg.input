@@ -4,8 +4,8 @@ ih2  1               ! hadron 2 (1 for protons, -1 for antiprotons)
 ebeam1 6500d0        ! energy of beam 1
 ebeam2 6500d0        ! energy of beam 2
 
-bornktmin 300d0       ! (default 0d0) Generation cut: minimum kt in underlying Born
-bornsuppfact 800d0  ! (default 0d0) Mass parameter for Born suppression factor.
+bornktmin 10       ! (default 0d0) Generation cut: minimum kt in underlying Born
+bornsuppfact 5  ! (default 0d0) Mass parameter for Born suppression factor.
                      ! If < 0 suppfact = 1.
 
 
