@@ -11,7 +11,7 @@ int main() {
 // Set up generation.
 Pythia pythia;
     // make root file and ttree
-TFile *TwoTime_pre_1M  = new TFile("TwoTime_pre_1M.root", "recreate");
+TFile *TwoTime_pre_1M  = new TFile("TwoTime_pre_10M_bias2Selection.root", "recreate");
 TTree *tree = new TTree("tree", "tree");
 
 int numJets;
@@ -24,11 +24,10 @@ pythia.readString("HardQCD:all		= on"); // Switch on process.
 pythia.readString("Beams:idA = 2212 "); //proton.
 pythia.readString("Beams:idB = 2212 "); //proton.
 pythia.readString("Beams:eCM = 13000 "); 
-pythia.readString("PhaseSpace:pTHatMin	= 10 "); 
+//pythia.readString("PhaseSpace:pTHatMin	= 10 "); 
+ pythia.readString("PhaseSpace:bias2Selection=on");
 
 
-pythia.readString("PartonLevel:ISR = on   "); 
-pythia.readString("PartonLevel:FSR= on"); 
 pythia.readString("PartonLevel:MPI = off");
 pythia.readString("HadronLevel:all = off");  
 
@@ -44,7 +43,7 @@ double pow = -1;
 SlowJet Jet( pow, radius, pTjetMin, etaMax);
 
 // Generate 5 nevents.
-int nevents = 1000000;
+int nevents = 10000000;
 for (int iEvent=0; iEvent < nevents; ++iEvent) {
 
     if (!pythia.next()) continue;

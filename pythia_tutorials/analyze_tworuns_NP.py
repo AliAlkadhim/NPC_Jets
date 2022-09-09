@@ -7,8 +7,16 @@ print(uproot.__version__)
 import uproot3
 print(uproot3.__version__)
 import uproot3 as uproot
+import argparse
 
-def tworuns(filepre, filepost):
+parser=argparse.ArgumentParser(description='just files')
+parser.add_argument('--pre', type=str, help='the root file of pre')
+parser.add_argument('--post', type=str, help='the root file of post')
+parser.add_argument('--N', type=int, help='the number of events simulated')
+args=parser.parse_args()
+
+
+def tworuns(filepre, filepost, N):
     ptbins=[97,  133,  174,  220,  272,  330,  395,  468,  548,  638,  737,  846, 967, 1101, 1248, 1410, 1588, 1784, 2000, 2238, 2500, 2787]
     with uproot.open(filepre) as filepre:
         with uproot.open(filepost) as filepost:
@@ -51,12 +59,14 @@ def tworuns(filepre, filepost):
             fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10,10), gridspec_kw={'height_ratios': [2,1]})
 
 
-            ax1.scatter(Partonptcenters, Partonptcounts, label='parton-level jet $p_T$ bin centers',
-                    color="r",facecolors='none', marker="X", s=10, linewidth=0.9)
+            ax1.scatter(Partonptcenters, Partonptcounts, label=r'parton-level $N_{jets}$',
+                    color="r",facecolors='none', marker="X", s=14, linewidth=0.9)
 
-            ax1.scatter(Hadronptcenters, Hadronptcounts, label='hadron-level jet $p_T$ bin centers', 
+            ax1.scatter(Hadronptcenters, Hadronptcounts, label='hadron-level $N_{jets}$', 
                         color="k",facecolors='none', marker="X", s=20, linewidth=0.9)
 
+            ax1.set_yscale('log')
+            #ax1.set_yticks()
 
             
             ax1.legend()
@@ -64,22 +74,28 @@ def tworuns(filepre, filepost):
             ratio = Hadronptcounts/Partonptcounts
 
             ax2.scatter(Partonptcenters, ratio,
-                    color="r",facecolors='none', marker="X", s=12, linewidth=1)
-            ax2.step(Partonptcenters, ratio, label='ratio',
-                    color="r",   linewidth=1)
-
+                    color="red",facecolors='none', marker="o", s=12, linewidth=1)
+            ax2.step(Partonptcenters, ratio,
+                    color="r",   linewidth=2)
+            ax2.set_ylabel(r'$\frac{N_{jets}^{hadron}}{N_{jets}^{parton}}$')
             ax2.set_xlim(r)
-            ax2.set_ylim((0,1.8))
+            ax2.set_ylim((0.9,1.2))
             # ticks=np.linspace(0, 1.7, 4)
-            ticks=[0,0.5,1,1.5,2]
-            ax2.set_yticks(ticks)
+            #ticks=[0,0.5,1,1.5,2]
+            #ax2.set_yticks(ticks)
             ones=np.linspace(0,1000, num=1000)
 
             ax2.scatter(ones, np.ones(1000), marker="o", s=5,linewidth=0.7)
             ax2.legend(loc='upper left')
             ax2.set_xlabel(r'$p_T$ [GeV]')
             # plt.savefug('pythia_standalone_
-            fig.suptitle('Pythia Standalone, $10^6$ Events')
-            plt.savefig('Pythia_Standalone_NP_TwoRuns_1M.png')
-            # plt.show()
-tworuns(filepre='TwoTime_pre_1M.root',filepost='TwoTime_post_1M.root')
+            fig.suptitle('Pythia Standalone, %d Events' % N )
+            fig.subplots_adjust(left=0.15)
+            plt.savefig('Pythia_Standalone_NP_TwoRuns_%d_Events.png' % N)
+            plt.show()
+
+def main():
+        tworuns(filepre=args.pre,filepost=args.post, N=args.N)
+
+if __name__ == '__main__':
+        main()
