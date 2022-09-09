@@ -3,7 +3,10 @@ import matplotlib
 import argparse
 import pprint
 
-
+# see https://stackoverflow.com/questions/45154291/numpy-histogram-retrieve-sum-of-weights-squared-in-each-bin
+#SEE https://ipnp.cz/scheirich/?page_id=292
+#SEE https://www.desy.de/~flucke/rootdoc/src/GFHistManip.cxx.html
+#SEE https://cholmcc.gitlab.io/nbi-python/statistics/Statistik_en.pdf
 
 matplotlib.rcParams.update({
     "text.usetex": True,

@@ -15,12 +15,17 @@ hep.style.use("CMS")
 
 parser=argparse.ArgumentParser(description='directory')
 parser.add_argument('--D', required=True)
+# parser.add_argument('--slice', required=True)
+
 parser.add_argument('--Matrix', type=bool, required=False, default=False, help='if True, generate a matrix of the NPC in the (x,y)=(hadron,parton) space')
 args = parser.parse_args()
+# SLICE=args.slice
 
 RANGE=(0.9,1.15)
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
-TUNE='CUETP8M1-NNPDF2.3LO'
+# TUNE='CUETP8M1-NNPDF2.3LO'
+TUNE='Monash2013'
+
 
 
 MAP_DICT_AK4 = { 
@@ -113,18 +118,24 @@ begin_file_string = 'CMS_2021_I1972986_'
 # begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_posthadron_merged.yoda/CMS_2021_I1972986/'
 # begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_prehadron_merged.yoda/CMS_2021_I1972986/'
 
-# LOW PT
-# begin_post_hist_string ='BEGIN HISTO1D /merged_posthadron_500M_supp250.yoda/CMS_2021_I1972986/'
-# begin_pre_hist_string ='BEGIN HISTO1D /merged_prehadron_500M_supp250.yoda/CMS_2021_I1972986/'
-
 
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
-begin_post_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
-begin_pre_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986'
+if args.D=="suppr800_bornktmin600_1B_ParisParams_MSTP":
+    begin_post_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986'
 
+elif args.D=="500M_supp250":#bornktmin0
+    begin_post_hist_string ='BEGIN HISTO1D /merged_posthadron_500M_supp250.yoda/CMS_2021_I1972986/'
+    begin_pre_hist_string ='BEGIN HISTO1D /merged_prehadron_500M_supp250.yoda/CMS_2021_I1972986/'
 
+elif args.D=="suppr0_bornktmin10_1B":
+    begin_post_hist_string = 'BEGIN HISTO1D /suppr0_bornktmin10_1B_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /suppr0_bornktmin10_1B_prehadron_merged.yoda/CMS_2021_I1972986'
+elif args.D=="suppr0_bornktmin20_1B":
+    begin_post_hist_string = 'BEGIN HISTO1D /suppr0_bornktmin20_1B_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /suppr0_bornktmin20_1B_prehadron_merged.yoda/CMS_2021_I1972986'
 
 
 def return_bins_pre_post(one_hist):
@@ -189,91 +200,94 @@ def return_bins_pre_post(one_hist):
 
 
 
+def main():
+    if not args.Matrix:
+        fig, axs = plt.subplots(nrows=4, ncols=2, figsize=(20,10))
+        for hist_ind_4, hist_4 in enumerate(MAP_DICT_AK4.keys()):
 
-if not args.Matrix:
-    fig, axs = plt.subplots(nrows=4, ncols=2, figsize=(20,10))
-    for hist_ind_4, hist_4 in enumerate(MAP_DICT_AK4.keys()):
+            bins_4, pre_4, post_4, pre_error_4 , post_error_4 = return_bins_pre_post(hist_4)
+            NPC_4 = post_4/pre_4
+            
+            print('bins_4 %d' % hist_ind_4, bins_4)
+            print('pre_error_4 y bin %d' % hist_ind_4, pre_error_4)
+            print('post_error_4 %d' % hist_ind_4, post_error_4)
+            print('pre_4', pre_4)
+            print('post_4', post_4)
+            # Delta (post/pre) = |post/pre| sqrt{([Delta post]/post)^2 + ([Delta pre]/pre)^2 }
+            factor_4 = np.abs(np.divide(post_4,pre_4))
+            error_NPC_4 = factor_4 * np.sqrt((post_error_4/post_4)**2 + (pre_error_4/pre_4)**2)
+            print('error_NPC_4',error_NPC_4)
 
-        bins_4, pre_4, post_4, pre_error_4 , post_error_4 = return_bins_pre_post(hist_4)
-        NPC_4 = post_4/pre_4
+            axs[hist_ind_4,0].step(bins_4, NPC_4, label=MAP_DICT_AK4[hist_4]['ylabel'], where='mid',linewidth=2, color=MAP_DICT_AK4[hist_4]['color'])
+            axs[hist_ind_4, 0].errorbar(bins_4, NPC_4, yerr = error_NPC_4, fmt='none', c='black', linewidth=2, capsize=2)
+            axs[hist_ind_4, 0].set_xlabel('$p_T$ [GeV]', fontsize=21)
+            axs[hist_ind_4,0].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
+            # axs[hist_ind_4,0].set_ylim(-0.1,max(NPC_4)*1.2)
+            # axs[hist_ind_4,0].set_ylim(0.85,1.2)
+            axs[hist_ind_4,0].set_ylim(RANGE)
+            #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
+            axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
+            # axs[hist_ind_4,0].set_xlim(100, 2500)
+            axs[hist_ind_4,0].axhline(y=1, color='black', linestyle='--')
+
+            axs[hist_ind_4,0].legend(loc='best',fontsize=19)
+            axs[hist_ind_4,0].grid(axis='x')
+            
+        for hist_ind_7, hist_7 in enumerate(MAP_DICT_AK7.keys()):
+
+            bins_7, pre_7, post_7, pre_error_7, post_error_7  = return_bins_pre_post(hist_7)
+            NPC_7 = post_7/pre_7
+            
+
+            factor_7 = np.abs(np.divide(post_7,pre_7))
+            error_NPC_7 = factor_7 * np.sqrt((post_error_7/post_7)**2 + (pre_error_7/pre_7)**2)
+            print('error_NPC_7',error_NPC_7)
+
+
+            axs[hist_ind_7,1].step(bins_7, NPC_7, label=MAP_DICT_AK7[hist_7]['ylabel'], where='mid',linewidth=2, color=MAP_DICT_AK7[hist_7]['color'])
+            axs[hist_ind_7, 1].errorbar(bins_7, NPC_7, yerr = error_NPC_7, fmt='none', c='black',linewidth=2,capsize=2)
+            
+            axs[hist_ind_7,1].set_xlabel('$p_T$ [GeV]', fontsize=21)
+            axs[hist_ind_7,1].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
+            # axs[hist_ind_7,1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
+            # axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
+            # axs[hist_ind_7,1].set_ylim(0.85,1.2)
+            axs[hist_ind_7,1].set_ylim(RANGE)
+            #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
+            axs[hist_ind_7,1].set_xlim(min(bins_7),max(bins_7))
+            # axs[hist_ind_7,1].set_xlim(100,2500)
+            axs[hist_ind_7,1].axhline(y=1, color='black', linestyle='--')
+
+            axs[hist_ind_7,1].legend(loc='best', fontsize=19)
+            axs[hist_ind_7,1].grid(axis='x')
+
+            
+            # plt.tight_layout()
         
-        print('bins_4 %d' % hist_ind_4, bins_4)
-        print('pre_error_4 y bin %d' % hist_ind_4, pre_error_4)
-        print('post_error_4 %d' % hist_ind_4, post_error_4)
-        print('pre_4', pre_4)
-        print('post_4', post_4)
-        # Delta (post/pre) = |post/pre| sqrt{([Delta post]/post)^2 + ([Delta pre]/pre)^2 }
-        factor_4 = np.abs(np.divide(post_4,pre_4))
-        error_NPC_4 = factor_4 * np.sqrt((post_error_4/post_4)**2 + (pre_error_4/pre_4)**2)
-        print('error_NPC_4',error_NPC_4)
-
-        axs[hist_ind_4,0].step(bins_4, NPC_4, label=MAP_DICT_AK4[hist_4]['ylabel'], where='mid',linewidth=2, color=MAP_DICT_AK4[hist_4]['color'])
-        axs[hist_ind_4, 0].errorbar(bins_4, NPC_4, yerr = error_NPC_4, fmt='none', c='black', linewidth=2, capsize=2)
-        axs[hist_ind_4, 0].set_xlabel('$p_T$ [GeV]', fontsize=21)
-        axs[hist_ind_4,0].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
-        # axs[hist_ind_4,0].set_ylim(-0.1,max(NPC_4)*1.2)
-        # axs[hist_ind_4,0].set_ylim(0.85,1.2)
-        axs[hist_ind_4,0].set_ylim(RANGE)
-        #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
-        axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
-        # axs[hist_ind_4,0].set_xlim(100, 2500)
-        axs[hist_ind_4,0].axhline(y=1, color='black', linestyle='--')
-
-        axs[hist_ind_4,0].legend(loc='best',fontsize=19)
-        axs[hist_ind_4,0].grid(axis='x')
         
-    for hist_ind_7, hist_7 in enumerate(MAP_DICT_AK7.keys()):
+        fig.suptitle('$(0,20)$, $10^9$ events, Tune: %s' % TUNE, font='MonoSpace')
+        plt.tight_layout()
+        plt.savefig(args.D+'/ALLBINS_'+args.D+TUNE+'_1B.png')
+        plt.show()
 
-        bins_7, pre_7, post_7, pre_error_7, post_error_7  = return_bins_pre_post(hist_7)
-        NPC_7 = post_7/pre_7
-        
+    elif args.Matrix:
+        average_pre=[]
+        average_post=[]
+        average_NPC = []
+        average_bins=[]
+        # for hist_ind, hist in enumerate(MAP_DICT.keys()):
+        #     bins, pre, post = return_bins_pre_post(hist)
+        #     NPC = post/pre
+        # print(average_bins)
 
-        factor_7 = np.abs(np.divide(post_7,pre_7))
-        error_NPC_7 = factor_7 * np.sqrt((post_error_7/post_7)**2 + (pre_error_7/pre_7)**2)
-        print('error_NPC_7',error_NPC_7)
+        bins, pre, post = return_bins_pre_post(list(MAP_DICT)[0])
+        post_2d, pre_2d = np.meshgrid(post, pre)
+        NPC = post_2d/pre_2d
+        print(NPC)
+        H= plt.pcolormesh(post_2d, pre_2d, NPC, vmin=- np.abs(NPC).max(), vmax=np.abs(NPC).max(), cmap ='Greens')
+        #x: post, y: pre
+        plt.colorbar(H)
+        plt.show()
 
-
-        axs[hist_ind_7,1].step(bins_7, NPC_7, label=MAP_DICT_AK7[hist_7]['ylabel'], where='mid',linewidth=2, color=MAP_DICT_AK7[hist_7]['color'])
-        axs[hist_ind_7, 1].errorbar(bins_7, NPC_7, yerr = error_NPC_7, fmt='none', c='black',linewidth=2,capsize=2)
-        
-        axs[hist_ind_7,1].set_xlabel('$p_T$ [GeV]', fontsize=21)
-        axs[hist_ind_7,1].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
-        # axs[hist_ind_7,1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
-        # axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
-        # axs[hist_ind_7,1].set_ylim(0.85,1.2)
-        axs[hist_ind_7,1].set_ylim(RANGE)
-        #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
-        axs[hist_ind_7,1].set_xlim(min(bins_7),max(bins_7))
-        # axs[hist_ind_7,1].set_xlim(100,2500)
-        axs[hist_ind_7,1].axhline(y=1, color='black', linestyle='--')
-
-        axs[hist_ind_7,1].legend(loc='best', fontsize=19)
-        axs[hist_ind_7,1].grid(axis='x')
-
-        
-        # plt.tight_layout()
-    
-    
-    fig.suptitle('$(800,600)$, $10^9$ events, Tune: CUETP8M1-NNPDF2.3LO',font='MonoSpace')
-    plt.tight_layout()
-    plt.savefig(args.D+'/ALLBINS_'+args.D+TUNE+'.png')
-    plt.show()
-
-elif args.Matrix:
-    average_pre=[]
-    average_post=[]
-    average_NPC = []
-    average_bins=[]
-    # for hist_ind, hist in enumerate(MAP_DICT.keys()):
-    #     bins, pre, post = return_bins_pre_post(hist)
-    #     NPC = post/pre
-    # print(average_bins)
-
-    bins, pre, post = return_bins_pre_post(list(MAP_DICT)[0])
-    post_2d, pre_2d = np.meshgrid(post, pre)
-    NPC = post_2d/pre_2d
-    print(NPC)
-    H= plt.pcolormesh(post_2d, pre_2d, NPC, vmin=- np.abs(NPC).max(), vmax=np.abs(NPC).max(), cmap ='Greens')
-    #x: post, y: pre
-    plt.colorbar(H)
-    plt.show()
+if __name__=="__main__":
+    main()
