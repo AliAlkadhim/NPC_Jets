@@ -52,3 +52,13 @@ make-plots --png *.dat
 
 
 
+-----------
+
+#Complete Automated Analysis
+
+It is also possible to use `make_analysys.py` for a completely automated POWHEG+Pythia analysis. This does everythin g necessary for the anlalysis, including the condor submission and checkpointing.
+Example usage `python make_anlysis.py --bornsupp 250 --bornktmin 10 --N 1000000000` makes an analysis with $(k_T^{supp},k_T^{min}) = (250,10)$ with $10^0$ events.
+
+Other options such as the pythia tunes and other parameters could be specified and are being automated.
+
+
