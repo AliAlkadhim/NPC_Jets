@@ -1,0 +1,49 @@
+# BEGIN PLOT
+LegendOnly=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_ratio /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_multi_ratio
+DrawOnly=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_ratio /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_multi_ratio
+Title=Ratio of jet multiplicity
+XMajorTickMarks=10
+RatioPlot=1
+LogY=0
+RatioPlotYLabel=Ratio
+RatioPlotReference=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_ratio
+XLabel=$N_{\mathrm{jet}}$
+XMinorTickMarks=0
+YLabel=$\sigma(\geq N_{\mathrm{jet}})/\sigma(\geq N_{\mathrm{jet}}-1)$
+ErrorBands=1
+Legend=1
+# END PLOT
+
+# BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_ratio
+ErrorBars=1
+ErrorBreakdown={0: {"": {up: 0.04779468466703205, dn: 0.04779468466703205}}, 1: {"": {up: 0.04779468466703205, dn: 0.04779468466703205}}, 2: {"": {up: 0.04527763467515066, dn: 0.04527763467515066}}, 3: {"": {up: 0.04358068714256502, dn: 0.04358068714256502}}, 4: {"": {up: 0.04426513836219846, dn: 0.04426513836219846}}, 5: {"": {up: 0, dn: 0}}}
+LineColor=red
+LineStyle=solid
+Path=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_ratio
+Title=PS
+# xlow	 xhigh	 val	 errminus	 errplus
+5.000000e-01	1.500000e+00	1.000000e+00	2.091396e-03	2.091396e-03
+1.500000e+00	2.500000e+00	1.000000e+00	2.091396e-03	2.091396e-03
+2.500000e+00	3.500000e+00	9.338589e-01	1.986374e-03	1.986374e-03
+3.500000e+00	4.500000e+00	8.436433e-01	1.904438e-03	1.904438e-03
+4.500000e+00	5.500000e+00	7.538448e-01	1.906625e-03	1.906625e-03
+5.500000e+00	6.500000e+00	0.000000e+00	0.000000e+00	0.000000e+00
+# END HISTO1D
+
+
+# BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_multi_ratio
+ErrorBars=1
+ErrorBreakdown={0: {"": {up: 0.0682735829510025, dn: 0.0682735829510025}}, 1: {"": {up: 0.0682735829510025, dn: 0.0682735829510025}}, 2: {"": {up: 0.06459186903833455, dn: 0.06459186903833455}}, 3: {"": {up: 0.06186375712495101, dn: 0.06186375712495101}}, 4: {"": {up: 0.06408225735042281, dn: 0.06408225735042281}}, 5: {"": {up: 0, dn: 0}}}
+LineColor=blue
+LineStyle=solid
+Path=/suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_multi_ratio
+Title=PS+MPI+HAD
+# xlow	 xhigh	 val	 errminus	 errplus
+5.000000e-01	1.500000e+00	1.000000e+00	4.911163e-03	4.911163e-03
+1.500000e+00	2.500000e+00	1.000000e+00	4.911163e-03	4.911163e-03
+2.500000e+00	3.500000e+00	9.341908e-01	4.689286e-03	4.689286e-03
+3.500000e+00	4.500000e+00	8.437652e-01	4.431932e-03	4.431932e-03
+4.500000e+00	5.500000e+00	7.536425e-01	4.721550e-03	4.721550e-03
+5.500000e+00	6.500000e+00	0.000000e+00	0.000000e+00	0.000000e+00
+# END HISTO1D
+

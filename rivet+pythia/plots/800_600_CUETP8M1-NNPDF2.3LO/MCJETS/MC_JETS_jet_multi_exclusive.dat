@@ -1,0 +1,51 @@
+# BEGIN PLOT
+LegendOnly=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_exclusive /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_multi_exclusive
+DrawOnly=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_exclusive /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_multi_exclusive
+Title=Exclusive jet multiplicity
+XMajorTickMarks=10
+RatioPlot=1
+LogY=1
+RatioPlotYLabel=Ratio
+RatioPlotReference=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_exclusive
+ErrorBands=1
+XMinorTickMarks=0
+YLabel=$\sigma(N_{\mathrm{jet}})$ [pb]
+XLabel=$N_{\mathrm{jet}}$
+Legend=1
+# END PLOT
+
+# BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_exclusive
+ErrorBars=1
+LineColor=red
+LineStyle=solid
+Path=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_multi_exclusive
+ScaledBy=7.25646247661192894e-07
+Title=PS
+# xlow	 xhigh	 val	 errminus	 errplus
+-5.000000e-01	5.000000e-01	0.000000e+00	0.000000e+00	0.000000e+00
+5.000000e-01	1.500000e+00	0.000000e+00	0.000000e+00	0.000000e+00
+1.500000e+00	2.500000e+00	1.811156e+01	6.784904e-02	6.784904e-02
+2.500000e+00	3.500000e+00	3.992877e+01	1.004625e-01	1.004625e-01
+3.500000e+00	4.500000e+00	5.305286e+01	1.156627e-01	1.156627e-01
+4.500000e+00	5.500000e+00	5.276017e+01	1.150743e-01	1.150743e-01
+5.500000e+00	6.500000e+00	4.294242e+01	1.035071e-01	1.035071e-01
+# END HISTO1D
+
+
+# BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_multi_exclusive
+ErrorBars=1
+LineColor=blue
+LineStyle=solid
+Path=/suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_multi_exclusive
+ScaledBy=2.03839766012782301e-06
+Title=PS+MPI+HAD
+# xlow	 xhigh	 val	 errminus	 errplus
+-5.000000e-01	5.000000e-01	0.000000e+00	0.000000e+00	0.000000e+00
+5.000000e-01	1.500000e+00	0.000000e+00	0.000000e+00	0.000000e+00
+1.500000e+00	2.500000e+00	1.817441e+01	1.141290e-01	1.141290e-01
+2.500000e+00	3.500000e+00	3.999435e+01	1.686388e-01	1.686388e-01
+3.500000e+00	4.500000e+00	5.320606e+01	1.941938e-01	1.941938e-01
+4.500000e+00	5.500000e+00	5.277630e+01	1.929737e-01	1.929737e-01
+5.500000e+00	6.500000e+00	4.299924e+01	1.735146e-01	1.735146e-01
+# END HISTO1D
+

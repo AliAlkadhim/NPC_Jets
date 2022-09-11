@@ -1,0 +1,64 @@
+# BEGIN PLOT
+LegendOnly=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_y_pmratio_3 /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_y_pmratio_3
+DrawOnly=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_y_pmratio_3 /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_y_pmratio_3
+Title=Rapidity $+/-$ ratio of third jet
+RatioPlotReference=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_y_pmratio_3
+RatioPlot=1
+LogY=1
+RatioPlotYLabel=Ratio
+XLabel=$|y(\mathrm{jet~3}|$
+YLabel=$y(\mathrm{jet~3})_+/y(\mathrm{jet~3})_-$
+Legend=1
+# END PLOT
+
+# BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_y_pmratio_3
+ErrorBars=1
+ErrorBreakdown={0: {"": {up: 0.08963152548520181, dn: 0.08963152548520181}}, 1: {"": {up: 0.1102588325296709, dn: 0.1102588325296709}}, 2: {"": {up: 0.1197343644080545, dn: 0.1197343644080545}}, 3: {"": {up: 0.1373590904060038, dn: 0.1373590904060038}}, 4: {"": {up: 0.1978470451515421, dn: 0.1978470451515421}}, 5: {"": {up: 0.1312813713867308, dn: 0.1312813713867308}}, 6: {"": {up: 0.2072387706773775, dn: 0.2072387706773775}}, 7: {"": {up: 0.272184532506402, dn: 0.272184532506402}}, 8: {"": {up: 0.5873487287099164, dn: 0.5873487287099164}}, 9: {"": {up: 0.385500617551901, dn: 0.385500617551901}}, 10: {"": {up: 0.1931440020904623, dn: 0.1931440020904623}}, 11: {"": {up: 0.43985895823553, dn: 0.43985895823553}}, 12: {"": {up: 1.315716387569145, dn: 1.315716387569145}}, 13: {"": {up: 3.929140201873922, dn: 3.929140201873922}}, 14: {"": {up: nan, dn: nan}}}
+LineColor=red
+LineStyle=solid
+Path=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_y_pmratio_3
+Title=PS
+# xlow	 xhigh	 val	 errminus	 errplus
+0.000000e+00	3.333334e-01	1.009783e+00	4.853319e-03	4.853319e-03
+3.333333e-01	6.666667e-01	1.010160e+00	5.066027e-03	5.066027e-03
+6.666666e-01	1.000000e+00	1.014278e+00	5.536900e-03	5.536900e-03
+1.000000e+00	1.333334e+00	1.027833e+00	6.425723e-03	6.425723e-03
+1.333333e+00	1.666667e+00	1.018679e+00	7.219073e-03	7.219073e-03
+1.666666e+00	2.000000e+00	1.033582e+00	9.050643e-03	9.050643e-03
+2.000000e+00	2.333334e+00	1.049744e+00	1.212500e-02	1.212500e-02
+2.333333e+00	2.666667e+00	nan	nan	nan
+2.666666e+00	3.000000e+00	nan	nan	nan
+3.000000e+00	3.333334e+00	nan	nan	nan
+3.333333e+00	3.666667e+00	nan	nan	nan
+3.666666e+00	4.000000e+00	nan	nan	nan
+4.000000e+00	4.333334e+00	nan	nan	nan
+4.333333e+00	4.666667e+00	nan	nan	nan
+4.666666e+00	5.000000e+00	nan	nan	nan
+# END HISTO1D
+
+
+# BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_y_pmratio_3
+ErrorBars=1
+ErrorBreakdown={0: {"": {up: 0.1439947287920208, dn: 0.1439947287920208}}, 1: {"": {up: 0.1776193290046182, dn: 0.1776193290046182}}, 2: {"": {up: 0.1499782325130761, dn: 0.1499782325130761}}, 3: {"": {up: 0.2364798288964148, dn: 0.2364798288964148}}, 4: {"": {up: 0.2556415188803478, dn: 0.2556415188803478}}, 5: {"": {up: 0.1970338230689497, dn: 0.1970338230689497}}, 6: {"": {up: 0.3623143196576823, dn: 0.3623143196576823}}, 7: {"": {up: 0.7035253440254845, dn: 0.7035253440254845}}, 8: {"": {up: 1.906816550866289, dn: 1.906816550866289}}, 9: {"": {up: 0.3613152830497541, dn: 0.3613152830497541}}, 10: {"": {up: 0.2879682010864829, dn: 0.2879682010864829}}, 11: {"": {up: 1.034396781326294, dn: 1.034396781326294}}, 12: {"": {up: nan, dn: nan}}, 13: {"": {up: nan, dn: nan}}, 14: {"": {up: nan, dn: nan}}}
+LineColor=blue
+LineStyle=solid
+Path=/suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_y_pmratio_3
+Title=PS+MPI+HAD
+# xlow	 xhigh	 val	 errminus	 errplus
+0.000000e+00	3.333334e-01	nan	nan	nan
+3.333333e-01	6.666667e-01	nan	nan	nan
+6.666666e-01	1.000000e+00	nan	nan	nan
+1.000000e+00	1.333334e+00	nan	nan	nan
+1.333333e+00	1.666667e+00	nan	nan	nan
+1.666666e+00	2.000000e+00	nan	nan	nan
+2.000000e+00	2.333334e+00	nan	nan	nan
+2.333333e+00	2.666667e+00	nan	nan	nan
+2.666666e+00	3.000000e+00	nan	nan	nan
+3.000000e+00	3.333334e+00	nan	nan	nan
+3.333333e+00	3.666667e+00	nan	nan	nan
+3.666666e+00	4.000000e+00	nan	nan	nan
+4.000000e+00	4.333334e+00	nan	nan	nan
+4.333333e+00	4.666667e+00	nan	nan	nan
+4.666666e+00	5.000000e+00	nan	nan	nan
+# END HISTO1D
+

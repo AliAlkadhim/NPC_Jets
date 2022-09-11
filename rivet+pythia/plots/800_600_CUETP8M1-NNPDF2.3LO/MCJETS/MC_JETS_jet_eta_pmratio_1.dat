@@ -1,0 +1,84 @@
+# BEGIN PLOT
+LegendOnly=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_eta_pmratio_1 /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_eta_pmratio_1
+DrawOnly=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_eta_pmratio_1 /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_eta_pmratio_1
+Title=Pseudorapidity $+/-$ ratio of first jet
+RatioPlotReference=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_eta_pmratio_1
+RatioPlot=1
+LogY=1
+RatioPlotYLabel=Ratio
+XLabel=$|\eta(\mathrm{jet~1}|$
+YLabel=$\eta(\mathrm{jet~1})_+/\eta(\mathrm{jet~1})_-$
+Legend=1
+# END PLOT
+
+# BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_eta_pmratio_1
+ErrorBars=1
+ErrorBreakdown={0: {"": {up: 0.1439880927287964, dn: 0.1439880927287964}}, 1: {"": {up: 0.1428404452307408, dn: 0.1428404452307408}}, 2: {"": {up: 0.1181186760465574, dn: 0.1181186760465574}}, 3: {"": {up: 0.1180628635823506, dn: 0.1180628635823506}}, 4: {"": {up: 0.1266121746288765, dn: 0.1266121746288765}}, 5: {"": {up: 0.1339812779299508, dn: 0.1339812779299508}}, 6: {"": {up: 0.1853483526295001, dn: 0.1853483526295001}}, 7: {"": {up: 0.1561961030598146, dn: 0.1561961030598146}}, 8: {"": {up: 0.2117112014924307, dn: 0.2117112014924307}}, 9: {"": {up: 0.4405061643289183, dn: 0.4405061643289183}}, 10: {"": {up: 0.2252716368456725, dn: 0.2252716368456725}}, 11: {"": {up: 0.4387889965639891, dn: 0.4387889965639891}}, 12: {"": {up: 1.117722176997894, dn: 1.117722176997894}}, 13: {"": {up: 0, dn: 0}}, 14: {"": {up: 1.057298409828554, dn: 1.057298409828554}}, 15: {"": {up: nan, dn: nan}}, 16: {"": {up: nan, dn: nan}}, 17: {"": {up: 0, dn: 0}}, 18: {"": {up: nan, dn: nan}}, 19: {"": {up: nan, dn: nan}}, 20: {"": {up: nan, dn: nan}}, 21: {"": {up: nan, dn: nan}}, 22: {"": {up: nan, dn: nan}}, 23: {"": {up: nan, dn: nan}}, 24: {"": {up: nan, dn: nan}}}
+LineColor=red
+LineStyle=solid
+Path=/suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/MC_JETS/jet_eta_pmratio_1
+Title=PS
+# xlow	 xhigh	 val	 errminus	 errplus
+0.000000e+00	2.000000e-01	1.013897e+00	5.698976e-03	5.698976e-03
+2.000000e-01	4.000000e-01	1.017876e+00	5.771342e-03	5.771342e-03
+4.000000e-01	6.000000e-01	1.009187e+00	5.920986e-03	5.920986e-03
+6.000000e-01	8.000000e-01	1.008940e+00	6.135265e-03	6.135265e-03
+8.000000e-01	1.000000e+00	1.018292e+00	6.626614e-03	6.626614e-03
+1.000000e+00	1.200000e+00	1.014027e+00	7.026870e-03	7.026870e-03
+1.200000e+00	1.400000e+00	1.019204e+00	7.915668e-03	7.915668e-03
+1.400000e+00	1.600000e+00	1.030444e+00	9.037417e-03	9.037417e-03
+1.600000e+00	1.800000e+00	nan	nan	nan
+1.800000e+00	2.000000e+00	1.057875e+00	1.633754e-02	1.633754e-02
+2.000000e+00	2.200000e+00	nan	nan	nan
+2.200000e+00	2.400000e+00	nan	nan	nan
+2.400000e+00	2.600000e+00	nan	nan	nan
+2.600000e+00	2.800000e+00	nan	nan	nan
+2.800000e+00	3.000000e+00	nan	nan	nan
+3.000000e+00	3.200000e+00	nan	nan	nan
+3.200000e+00	3.400000e+00	nan	nan	nan
+3.400000e+00	3.600000e+00	nan	nan	nan
+3.600000e+00	3.800000e+00	nan	nan	nan
+3.800000e+00	4.000000e+00	nan	nan	nan
+4.000000e+00	4.200000e+00	nan	nan	nan
+4.200000e+00	4.400000e+00	nan	nan	nan
+4.400000e+00	4.600000e+00	nan	nan	nan
+4.600000e+00	4.800000e+00	nan	nan	nan
+4.800000e+00	5.000000e+00	nan	nan	nan
+# END HISTO1D
+
+
+# BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_eta_pmratio_1
+ErrorBars=1
+ErrorBreakdown={0: {"": {up: 0.1797525306105139, dn: 0.1797525306105139}}, 1: {"": {up: 0.1823775891188224, dn: 0.1823775891188224}}, 2: {"": {up: 0.2017733855937343, dn: 0.2017733855937343}}, 3: {"": {up: 0.1708475685838854, dn: 0.1708475685838854}}, 4: {"": {up: 0.1997810760542188, dn: 0.1997810760542188}}, 5: {"": {up: 0.1574234250515119, dn: 0.1574234250515119}}, 6: {"": {up: 0.1906912422600784, dn: 0.1906912422600784}}, 7: {"": {up: 0.2624346896002638, dn: 0.2624346896002638}}, 8: {"": {up: 0.2750168893107415, dn: 0.2750168893107415}}, 9: {"": {up: 1.065554038794271, dn: 1.065554038794271}}, 10: {"": {up: 0.1274449227217146, dn: 0.1274449227217146}}, 11: {"": {up: 0.5811006359108936, dn: 0.5811006359108936}}, 12: {"": {up: nan, dn: nan}}, 13: {"": {up: nan, dn: nan}}, 14: {"": {up: 0, dn: 0}}, 15: {"": {up: nan, dn: nan}}, 16: {"": {up: nan, dn: nan}}, 17: {"": {up: 0, dn: 0}}, 18: {"": {up: nan, dn: nan}}, 19: {"": {up: nan, dn: nan}}, 20: {"": {up: nan, dn: nan}}, 21: {"": {up: nan, dn: nan}}, 22: {"": {up: nan, dn: nan}}, 23: {"": {up: nan, dn: nan}}, 24: {"": {up: nan, dn: nan}}}
+LineColor=blue
+LineStyle=solid
+Path=/suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/MC_JETS/jet_eta_pmratio_1
+Title=PS+MPI+HAD
+# xlow	 xhigh	 val	 errminus	 errplus
+0.000000e+00	2.000000e-01	nan	nan	nan
+2.000000e-01	4.000000e-01	nan	nan	nan
+4.000000e-01	6.000000e-01	nan	nan	nan
+6.000000e-01	8.000000e-01	nan	nan	nan
+8.000000e-01	1.000000e+00	nan	nan	nan
+1.000000e+00	1.200000e+00	nan	nan	nan
+1.200000e+00	1.400000e+00	nan	nan	nan
+1.400000e+00	1.600000e+00	nan	nan	nan
+1.600000e+00	1.800000e+00	nan	nan	nan
+1.800000e+00	2.000000e+00	nan	nan	nan
+2.000000e+00	2.200000e+00	nan	nan	nan
+2.200000e+00	2.400000e+00	nan	nan	nan
+2.400000e+00	2.600000e+00	nan	nan	nan
+2.600000e+00	2.800000e+00	nan	nan	nan
+2.800000e+00	3.000000e+00	nan	nan	nan
+3.000000e+00	3.200000e+00	nan	nan	nan
+3.200000e+00	3.400000e+00	nan	nan	nan
+3.400000e+00	3.600000e+00	nan	nan	nan
+3.600000e+00	3.800000e+00	nan	nan	nan
+3.800000e+00	4.000000e+00	nan	nan	nan
+4.000000e+00	4.200000e+00	nan	nan	nan
+4.200000e+00	4.400000e+00	nan	nan	nan
+4.400000e+00	4.600000e+00	nan	nan	nan
+4.600000e+00	4.800000e+00	nan	nan	nan
+4.800000e+00	5.000000e+00	nan	nan	nan
+# END HISTO1D
+

@@ -136,6 +136,8 @@ elif args.D=="suppr0_bornktmin10_1B":
 elif args.D=="suppr0_bornktmin20_1B":
     begin_post_hist_string = 'BEGIN HISTO1D /suppr0_bornktmin20_1B_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /suppr0_bornktmin20_1B_prehadron_merged.yoda/CMS_2021_I1972986'
+# elif args.D=='800_600_CUETP8M1-NNPDF2.3LO/MCJETS':
+#     begin_post_hist_string=
 
 
 def return_bins_pre_post(one_hist):

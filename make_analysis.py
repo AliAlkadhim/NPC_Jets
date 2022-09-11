@@ -28,6 +28,15 @@ if N==1000000000:
     Ns='1B'
     
 def make_directory(bornsupp, bornktmin, N):
+    """Make automatic analysis
+    Args:
+        bornsupp ([int]): [description]
+        bornktmin ([int]): [description]
+        N ([int]): [description]
+        
+        Example usage: 
+        python make_analysis.py --bornsupp 5 --bornktmin 10
+    """
     BASE_DIR_NP = os.environ['BASE_DIR_NP']
     os.chdir(BASE_DIR_NP)    
     print(BASE_DIR_NP)
