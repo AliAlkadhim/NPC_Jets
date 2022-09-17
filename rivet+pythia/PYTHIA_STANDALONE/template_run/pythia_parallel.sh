@@ -61,7 +61,7 @@ cd /nfs/dust/cms/user/aalkadhi/PYTHIA_STANDALONE/Monash_HardQCD_1B_2/run_${rnd}
 #remove everything but the pwgevents.lhe files
 ####setup more stuff
 #source /cvmfs/sft.cern.ch/lcg/contrib/gcc/4.9.3/x86_64-centos7-gcc49-opt/setup.sh
-#source /cvmfs/sft.cern.ch/lcg/contrib/gcc/5.1/x86_64-centos7/setup.sh
+source /cvmfs/sft.cern.ch/lcg/contrib/gcc/5.1/x86_64-centos7/setup.sh
 
 #source env
 

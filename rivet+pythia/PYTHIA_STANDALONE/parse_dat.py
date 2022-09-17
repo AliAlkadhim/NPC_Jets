@@ -21,7 +21,7 @@ parser.add_argument('--Matrix', type=bool, required=False, default=False, help='
 args = parser.parse_args()
 # SLICE=args.slice
 
-RANGE=(0.7,1.5)
+RANGE=(0.9,1.15)
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
 TUNE='Monash2013'
@@ -125,8 +125,6 @@ begin_file_string = 'CMS_2021_I1972986_'
 if args.D=="suppr800_bornktmin600_1B_ParisParams_MSTP":
     begin_post_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986'
-    supp=800
-    ktmin=600
 
 elif args.D=="500M_supp250":#bornktmin0
     begin_post_hist_string ='BEGIN HISTO1D /merged_posthadron_500M_supp250.yoda/CMS_2021_I1972986/'
@@ -138,6 +136,10 @@ elif args.D=="suppr0_bornktmin10_1B":
 elif args.D=="suppr0_bornktmin20_1B":
     begin_post_hist_string = 'BEGIN HISTO1D /suppr0_bornktmin20_1B_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /suppr0_bornktmin20_1B_prehadron_merged.yoda/CMS_2021_I1972986'
+elif args.D=="Monash_HardQCD_1B":
+    begin_post_hist_string = 'BEGIN HISTO1D /Monash_HardQCD_1B_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Monash_HardQCD_1B_prehadron_merged.yoda/CMS_2021_I1972986'
+    
 # elif args.D=='800_600_CUETP8M1-NNPDF2.3LO/MCJETS':
 #     begin_post_hist_string=
 
@@ -269,9 +271,9 @@ def main():
             # plt.tight_layout()
         
         
-        fig.suptitle('$(%d, %d)$, $10^9$ events, Tune: %s' % ( supp, ktmin, TUNE) , font='MonoSpace')
+        fig.suptitle('$(0,20)$, $10^9$ events, Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
-        plt.savefig(args.D+'/ALLBINS_diffrange_'+args.D+TUNE+'_1B.png')
+        plt.savefig(args.D+'/PYTHIA_STANDALONE_ALLBINS_'+args.D+'_1B.png')
         plt.show()
 
     elif args.Matrix:

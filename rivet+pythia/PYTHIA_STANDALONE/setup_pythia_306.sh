@@ -34,7 +34,8 @@ export PYTHIA8DATA=/cvmfs/sft.cern.ch/lcg/releases/LCG_88b/MCGenerators/pythia8/
 #Get the appropriate gcc version from https://gcc.gnu.org/onlinedocs/libstdc++/manual/abi.html
 #GCC 4.9.0: GLIBCXX_3.4.20, CXXABI_1.3.8
 #GCC 5.1.0: GLIBCXX_3.4.21, CXXABI_1.3.9
-source /cvmfs/sft.cern.ch/lcg/contrib/gcc/4.9.3/x86_64-centos7-gcc49-opt/setup.sh
+#source /cvmfs/sft.cern.ch/lcg/contrib/gcc/4.9.3/x86_64-centos7-gcc49-opt/setup.sh
+#need 4.9 and 5.1 when compiling/running. Need only 5.1 when running with rivet thereafter
 source /cvmfs/sft.cern.ch/lcg/contrib/gcc/5.1/x86_64-centos7/setup.sh
 
 
