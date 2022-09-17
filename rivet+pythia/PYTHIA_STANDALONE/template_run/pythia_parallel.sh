@@ -59,7 +59,8 @@ mkdir -p /nfs/dust/cms/user/aalkadhi/PYTHIA_STANDALONE/Monash_HardQCD_1B_2/run_$
 cd /nfs/dust/cms/user/aalkadhi/PYTHIA_STANDALONE/Monash_HardQCD_1B_2/run_${rnd}
 
 #remove everything but the pwgevents.lhe files
-####setup more stuff
+#GCC 4.9.0: GLIBCXX_3.4.20, CXXABI_1.3.8
+#GCC 5.1.0: GLIBCXX_3.4.21, CXXABI_1.3.9
 #source /cvmfs/sft.cern.ch/lcg/contrib/gcc/4.9.3/x86_64-centos7-gcc49-opt/setup.sh
 source /cvmfs/sft.cern.ch/lcg/contrib/gcc/5.1/x86_64-centos7/setup.sh
 
