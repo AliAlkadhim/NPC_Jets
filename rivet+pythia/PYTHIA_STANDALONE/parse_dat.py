@@ -147,7 +147,9 @@ elif args.D=="Monash_HardQCD_10k":
 elif args.D=="Monash_HardQCD_1B/OneRun":
     begin_post_hist_string = 'BEGIN HISTO1D /posthadron601.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /prehadron601.yoda/CMS_2021_I1972986'
-
+elif args.D=="Monash_HardQCD_1B/Merged_Rivet":
+    begin_post_hist_string = 'BEGIN HISTO1D /Monash_HardQCD_1B_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Monash_HardQCD_1B_prehadron_merged.yoda/CMS_2021_I1972986'
 
 # elif args.D=='800_600_CUETP8M1-NNPDF2.3LO/MCJETS':
 #     begin_post_hist_string=
@@ -280,9 +282,9 @@ def main():
             # plt.tight_layout()
         
         
-        fig.suptitle('Pythia Standalone (HardQCD:all) $10^6$ events, Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Pythia Standalone (HardQCD:all) $10^9$ events, rivet-merge, Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
-        plt.savefig(args.D.split('/')[0]+'/ONERUN_PYTHIA_STANDALONE_ALLBINS_HardQCD__1M.png')
+        plt.savefig(args.D.split('/')[0]+'/RIVET_MERGE_PYTHIA_STANDALONE_ALLBINS_HardQCD__1B.png')
         plt.show()
 
     elif args.Matrix:
