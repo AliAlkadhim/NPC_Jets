@@ -7,7 +7,7 @@ import argparse
 matplotlib.rcParams.update({
     "text.usetex": True})
 import numpy as np
-import pandas as pd
+# import pandas as pd
 import mplhep as hep
 hep.style.use("CMS") 
 
@@ -21,7 +21,7 @@ parser.add_argument('--Matrix', type=bool, required=False, default=False, help='
 args = parser.parse_args()
 # SLICE=args.slice
 
-RANGE=(0.9,1.15)
+RANGE=(0.,1.8)
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
 TUNE='Monash2013'
@@ -139,7 +139,11 @@ elif args.D=="suppr0_bornktmin20_1B":
 elif args.D=="Monash_HardQCD_1B":
     begin_post_hist_string = 'BEGIN HISTO1D /Monash_HardQCD_1B_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /Monash_HardQCD_1B_prehadron_merged.yoda/CMS_2021_I1972986'
-    
+
+elif args.D=="Monash_HardQCD_10k":
+    begin_post_hist_string = 'BEGIN HISTO1D /prehadron_10k.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /posthadron_10k.yoda/CMS_2021_I1972986'
+
 # elif args.D=='800_600_CUETP8M1-NNPDF2.3LO/MCJETS':
 #     begin_post_hist_string=
 
@@ -271,9 +275,9 @@ def main():
             # plt.tight_layout()
         
         
-        fig.suptitle('$(0,20)$, $10^9$ events, Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Pythia Standalone (HardQCD:all) $10^9$ events, Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
-        plt.savefig(args.D+'/PYTHIA_STANDALONE_ALLBINS_'+args.D+'_1B.png')
+        plt.savefig(args.D+'/PYTHIA_STANDALONE_ALLBINS_HardQCD_'+args.D+'_1B.png')
         plt.show()
 
     elif args.Matrix:
