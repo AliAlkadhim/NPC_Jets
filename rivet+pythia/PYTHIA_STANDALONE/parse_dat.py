@@ -21,7 +21,7 @@ parser.add_argument('--Matrix', type=bool, required=False, default=False, help='
 args = parser.parse_args()
 # SLICE=args.slice
 
-RANGE=(0.,1.8)
+RANGE=(0.85,1.3)
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
 TUNE='Monash2013'
