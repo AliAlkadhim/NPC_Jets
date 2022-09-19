@@ -24,8 +24,8 @@ args = parser.parse_args()
 RANGE=(0.85,1.3)
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
-TUNE='Monash2013'
-
+# TUNE='Monash2013'
+TUNE="CUETP8M1-NNPDF2.3LO"
 
 
 MAP_DICT_AK4 = { 
@@ -154,6 +154,12 @@ elif args.D=="Monash_HardQCD_Random_10M":
     begin_post_hist_string = 'BEGIN HISTO1D /Monash_HardQCD_Random_10M_posthadron_merged.yoda/CMS_2021_I1972986/'
     begin_pre_hist_string = 'BEGIN HISTO1D /Monash_HardQCD_Random_10M_prehadron_merged.yoda/CMS_2021_I1972986/'
 
+elif args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_1B":
+    begin_post_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_1Bposthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_1Bprehadron_merged.yoda/CMS_2021_I1972986'
+elif args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_10B":
+    begin_post_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_10Bposthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_10Bprehadron_merged.yoda/CMS_2021_I1972986'
 # elif args.D=='800_600_CUETP8M1-NNPDF2.3LO/MCJETS':
 #     begin_post_hist_string=
 
@@ -285,9 +291,9 @@ def main():
             # plt.tight_layout()
         
         
-        fig.suptitle('Pythia STA (HardQCD:all) $10^7$ events, rivet-merge, randomseed Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Pythia STA (HardQCD:all) $10^{10}$ events, randomseed Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
-        plt.savefig(args.D+'/RANDSOMSEED_RIVET_MERGE_PYTHIA_STANDALONE_ALLBINS_HardQCD_10M.png')
+        plt.savefig(args.D+'/ALLBINS_HardQCD_10B_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
         plt.show()
 
     elif args.Matrix:
