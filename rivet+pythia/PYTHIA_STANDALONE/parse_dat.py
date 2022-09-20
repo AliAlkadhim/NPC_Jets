@@ -160,8 +160,10 @@ elif args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_1B":
 elif args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_10B":
     begin_post_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_10Bposthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_10Bprehadron_merged.yoda/CMS_2021_I1972986'
-# elif args.D=='800_600_CUETP8M1-NNPDF2.3LO/MCJETS':
-#     begin_post_hist_string=
+elif args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_1T":
+    begin_post_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_1T_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_1T_prehadron_merged.yoda/CMS_2021_I1972986'
+
 
 
 def return_bins_pre_post(one_hist):
@@ -291,9 +293,9 @@ def main():
             # plt.tight_layout()
         
         
-        fig.suptitle('Pythia STA (HardQCD:all) $10^{10}$ events, randomseed Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Pythia STA (HardQCD:all) $10^{12}$ events, randomseed Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
-        plt.savefig(args.D+'/ALLBINS_HardQCD_10B_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
+        plt.savefig(args.D+'/ALLBINS_HardQCD_1T_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
         plt.show()
 
     elif args.Matrix:
