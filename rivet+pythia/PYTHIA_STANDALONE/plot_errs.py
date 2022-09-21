@@ -135,7 +135,7 @@ for hist_ind, hist in enumerate(MAP_DICT.keys()):
                 plt.scatter(bins_4, err_file*100, label=MAP_DICT[hist]['ylabel'],linewidth=2,marker='X')
                 
                 plt.xlabel('$p_T$ [GeV]', fontsize=21)
-                plt.ylabel('\% Uncertainty')
+                plt.ylabel('\% Uncertainty of NP Corrections', fontsize=20)
                 plt.legend(fontsize=13)
 
 plt.savefig(args.D+ '/'+'errs_allbins.png')
