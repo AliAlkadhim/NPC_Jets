@@ -21,7 +21,8 @@ parser.add_argument('--Matrix', type=bool, required=False, default=False, help='
 args = parser.parse_args()
 # SLICE=args.slice
 
-RANGE=(0.85,1.3)
+RANGE=(0.9,1.15)
+XMAX=967 + 10
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
 # TUNE='Monash2013'
@@ -33,24 +34,27 @@ MAP_DICT_AK4 = {
     'd01-x01-y01' : {'y_range':(0,0.5), 
                                 'n_bins': 22,
                                 'ylabel':'AK4 $0<|y|<0.5$',
-                                'color':'tab:orange'},
+                                'color':'tab:orange',
+                                'xfitter_file':'NP_y0.dat'},
 
  'd02-x01-y01' :  {'y_range':(0.5,1), 
                                 'n_bins': 21,
                                 'ylabel':'AK4 $0.5<|y|<1.0$',
-                                'color':'navy'},
+                                'color':'navy',
+                                'xfitter_file':'NP_y1.dat'},
 
   'd03-x01-y01':  {'y_range':(1,1.5), 
                                 'n_bins': 19,
                                 'ylabel': 'AK4 $1.0<|y|<1.5$',
-                                'color':'tab:green'},
+                                'color':'tab:green',
+                                'xfitter_file':'NP_y2.dat'},
 
    'd04-x01-y01': {'y_range':(1.5,2), 
                                 'n_bins': 16, #15 for ordinary, 16 for RAW
                                 'ylabel': 'AK4 $1.5<|y|<2.0$',
-                                'color':'tab:red'}
+                                'color':'tab:red',
+                                'xfitter_file':'NP_y3.dat'}
 }
-
 
 
 MAP_DICT_AK7 = {
@@ -59,22 +63,27 @@ MAP_DICT_AK7 = {
     'd21-x01-y01': {'y_range':(0,0.5), 
                                 'n_bins': 22,
                                 'ylabel':'AK7 $0<|y|<0.5$',
-                                'color':'tab:orange'},
+                                'color':'tab:orange',
+                                'xfitter_file':'NP_y0.dat'},
     
     'd22-x01-y01': {'y_range':(0.5,1), 
                                 'n_bins': 21,
                                 'ylabel':'AK7 $0.5<|y|<1.0$',
-                                'color':'navy'},
+                                'color':'navy',
+                                'xfitter_file':'NP_y1.dat'
+                                },
 
     'd23-x01-y01': {'y_range':(1,1.5), 
                                 'n_bins': 19,
                                 'ylabel': 'AK7 $1.0<|y|<1.5$',
-                                'color':'tab:green'},
+                                'color':'tab:green',
+                                 'xfitter_file':'NP_y2.dat'},
 
     'd24-x01-y01': {'y_range':(1.5,2), 
                                 'n_bins': 16, #15 for ordinary, 16 for RAW
                                 'ylabel': 'AK7 $1.5<|y|<2.0$',
-                                'color':'tab:red'}
+                                'color':'tab:red',
+                                'xfitter_file':'NP_y3.dat'}
 
 
 }
@@ -122,6 +131,28 @@ begin_file_string = 'CMS_2021_I1972986_'
 #THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
 #do ls directory to see the .yoda hist names
 
+
+dir_211_10431 = '../../xfitter_datafiles/xfitter-datafiles/lhc/cms/jets/2111.10431/NP/'
+
+def xfitter_NPs(rap_bin):
+    file_string = dir_211_10431 + MAP_DICT_AK7[rap_bin]['xfitter_file']
+    print(file_string)
+    
+    n_bins=MAP_DICT_AK7[rap_bin]['n_bins']
+    with open(file_string, 'r') as f:
+        bins_list=[]
+        NPC_list=[]
+
+
+        fr =f.readlines()
+        for line_ind, line in enumerate(fr):
+            bins_list.append(float(line.strip().split()[2]))
+            NPC_list.append(float(line.strip().split()[-1]))
+        
+        return np.array(bins_list) , np.array(NPC_list)
+            
+            
+            
 if args.D=="suppr800_bornktmin600_1B_ParisParams_MSTP":
     begin_post_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986'
@@ -245,6 +276,7 @@ def main():
             factor_4 = np.abs(np.divide(post_4,pre_4))
             error_NPC_4 = factor_4 * np.sqrt((post_error_4/post_4)**2 + (pre_error_4/pre_4)**2)
             print('error_NPC_4',error_NPC_4)
+            np.save(args.D+'/'+hist_4+'_errors.npy',error_NPC_4)
 
             axs[hist_ind_4,0].step(bins_4, NPC_4, label=MAP_DICT_AK4[hist_4]['ylabel'], where='mid',linewidth=2, color=MAP_DICT_AK4[hist_4]['color'])
             axs[hist_ind_4, 0].errorbar(bins_4, NPC_4, yerr = error_NPC_4, fmt='none', c='black', linewidth=2, capsize=2)
@@ -252,14 +284,20 @@ def main():
             axs[hist_ind_4,0].set_ylabel(r'$\mathbf{\frac{\sigma_{PS+MPI+HAD}}{\sigma_{PS}}}$', fontsize=22)
             # axs[hist_ind_4,0].set_ylim(-0.1,max(NPC_4)*1.2)
             # axs[hist_ind_4,0].set_ylim(0.85,1.2)
+
+            
+            
             axs[hist_ind_4,0].set_ylim(RANGE)
             #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
-            axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
+            # axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
+            axs[hist_ind_4,0].set_xlim(min(bins_4),XMAX)
+            # axs[hist_ind_4,0].set_xticks(bins_4)
             # axs[hist_ind_4,0].set_xlim(100, 2500)
             axs[hist_ind_4,0].axhline(y=1, color='black', linestyle='--')
 
             axs[hist_ind_4,0].legend(loc='best',fontsize=19)
             axs[hist_ind_4,0].grid(axis='x')
+            axs[hist_ind_4,0].set_yticks([0.9,1.0,1.1])
             
         for hist_ind_7, hist_7 in enumerate(MAP_DICT_AK7.keys()):
 
@@ -270,7 +308,7 @@ def main():
             factor_7 = np.abs(np.divide(post_7,pre_7))
             error_NPC_7 = factor_7 * np.sqrt((post_error_7/post_7)**2 + (pre_error_7/pre_7)**2)
             print('error_NPC_7',error_NPC_7)
-
+            np.save(args.D+'/'+hist_7+'_errors.npy',error_NPC_7)
 
             axs[hist_ind_7,1].step(bins_7, NPC_7, label=MAP_DICT_AK7[hist_7]['ylabel'], where='mid',linewidth=2, color=MAP_DICT_AK7[hist_7]['color'])
             axs[hist_ind_7, 1].errorbar(bins_7, NPC_7, yerr = error_NPC_7, fmt='none', c='black',linewidth=2,capsize=2)
@@ -280,14 +318,22 @@ def main():
             # axs[hist_ind_7,1].set_title('bornktmin 10, bornsuppfact 250',font='MonoSpace')
             # axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
             # axs[hist_ind_7,1].set_ylim(0.85,1.2)
+                        #Xfitter
+            xfitter_bins, xfitter_NP = xfitter_NPs(hist_7)
+            axs[hist_ind_7,1].step(xfitter_bins, xfitter_NP, label=r'arxiv:$2111.10431$', where='mid', linewidth=2, color='purple')
+            
+            
+            
             axs[hist_ind_7,1].set_ylim(RANGE)
             #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
-            axs[hist_ind_7,1].set_xlim(min(bins_7),max(bins_7))
+            # axs[hist_ind_7,1].set_xlim(min(bins_7),max(bins_7))
+            axs[hist_ind_7,1].set_xlim(min(bins_7),XMAX)
             # axs[hist_ind_7,1].set_xlim(100,2500)
             axs[hist_ind_7,1].axhline(y=1, color='black', linestyle='--')
-
-            axs[hist_ind_7,1].legend(loc='best', fontsize=19)
+            # axs[hist_ind_7,1].set_xticks(bins_7)
+            axs[hist_ind_7,1].legend(loc='upper center', fontsize=19, mode='expand', ncol=2)
             axs[hist_ind_7,1].grid(axis='x')
+            axs[hist_ind_7,1].set_yticks([0.9,1.0,1.1])
 
             
             # plt.tight_layout()
@@ -295,7 +341,7 @@ def main():
         
         fig.suptitle('Pythia STA (HardQCD:all) $10^{12}$ events, randomseed Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
-        plt.savefig(args.D+'/ALLBINS_HardQCD_1T_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
+        plt.savefig(args.D+'/ALLBINS_smallrange_HardQCD_1T_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
         plt.show()
 
     elif args.Matrix:
