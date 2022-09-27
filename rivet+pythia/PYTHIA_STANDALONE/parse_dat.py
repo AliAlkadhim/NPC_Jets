@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib
 import argparse
-# import parse_paris_yoda  as Paris
-from parse_paris_yoda import MAP_DICT_PARIS_4 
+import parse_paris_yoda  as Paris
+# from parse_paris_yoda import MAP_DICT_PARIS_4 
 
 matplotlib.rcParams.update({
     "text.usetex": True})
@@ -21,7 +21,7 @@ parser.add_argument('--Matrix', type=bool, required=False, default=False, help='
 args = parser.parse_args()
 # SLICE=args.slice
 
-RANGE=(0.9,1.3)
+RANGE=(0.9,1.15)
 XMAX=967 + 10
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
@@ -123,13 +123,53 @@ MAP_DICT = {
                                 'ylabel': 'AK7 $1.5<|y|<2.0$'}
 }
 begin_file_string = 'CMS_2021_I1972986_'
-# 300 AND 600 BORNKTMIN WITH 800 SUPPR
-# begin_post_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_posthadron_merged.yoda/CMS_2021_I1972986/'
-# begin_pre_hist_string ='BEGIN HISTO1D /suppr800_bornktmin600_100M_prehadron_merged.yoda/CMS_2021_I1972986/'
+
+######################### PARIS YODAS
+Paris_post_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/fromParis/Inclusive_Jets_Pythia8CUETM1_MPIHAD_on.yoda'
+Paris_pre_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/fromParis/Inclusive_Jets_Pythia8CUETM1_MPIHAD_off.yoda'
+begin_hist_string_Paris = 'BEGIN YODA_HISTO1D_V2 /CMS_2019_incJets/' #not the RAW/... because the RAW has no sacaling
+    
+MAP_DICT_PARIS_4 = { 
+    #AK4 JETS
+    'ak4_y0' : {'y_range':(0,0.5), 
+                                'n_bins': 244-221+1,
+                                'ylabel':'AK4 $0<|y|<0.5$'},
+
+ 'ak4_y1' :  {'y_range':(0.5,1), 
+                                'n_bins': 203-180+1,
+                                'ylabel':'AK4 $0.5<|y|<1.0$'},
+
+  'ak4_y2':  {'y_range':(1,1.5), 
+                                'n_bins': 162-140+1,
+                                'ylabel': 'AK4 $1.0<|y|<1.5$'},
+
+   'ak4_y3': {'y_range':(1.5,2), 
+                                'n_bins': 121-98+1, #15 for ordinary, 16 for RAW
+                                'ylabel': 'AK4 $1.5<|y|<2.0$'},
+
+   ###THERE ARE MORE BINS FOR SOME REASON
+}
+
+MAP_DICT_PARIS_7 ={
+   #AK 7
+    'ak7_y5': {'y_range':(0,0.5), 
+                                'n_bins': 336-313+1,
+                                'ylabel':'AK7 $2<|y|<2.5$'},
+    
+    'ak7_y3': {'y_range':(0.5,1), 
+                                'n_bins': 418-395+1,
+                                'ylabel':'AK7 $1.5<|y|<2$'},
+
+    'ak7_y2': {'y_range':(1,1.5), 
+                                'n_bins': 459-436+1,
+                                'ylabel': 'AK7 $0.5<|y|<1$'},
+
+    'ak7_y1': {'y_range':(1.5,2), 
+                                'n_bins': 500-477+1, #15 for ordinary, 16 for RAW
+                                'ylabel': 'AK7 $0<|y|<0.5$'}
 
 
-#THE suppr_0_500M_prehadron_merged.yoda is the .yoda hist name
-#do ls directory to see the .yoda hist names
+}
 
 
 dir_211_10431 = '../../xfitter_datafiles/xfitter-datafiles/lhc/cms/jets/2111.10431/NP/'
@@ -302,16 +342,21 @@ def main():
             # axs[hist_ind_4,0].set_xlim(100, 2500)
             axs[hist_ind_4,0].axhline(y=1, color='black', linestyle='--')
 
-            axs[hist_ind_4,0].legend(loc='best',fontsize=19)
+            
             axs[hist_ind_4,0].grid(axis='x')
             axs[hist_ind_4,0].set_yticks([0.9,1.0,1.1])
-            
+            axs[hist_ind_4,0].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
         #NOW ITERATE OVER PARIS DICTIONARIES
-        for hist_ind, hist in enumerate(Paris.MAP_DICT_PARIS_4.keys()):
-            pre_bins_list, pre_entries_list= get_bin_entries_list(Paris.pre_filename,hist, Paris.MAP_DICT_PARIS_4[hist]['n_bins']) 
+        for hist_ind, hist in enumerate(MAP_DICT_PARIS_4.keys()):
+            Paris_pre_bins_list, Paris_pre_entries_list= Paris.get_bin_entries_list(Paris_pre_filename,hist, MAP_DICT_PARIS_4[hist]['n_bins']) 
+            Paris_post_bins_list, Paris_post_entries_list= Paris.get_bin_entries_list(Paris_post_filename,hist, MAP_DICT_PARIS_4[hist]['n_bins'])
+            Paris_NPC = Paris_post_entries_list/Paris_pre_entries_list
+            axs[hist_ind,0].step(Paris_pre_bins_list, Paris_NPC, label=r'arxiv:$2111.10431$ Paris Yoda', linewidth=2, color='purple')
+                                   #MAP_DICT_PARIS_4[hist]['ylabel'], where='mid')
             
-            
+            axs[hist_ind,0].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
+        
         for hist_ind_7, hist_7 in enumerate(MAP_DICT_AK7.keys()):
 
             bins_7, pre_7, post_7, pre_error_7, post_error_7  = return_bins_pre_post(hist_7)
@@ -351,7 +396,17 @@ def main():
             
             # plt.tight_layout()
         
-        
+                    
+        #NOW ITERATE OVER PARIS DICTIONARIES
+        for hist_ind, hist in enumerate(MAP_DICT_PARIS_7.keys()):
+            Paris_pre_bins_list, Paris_pre_entries_list= Paris.get_bin_entries_list(Paris_pre_filename,hist, MAP_DICT_PARIS_7[hist]['n_bins']) 
+            Paris_post_bins_list, Paris_post_entries_list= Paris.get_bin_entries_list(Paris_post_filename,hist, MAP_DICT_PARIS_7[hist]['n_bins'])
+            Paris_NPC = Paris_post_entries_list/Paris_pre_entries_list
+            axs[hist_ind,1].step(Paris_pre_bins_list, Paris_NPC, label=r'arxiv:$2111.10431$ Paris Yoda', linewidth=2, color='purple')
+                                   #MAP_DICT_PARIS_7[hist]['ylabel'], where='mid')
+            
+            axs[hist_ind,1].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
+            
         fig.suptitle('Paris Params Pythia STA (HardQCD:all) $10^{10}$ events, Tune: %s' % TUNE.split('_')[0], font='MonoSpace')
         plt.tight_layout()
         plt.savefig(args.D+'/ALLBINS_Paris_Params_smallrange_HardQCD_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
