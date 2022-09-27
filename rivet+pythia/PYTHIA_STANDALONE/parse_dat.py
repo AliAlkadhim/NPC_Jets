@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib
 import argparse
-
-
+# import parse_paris_yoda  as Paris
+from parse_paris_yoda import MAP_DICT_PARIS_4 
 
 matplotlib.rcParams.update({
     "text.usetex": True})
@@ -21,13 +21,13 @@ parser.add_argument('--Matrix', type=bool, required=False, default=False, help='
 args = parser.parse_args()
 # SLICE=args.slice
 
-RANGE=(0.9,1.15)
+RANGE=(0.9,1.3)
 XMAX=967 + 10
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
 # TUNE='Monash2013'
-TUNE="CUETP8M1-NNPDF2.3LO"
-
+# TUNE="CUETP8M1-NNPDF2.3LO"
+TUNE='CUETP8M'
 
 MAP_DICT_AK4 = { 
     #AK4 JETS
@@ -151,6 +151,10 @@ def xfitter_NPs(rap_bin):
         
         return np.array(bins_list) , np.array(NPC_list)
             
+
+
+
+
             
             
 if args.D=="suppr800_bornktmin600_1B_ParisParams_MSTP":
@@ -195,7 +199,10 @@ elif args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_1T":
     begin_post_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_1T_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_1T_prehadron_merged.yoda/CMS_2021_I1972986'
 
-
+elif args.D=="Paris_CUETP8M_10B":
+    begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10B_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10B_prehadron_merged.yoda/CMS_2021_I1972986'
+    
 
 def return_bins_pre_post(one_hist):
     file_string = args.D + '/' + begin_file_string+ one_hist +'.dat'
@@ -299,6 +306,12 @@ def main():
             axs[hist_ind_4,0].grid(axis='x')
             axs[hist_ind_4,0].set_yticks([0.9,1.0,1.1])
             
+            
+        #NOW ITERATE OVER PARIS DICTIONARIES
+        for hist_ind, hist in enumerate(Paris.MAP_DICT_PARIS_4.keys()):
+            pre_bins_list, pre_entries_list= get_bin_entries_list(Paris.pre_filename,hist, Paris.MAP_DICT_PARIS_4[hist]['n_bins']) 
+            
+            
         for hist_ind_7, hist_7 in enumerate(MAP_DICT_AK7.keys()):
 
             bins_7, pre_7, post_7, pre_error_7, post_error_7  = return_bins_pre_post(hist_7)
@@ -319,8 +332,8 @@ def main():
             # axs[hist_ind_7,1].set_ylim(-0.1, max(NPC_7)*1.2)
             # axs[hist_ind_7,1].set_ylim(0.85,1.2)
                         #Xfitter
-            xfitter_bins, xfitter_NP = xfitter_NPs(hist_7)
-            axs[hist_ind_7,1].step(xfitter_bins, xfitter_NP, label=r'arxiv:$2111.10431$', where='mid', linewidth=2, color='purple')
+            # xfitter_bins, xfitter_NP = xfitter_NPs(hist_7)
+            # axs[hist_ind_7,1].step(xfitter_bins, xfitter_NP, label=r'arxiv:$2111.10431$', where='mid', linewidth=2, color='purple')
             
             
             
@@ -339,10 +352,18 @@ def main():
             # plt.tight_layout()
         
         
-        fig.suptitle('Pythia STA (HardQCD:all) $10^{12}$ events, randomseed Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $10^{10}$ events, Tune: %s' % TUNE.split('_')[0], font='MonoSpace')
         plt.tight_layout()
-        plt.savefig(args.D+'/ALLBINS_smallrange_HardQCD_1T_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
+        plt.savefig(args.D+'/ALLBINS_Paris_Params_smallrange_HardQCD_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
         plt.show()
+
+
+
+
+
+
+
+
 
     elif args.Matrix:
         average_pre=[]
