@@ -3,6 +3,7 @@ import matplotlib
 import argparse
 import parse_paris_yoda  as Paris
 import pandas as pd
+from parse_yoda  import get_bin_entries_list as yoda_parse
 # from parse_paris_yoda import MAP_DICT_PARIS_4 
 
 matplotlib.rcParams.update({
@@ -23,8 +24,9 @@ parser.add_argument('--Matrix', type=bool, required=False, default=False, help='
 args = parser.parse_args()
 # SLICE=args.slice
 
-RANGE=(0.9,1.15)
+RANGE=(0.95,1.15)
 XMAX=967 + 10
+
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
 # TUNE='Monash2013'
@@ -247,6 +249,17 @@ elif args.D=="Paris_CUETP8M_10B":
 elif args.D=="Paris_CUETP8M_10T":
     begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_prehadron_merged.yoda/CMS_2021_I1972986'
+    pre_yoda='Paris_CUETP8M_10T_prehadron_merged.yoda'
+    post_yoda='Paris_CUETP8M_10T_posthadron_merged.yoda'
+    
+elif args.D=="Paris_CUETP8M_10T_2":
+    begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_2_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_2_prehadron_merged.yoda/CMS_2021_I1972986'
+    
+
+elif args.D=="Paris_CUETP8M_20T":
+    begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_1_2_COMBINED_posthadron.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_1_2_COMBINED_prehadron.yoda/CMS_2021_I1972986'
     
 
 def return_bins_pre_post(one_hist):
@@ -341,6 +354,13 @@ def main():
             # axs[hist_ind_4,0].set_ylim(0.85,1.2)
 
             
+            ###########ITERATE USING YODA PARSER
+            _, pre_yoda_entries = yoda_parse(args.D + '/' + pre_yoda, hist_4, MAP_DICT_AK4[hist_4]['n_bins'])
+            _, post_yoda_entries = yoda_parse(args.D + '/' + post_yoda, hist_4, MAP_DICT_AK4[hist_4]['n_bins'])
+            
+            NPC_yoda = post_yoda_entries/pre_yoda_entries
+            # axs[hist_ind_4,0].step(bins_4, NPC_yoda, label='YODA parser')
+            
             
             axs[hist_ind_4,0].set_ylim(RANGE)
             #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
@@ -355,6 +375,7 @@ def main():
             axs[hist_ind_4,0].set_yticks([0.9,1.0,1.1])
             axs[hist_ind_4,0].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
+###################################################
         #NOW ITERATE OVER PARIS DICTIONARIES
         for hist_ind, hist in enumerate(MAP_DICT_PARIS_4.keys()):
             Paris_pre_bins_list, Paris_pre_entries_list= Paris.get_bin_entries_list(Paris_pre_filename,hist, MAP_DICT_PARIS_4[hist]['n_bins']) 
@@ -415,7 +436,7 @@ def main():
             
             axs[hist_ind,1].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
-        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $10^{13}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $ 10^{13}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
         if args.save:
             plt.savefig(args.D+'/ALLBINS_Paris_Params_HardQCD_%s_PYTHIA_STANDALONE_%s.png'%( str(args.D), TUNE ) )
