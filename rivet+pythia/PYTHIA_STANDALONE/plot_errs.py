@@ -26,7 +26,8 @@ XMAX=967 + 10
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
 # TUNE='Monash2013'
-TUNE="CUETP8M1-NNPDF2.3LO"
+# TUNE="CUETP8M1-NNPDF2.3LO"
+TUNE='CUETP8M'
 
 
 
@@ -128,7 +129,12 @@ begin_file_string = 'CMS_2021_I1972986_'
 if args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_1T":
     begin_post_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_1T_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /CUETP8M1-NNPDF2.3LO_HardQCD_1T_prehadron_merged.yoda/CMS_2021_I1972986'
-    
+
+elif args.D=="Paris_CUETP8M_10T":
+    begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_prehadron_merged.yoda/CMS_2021_I1972986'
+
+fig = plt.figure(figsize=(10,10))
 for hist_ind, hist in enumerate(MAP_DICT.keys()):
                 bins_4, pre_4, post_4, pre_error_4 , post_error_4 = parse.return_bins_pre_post(hist)
                 err_file = np.load(args.D + '/' + hist + '_errors.npy')
@@ -137,6 +143,6 @@ for hist_ind, hist in enumerate(MAP_DICT.keys()):
                 plt.xlabel('$p_T$ [GeV]', fontsize=21)
                 plt.ylabel('\% Uncertainty of NP Corrections', fontsize=20)
                 plt.legend(fontsize=13)
-
+                fig.suptitle('Paris Params Pythia STA (HardQCD:all) $10^{13}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
 plt.savefig(args.D+ '/'+'errs_allbins.png')
 plt.show()

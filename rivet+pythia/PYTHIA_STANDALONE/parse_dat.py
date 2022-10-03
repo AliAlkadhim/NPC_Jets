@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import argparse
 import parse_paris_yoda  as Paris
+import pandas as pd
 # from parse_paris_yoda import MAP_DICT_PARIS_4 
 
 matplotlib.rcParams.update({
@@ -15,6 +16,7 @@ hep.style.use("CMS")
 
 parser=argparse.ArgumentParser(description='directory')
 parser.add_argument('--D', required=True)
+parser.add_argument('--save', required=True)
 # parser.add_argument('--slice', required=True)
 
 parser.add_argument('--Matrix', type=bool, required=False, default=False, help='if True, generate a matrix of the NPC in the (x,y)=(hadron,parton) space')
@@ -124,7 +126,7 @@ MAP_DICT = {
 }
 begin_file_string = 'CMS_2021_I1972986_'
 
-######################### PARIS YODAS
+######################### PARIS YODAS #########################
 Paris_post_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/fromParis/Inclusive_Jets_Pythia8CUETM1_MPIHAD_on.yoda'
 Paris_pre_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/fromParis/Inclusive_Jets_Pythia8CUETM1_MPIHAD_off.yoda'
 begin_hist_string_Paris = 'BEGIN YODA_HISTO1D_V2 /CMS_2019_incJets/' #not the RAW/... because the RAW has no sacaling
@@ -171,7 +173,7 @@ MAP_DICT_PARIS_7 ={
 
 }
 
-
+########################################################################################
 dir_211_10431 = '../../xfitter_datafiles/xfitter-datafiles/lhc/cms/jets/2111.10431/NP/'
 
 def xfitter_NPs(rap_bin):
@@ -242,6 +244,9 @@ elif args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_1T":
 elif args.D=="Paris_CUETP8M_10B":
     begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10B_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10B_prehadron_merged.yoda/CMS_2021_I1972986'
+elif args.D=="Paris_CUETP8M_10T":
+    begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_prehadron_merged.yoda/CMS_2021_I1972986'
     
 
 def return_bins_pre_post(one_hist):
@@ -305,18 +310,21 @@ def return_bins_pre_post(one_hist):
     return bins, pre, post, pre_errors, post_errors
 
 
-
+# df = pd.DataFrame()
 def main():
     if not args.Matrix:
         fig, axs = plt.subplots(nrows=4, ncols=2, figsize=(20,10))
         for hist_ind_4, hist_4 in enumerate(MAP_DICT_AK4.keys()):
 
             bins_4, pre_4, post_4, pre_error_4 , post_error_4 = return_bins_pre_post(hist_4)
-            NPC_4 = post_4/pre_4
+            # df[hist_4]+'edges'= bins_4
             
-            print('bins_4 %d' % hist_ind_4, bins_4)
-            print('pre_error_4 y bin %d' % hist_ind_4, pre_error_4)
-            print('post_error_4 %d' % hist_ind_4, post_error_4)
+            NPC_4 = post_4/pre_4
+            # df[hist_4]+'
+            print('bins_4' ,  bins_4)
+            print('NPC_4 ',  NPC_4)
+            # print('pre_error_4 y bin %d' % hist_ind_4, pre_error_4)
+            # print('post_error_4 %d' % hist_ind_4, post_error_4)
             print('pre_4', pre_4)
             print('post_4', post_4)
             # Delta (post/pre) = |post/pre| sqrt{([Delta post]/post)^2 + ([Delta pre]/pre)^2 }
@@ -407,9 +415,10 @@ def main():
             
             axs[hist_ind,1].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
-        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $10^{10}$ events, Tune: %s' % TUNE.split('_')[0], font='MonoSpace')
+        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $10^{13}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
-        plt.savefig(args.D+'/ALLBINS_Paris_Params_smallrange_HardQCD_%sRANDSOMSEED_RIVETMERGE_PYTHIA_STANDALONE.png'%str(args.D))
+        if args.save:
+            plt.savefig(args.D+'/ALLBINS_Paris_Params_HardQCD_%s_PYTHIA_STANDALONE_%s.png'%( str(args.D), TUNE ) )
         plt.show()
 
 
