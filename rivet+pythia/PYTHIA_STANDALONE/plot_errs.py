@@ -15,6 +15,9 @@ hep.style.use("CMS")
 
 parser=argparse.ArgumentParser(description='directory')
 parser.add_argument('--D', required=True)
+parser.add_argument('--save', required=True)
+
+
 # parser.add_argument('--slice', required=True)
 
 parser.add_argument('--Matrix', type=bool, required=False, default=False, help='if True, generate a matrix of the NPC in the (x,y)=(hadron,parton) space')
@@ -22,7 +25,8 @@ args = parser.parse_args()
 # SLICE=args.slice
 
 RANGE=(0.9,1.15)
-XMAX=967 + 10
+# XMAX=967 + 10
+CMAS=3000
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
 # TUNE='Monash2013'
@@ -143,6 +147,6 @@ for hist_ind, hist in enumerate(MAP_DICT.keys()):
                 plt.xlabel('$p_T$ [GeV]', fontsize=21)
                 plt.ylabel('\% Uncertainty of NP Corrections', fontsize=20)
                 plt.legend(fontsize=13)
-                fig.suptitle('Paris Params Pythia STA (HardQCD:all) $10^{13}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
+                fig.suptitle('Paris STA (HardQCD:all) $10^{12}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
 plt.savefig(args.D+ '/'+'errs_allbins.png')
 plt.show()

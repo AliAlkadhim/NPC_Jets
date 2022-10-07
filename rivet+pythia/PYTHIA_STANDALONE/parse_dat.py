@@ -200,7 +200,6 @@ def xfitter_NPs(rap_bin):
 
 
             
-            
 if args.D=="suppr800_bornktmin600_1B_ParisParams_MSTP":
     begin_post_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string =' BEGIN HISTO1D /suppr800_bornktmin600_1B_ParisParams_MSTP_prehadron_merged.yoda/CMS_2021_I1972986'
@@ -246,6 +245,7 @@ elif args.D=="CUETP8M1-NNPDF2.3LO_HardQCD_1T":
 elif args.D=="Paris_CUETP8M_10B":
     begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10B_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10B_prehadron_merged.yoda/CMS_2021_I1972986'
+############Paris_CUETP8M_10T is an important run
 elif args.D=="Paris_CUETP8M_10T":
     begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_prehadron_merged.yoda/CMS_2021_I1972986'
@@ -260,6 +260,11 @@ elif args.D=="Paris_CUETP8M_10T_2":
 elif args.D=="Paris_CUETP8M_20T":
     begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_1_2_COMBINED_posthadron.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_10T_1_2_COMBINED_prehadron.yoda/CMS_2021_I1972986'
+    
+elif args.D=="Paris_CUETP8M_4.5T":
+    begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_4.5T_posthadron_merged.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_4.5T_prehadron_merged.yoda/CMS_2021_I1972986'
+    
     
 
 def return_bins_pre_post(one_hist):
@@ -323,15 +328,16 @@ def return_bins_pre_post(one_hist):
     return bins, pre, post, pre_errors, post_errors
 
 
-# df = pd.DataFrame()
+df4 = pd.DataFrame({})
+df7 = pd.DataFrame({})
+
 def main():
     if not args.Matrix:
         fig, axs = plt.subplots(nrows=4, ncols=2, figsize=(20,10))
         for hist_ind_4, hist_4 in enumerate(MAP_DICT_AK4.keys()):
 
             bins_4, pre_4, post_4, pre_error_4 , post_error_4 = return_bins_pre_post(hist_4)
-            # df[hist_4]+'edges'= bins_4
-            
+
             NPC_4 = post_4/pre_4
             # df[hist_4]+'
             print('bins_4' ,  bins_4)
@@ -355,10 +361,10 @@ def main():
 
             
             ###########ITERATE USING YODA PARSER
-            _, pre_yoda_entries = yoda_parse(args.D + '/' + pre_yoda, hist_4, MAP_DICT_AK4[hist_4]['n_bins'])
-            _, post_yoda_entries = yoda_parse(args.D + '/' + post_yoda, hist_4, MAP_DICT_AK4[hist_4]['n_bins'])
+            # _, pre_yoda_entries = yoda_parse(args.D + '/' + pre_yoda, hist_4, MAP_DICT_AK4[hist_4]['n_bins'])
+            # _, post_yoda_entries = yoda_parse(args.D + '/' + post_yoda, hist_4, MAP_DICT_AK4[hist_4]['n_bins'])
             
-            NPC_yoda = post_yoda_entries/pre_yoda_entries
+            # NPC_yoda = post_yoda_entries/pre_yoda_entries
             # axs[hist_ind_4,0].step(bins_4, NPC_yoda, label='YODA parser')
             
             
@@ -375,6 +381,10 @@ def main():
             axs[hist_ind_4,0].set_yticks([0.9,1.0,1.1])
             axs[hist_ind_4,0].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
+            df4[hist_4 + '_bins_low'] = pd.Series(bins_4)
+            df4[hist_4+'NPC_4']=  pd.Series(NPC_4)
+            df4[hist_4+'error_NPC_4']= pd.Series(error_NPC_4)
+
 ###################################################
         #NOW ITERATE OVER PARIS DICTIONARIES
         for hist_ind, hist in enumerate(MAP_DICT_PARIS_4.keys()):
@@ -424,8 +434,11 @@ def main():
 
             
             # plt.tight_layout()
-        
-                    
+            #save df
+            df7[hist_7 + '_bins_low'] = pd.Series(bins_7)
+            df7[hist_7+'NPC_7']=  pd.Series(NPC_7)
+            df7[hist_7+'error_NPC_7']= pd.Series(error_NPC_7)
+            
         #NOW ITERATE OVER PARIS DICTIONARIES
         for hist_ind, hist in enumerate(MAP_DICT_PARIS_7.keys()):
             Paris_pre_bins_list, Paris_pre_entries_list= Paris.get_bin_entries_list(Paris_pre_filename,hist, MAP_DICT_PARIS_7[hist]['n_bins']) 
@@ -436,12 +449,13 @@ def main():
             
             axs[hist_ind,1].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
-        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $ 10^{13}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $ 4 \times 10^{13}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
         if args.save:
             plt.savefig(args.D+'/ALLBINS_Paris_Params_HardQCD_%s_PYTHIA_STANDALONE_%s.png'%( str(args.D), TUNE ) )
         plt.show()
-
+        df4.to_csv(args.D+'/df_4.csv')
+        df7.to_csv(args.D+'/df_7.csv')
 
 
 
