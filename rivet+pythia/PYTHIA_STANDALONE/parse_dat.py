@@ -25,7 +25,7 @@ args = parser.parse_args()
 # SLICE=args.slice
 
 RANGE=(0.95,1.15)
-XMAX=967 + 10
+XMAX=3000
 
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
@@ -264,7 +264,10 @@ elif args.D=="Paris_CUETP8M_20T":
 elif args.D=="Paris_CUETP8M_4.5T":
     begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_4.5T_posthadron_merged.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_4.5T_prehadron_merged.yoda/CMS_2021_I1972986'
-    
+elif args.D=="onerun_Paris":
+    begin_post_hist_string = 'BEGIN HISTO1D /posthadron1.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /prehadron1.yoda/CMS_2021_I1972986'
+        
     
 
 def return_bins_pre_post(one_hist):
@@ -449,7 +452,7 @@ def main():
             
             axs[hist_ind,1].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
-        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $ 4 \times 10^{13}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $ 10^{8}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
         if args.save:
             plt.savefig(args.D+'/ALLBINS_Paris_Params_HardQCD_%s_PYTHIA_STANDALONE_%s.png'%( str(args.D), TUNE ) )
