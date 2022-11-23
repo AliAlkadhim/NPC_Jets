@@ -3,6 +3,28 @@ To see example results, go to `rivet+pythia/plots`. If you want to reproduce or 
 
 This is meant to be run on `naf`, althought with some modifications it can also be run on `lxplus`. Further, it is highly recommended to be run on `DUST` for higher storage capacity than `afs` (1 TB starting! Do `mydust-quota` to see your available space)
 
+## Complete Automated Analysis for PYTHIA
+
+`cd PYTHIA_STANDALONE && ls -lt`
+
+`make_pythia_analysis.py` uses the template for one condor run (with `pythia` and `rivet`) in `PYTHIA_STANDALONE/template_run`, with optional argumetents that can be changed in the python script. Use `python make_pythia_analysis --help` for more arguments.
+
+```
+cd PYTHIA_STANDALONE
+python make_pythia_analysis.py --runname SOME_RUN_NAME
+cd SOME_RUN_NAME
+condor-submit rivet_condor.sub
+```
+
+This too is automated such that you can make many condor runs, each is composed of thousands of jobs. To merge the outputs of this huge meta-run, see `PYTHIA_STANDALONE/merge_huge.sh`  
+`merge_huge.sh`
+
+
+
+-----------
+
+## POWHEG
+
 Most of my workflow can be replicated from a sample run in the folder "template_run"
 
 To make a new run, which is associated with a new directory, do
@@ -52,9 +74,8 @@ make-plots --png *.dat
 
 
 
------------
 
-## Complete Automated Analysis
+### Complete Automated Analysis for POWHEG
 
 It is also possible to use `make_analysys.py` for a completely automated POWHEG+Pythia analysis. This does everythin g necessary for the anlalysis, including the condor submission and checkpointing.
 Example usage `python make_anlysis.py --bornsupp 250 --bornktmin 10 --N 1000000000` makes an analysis with $(k_T^{supp},k_T^{min}) = (250,10)$ with $10^9$ events.
