@@ -25,7 +25,7 @@ This too is automated such that you can make many condor runs, each is composed 
 
 ## POWHEG
 
-Most of my workflow can be replicated from a sample run in the directory `powheg/template_run`
+Most of my workflow can be replicated from a sample run in the directory `powheg/template_run`.
 
 To make a new run, which is associated with a new directory, do
 
