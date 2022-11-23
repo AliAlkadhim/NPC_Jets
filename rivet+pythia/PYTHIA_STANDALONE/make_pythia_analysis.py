@@ -32,7 +32,7 @@ def make_directory():
 
     os.system('sed -i "s;some_run;%s;g" pythia_parallel.sh' % new_dir) 
     os.system('sed -i "s;some_run;%s;g" rivet_condor.sub' % new_dir) 
-
+    os.system('sed -i "s;some_run;%s;g" COMPLETE_YODAS/merg.sh' % new_dir)
 #    if condor:
 #        os.system(
 #            '''
