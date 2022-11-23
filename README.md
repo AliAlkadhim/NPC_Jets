@@ -5,7 +5,7 @@ This is meant to be run on `naf`, althought with some modifications it can also 
 
 ## Complete Automated Analysis for PYTHIA
 
-`cd PYTHIA_STANDALONE && ls -lt`
+`cd rive+pythia/PYTHIA_STANDALONE && ls -lt`
 
 `make_pythia_analysis.py` uses the template for one condor run (with `pythia` and `rivet`) in `PYTHIA_STANDALONE/template_run`, with optional argumetents that can be changed in the python script. Use `python make_pythia_analysis --help` for more arguments.
 
