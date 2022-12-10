@@ -11,7 +11,7 @@ int main() {
 // Set up generation.
 Pythia pythia;
     // make root file and ttree
-TFile *TwoTime_pre_1M  = new TFile("TwoTime_pre_10M_bias2Selection.root", "recreate");
+TFile *TwoTime_pre_1M  = new TFile("TwoTime_pre_100_bias2Selection.root", "recreate");
 TTree *tree = new TTree("tree", "tree");
 
 int numJets;
@@ -43,7 +43,7 @@ double pow = -1;
 SlowJet Jet( pow, radius, pTjetMin, etaMax);
 
 // Generate 5 nevents.
-int nevents = 10000000;
+int nevents = 100;
 for (int iEvent=0; iEvent < nevents; ++iEvent) {
 
     if (!pythia.next()) continue;
