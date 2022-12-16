@@ -6,7 +6,7 @@
 ! The changes here are illustrative, not always physics-motivated.
 
 ! 1) Settings that will be used in a main program.
-Main:numberOfEvents = 10000
+Main:numberOfEvents = 1000
 ! 2000000000          ! number of events to generate
 Main:timesAllowErrors = 1000000        ! abort run after this many flawed events
 

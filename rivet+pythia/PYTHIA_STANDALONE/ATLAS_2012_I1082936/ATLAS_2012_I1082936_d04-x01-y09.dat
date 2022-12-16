@@ -1,0 +1,50 @@
+# BEGIN PLOT
+LegendOnly=/ATLAS_2012_I1082936/d04-x01-y09 /prehadron1.yoda/ATLAS_2012_I1082936/d04-x01-y09 /posthadron1.yoda/ATLAS_2012_I1082936/d04-x01-y09
+DrawOnly=/ATLAS_2012_I1082936/d04-x01-y09 /prehadron1.yoda/ATLAS_2012_I1082936/d04-x01-y09 /posthadron1.yoda/ATLAS_2012_I1082936/d04-x01-y09
+Title=Dijet double-diff. x-section, anti-$k_t$ 0.6 ($4.0 \leq y^* < 4.4$)
+RatioPlotReference=/ATLAS_2012_I1082936/d04-x01-y09
+RatioPlot=1
+LogY=1
+XLabel=$m_{12}$~[TeV]
+YLabel=$\mathrm{d}^2\sigma/\mathrm{d}m_{12}\mathrm{d}y^*$~[pb/TeV]
+Legend=1
+# END PLOT
+
+# BEGIN HISTO1D /ATLAS_2012_I1082936/d04-x01-y09
+ConnectBins=0
+ErrorBars=1
+IsRef=1
+Path=/ATLAS_2012_I1082936/d04-x01-y09
+PolyMarker=*
+Title=Data
+# xlow	 xhigh	 val	 errminus	 errplus
+2.550000e+00	3.040000e+00	4.300000e+02	2.713164e+02	4.639351e+02
+3.040000e+00	4.270000e+00	2.800000e+01	1.495016e+01	3.027831e+01
+# END HISTO1D
+
+
+# BEGIN HISTO1D /prehadron1.yoda/ATLAS_2012_I1082936/d04-x01-y09
+ErrorBars=1
+LineColor=red
+LineStyle=solid
+Path=/prehadron1.yoda/ATLAS_2012_I1082936/d04-x01-y09
+ScaledBy=4.20333696222240850e+07
+Title=PS
+# xlow	 xhigh	 val	 errminus	 errplus
+2.550000e+00	3.040000e+00	0.000000e+00	0.000000e+00	0.000000e+00
+3.040000e+00	4.270000e+00	0.000000e+00	0.000000e+00	0.000000e+00
+# END HISTO1D
+
+
+# BEGIN HISTO1D /posthadron1.yoda/ATLAS_2012_I1082936/d04-x01-y09
+ErrorBars=1
+LineColor=blue
+LineStyle=solid
+Path=/posthadron1.yoda/ATLAS_2012_I1082936/d04-x01-y09
+ScaledBy=4.65099282462582052e+08
+Title=PS+HAD+MPI
+# xlow	 xhigh	 val	 errminus	 errplus
+2.550000e+00	3.040000e+00	0.000000e+00	0.000000e+00	0.000000e+00
+3.040000e+00	4.270000e+00	0.000000e+00	0.000000e+00	0.000000e+00
+# END HISTO1D
+

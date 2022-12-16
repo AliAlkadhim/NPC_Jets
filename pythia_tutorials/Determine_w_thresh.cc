@@ -19,7 +19,9 @@ pythia.readFile(argv[1]);
 
 
     // make root file and ttree
-TFile *weights  = new TFile("weight_studies/WEIGHTS_pre_10K_ParisParams.root", "recreate");
+//BIASED
+//TFile *weights  = new TFile("weight_studies/biased/WEIGHTS_pre_10K_ParisParams.root", "recreate");
+TFile *weights  = new TFile("weight_studies/biased/WEIGHTS_pre_1K_ParisParams_biased.root", "recreate");
 TTree *tree = new TTree("tree", "tree");
 
 
@@ -73,7 +75,9 @@ for (int iEvent=0; iEvent < nevents; ++iEvent) {
 // cout << "i = " << i << ", id = " << pythia.event[i].() << endl;
 // }
   // Get the event weight
-  evtWeight = pythia.info.weight();
+   evtWeight = pythia.info.weight();
+// I BELIVE I SHOULD USE UserHooks::biasedSelectionWeight()
+// evtWeight = pythia.userhooks.biasedSelectionWeight();
   //fill tree with weight
   tree->Fill();
   Jet.analyze(pythia.event);

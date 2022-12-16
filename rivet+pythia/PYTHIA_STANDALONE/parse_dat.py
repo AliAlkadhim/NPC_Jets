@@ -24,8 +24,8 @@ parser.add_argument('--Matrix', type=bool, required=False, default=False, help='
 args = parser.parse_args()
 # SLICE=args.slice
 
-RANGE=(0.95,1.15)
-XMAX=3000
+RANGE=(0.9,1.25)
+# XMAX=3000
 
 #ASSUMING EVERYTHING is in /RAW/CMS_2021_I1972986/  , for example /RAW/CMS_2021_I1972986/d23-x01-y01
 # TUNE='CUETP8M1-NNPDF2.3LO'
@@ -128,6 +128,8 @@ MAP_DICT = {
 }
 begin_file_string = 'CMS_2021_I1972986_'
 
+begin_file_string_ATLAS='ATLAS_2012_I1082936_'
+# begin_file_string=begin_file_string_ATLAS
 ######################### PARIS YODAS #########################
 Paris_post_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/fromParis/Inclusive_Jets_Pythia8CUETM1_MPIHAD_on.yoda'
 Paris_pre_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/fromParis/Inclusive_Jets_Pythia8CUETM1_MPIHAD_off.yoda'
@@ -267,9 +269,24 @@ elif args.D=="Paris_CUETP8M_4.5T":
 elif args.D=="onerun_Paris":
     begin_post_hist_string = 'BEGIN HISTO1D /posthadron1.yoda/CMS_2021_I1972986'
     begin_pre_hist_string = 'BEGIN HISTO1D /prehadron1.yoda/CMS_2021_I1972986'
-        
-    
 
+elif args.D=="MetaRun_Paris_CUETP8M_1_to_30":
+    begin_post_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_100T_POSTHADRON_1_to_30.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Paris_CUETP8M_100T_PREHADRON_1_to_30.yoda/CMS_2021_I1972986'
+
+
+elif args.D=="Paris_CUETP8M_Nov26":
+    begin_post_hist_string = 'BEGIN HISTO1D /Nov_26_all_merged_posthadron.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /Nov_26_all_merged_prehadron.yoda/CMS_2021_I1972986'
+    
+elif args.D=="Paris_CUETP8M_Nov26_Dec":
+    begin_post_hist_string = 'BEGIN HISTO1D /COMBINED_POSTHADRON.yoda/CMS_2021_I1972986'
+    begin_pre_hist_string = 'BEGIN HISTO1D /COMBINED_PREHADRON.yoda/CMS_2021_I1972986'
+    
+elif args.D=="ATLAS_2012_I1082936":
+    begin_post_hist_string = 'BEGIN HISTO1D /posthadron1.yoda/ATLAS_2012_I1082936'
+    begin_pre_hist_string = 'BEGIN HISTO1D /prehadron1.yoda/ATLAS_2012_I1082936'
+    
 def return_bins_pre_post(one_hist):
     file_string = args.D + '/' + begin_file_string+ one_hist +'.dat'
     n_bins=MAP_DICT[one_hist]['n_bins']
@@ -373,15 +390,15 @@ def main():
             
             axs[hist_ind_4,0].set_ylim(RANGE)
             #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
-            # axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
-            axs[hist_ind_4,0].set_xlim(min(bins_4),XMAX)
+            axs[hist_ind_4,0].set_xlim(min(bins_4),max(bins_4))
+            # axs[hist_ind_4,0].set_xlim(min(bins_4),XMAX)
             # axs[hist_ind_4,0].set_xticks(bins_4)
             # axs[hist_ind_4,0].set_xlim(100, 2500)
             axs[hist_ind_4,0].axhline(y=1, color='black', linestyle='--')
 
             
             axs[hist_ind_4,0].grid(axis='x')
-            axs[hist_ind_4,0].set_yticks([0.9,1.0,1.1])
+            axs[hist_ind_4,0].set_yticks([0.9,1.0,1.1,1.2])
             axs[hist_ind_4,0].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
             df4[hist_4 + '_bins_low'] = pd.Series(bins_4)
@@ -426,14 +443,14 @@ def main():
             
             axs[hist_ind_7,1].set_ylim(RANGE)
             #STANDARD RANGE (PLOT THIS RANGE FIRST BEFORE CHAGING)
-            # axs[hist_ind_7,1].set_xlim(min(bins_7),max(bins_7))
-            axs[hist_ind_7,1].set_xlim(min(bins_7),XMAX)
+            axs[hist_ind_7,1].set_xlim(min(bins_7),max(bins_7))
+            # axs[hist_ind_7,1].set_xlim(min(bins_7),XMAX)
             # axs[hist_ind_7,1].set_xlim(100,2500)
             axs[hist_ind_7,1].axhline(y=1, color='black', linestyle='--')
             # axs[hist_ind_7,1].set_xticks(bins_7)
             axs[hist_ind_7,1].legend(loc='upper center', fontsize=19, mode='expand', ncol=2)
             axs[hist_ind_7,1].grid(axis='x')
-            axs[hist_ind_7,1].set_yticks([0.9,1.0,1.1])
+            axs[hist_ind_7,1].set_yticks([0.9,1.0,1.1,1.2])
 
             
             # plt.tight_layout()
@@ -452,7 +469,7 @@ def main():
             
             axs[hist_ind,1].legend(loc='upper center',fontsize=19,mode='expand', ncol=2)
             
-        fig.suptitle('Paris Params Pythia STA (HardQCD:all) $ 10^{8}$ events (pre-cuts), Tune: %s' % TUNE, font='MonoSpace')
+        fig.suptitle('Paris Params Pythia  $ 10^{7}$ events (post-cuts), Tune: %s' % TUNE, font='MonoSpace')
         plt.tight_layout()
         if args.save:
             plt.savefig(args.D+'/ALLBINS_Paris_Params_HardQCD_%s_PYTHIA_STANDALONE_%s.png'%( str(args.D), TUNE ) )

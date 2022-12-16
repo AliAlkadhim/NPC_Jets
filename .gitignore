@@ -1,3 +1,4 @@
 rivet+pythia/plots/xfitter/
 *.root
 *.hepmc
+tutorial_papers/

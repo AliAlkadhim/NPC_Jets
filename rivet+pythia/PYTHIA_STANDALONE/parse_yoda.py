@@ -60,7 +60,9 @@ AK4_NAMES=[
   'd03-x01-y01', 
    'd04-x01-y01']
 
-begin_hist_string = 'BEGIN YODA_HISTO1D_V2 /CMS_2021_I1972986/' #not the RAW/... because the RAW has no sacaling
+# begin_hist_string = 'BEGIN YODA_HISTO1D_V2 /CMS_2021_I1972986/' #not the RAW/... because the RAW has no sacaling
+begin_hist_string ='EGIN YODA_HISTO1D_V2 /CMS_2021_I1972986/'
+
 def get_bin_entries_list(filename, hist_name, n_bins):
     # line_counter=0
     with open(filename, 'r') as f:
@@ -99,8 +101,11 @@ if __name__ == '__main__':
     # pre_filename = 'merged_prehadron_500M_supp250.yoda'
     # pre_filename='../plots/suppr800_bornktmin600_100M/suppr800_bornktmin600_100M_prehadron_merged.yoda'
     
-    post_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/plots/suppr800_bornktmin300_100M/suppr800_bornktmin300_100M_posthadron_merged.yoda'
-    pre_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/plots/suppr800_bornktmin300_100M/suppr800_bornktmin300_100M_prehadron_merged.yoda'
+    # post_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/plots/suppr800_bornktmin300_100M/suppr800_bornktmin300_100M_posthadron_merged.yoda'
+    # pre_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/plots/suppr800_bornktmin300_100M/suppr800_bornktmin300_100M_prehadron_merged.yoda'
+    
+    post_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/PYTHIA_STANDALONE/MetaRun_Paris_CUETP8M_1_to_30/Paris_CUETP8M_100T_POSTHADRON_1_to_30.yoda'
+    pre_filename='/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/PYTHIA_STANDALONE/MetaRun_Paris_CUETP8M_1_to_30/Paris_CUETP8M_100T_POSTHADRON_1_to_30.yoda'
     #SINGLE TEST
     # pre_bins_list, pre_entries_list= get_bin_entries_list(pre_filename,AK4_NAMES[0], MAP_DICT[AK4_NAMES[0]]['n_bins'])
     # post_bins_list, post_entries_list= get_bin_entries_list(post_filename,AK4_NAMES[0],MAP_DICT[AK4_NAMES[0]]['n_bins'])
@@ -127,11 +132,11 @@ if __name__ == '__main__':
         NPC = post_entries_list/pre_entries_list
         
         plt.step(pre_bins_list, NPC, label=MAP_DICT[hist]['ylabel'], where='mid')
-        plt.ylim(-0.5,1.8)
+        plt.ylim(0.95,1.05)
         plt.xlabel('$p_T$')
         plt.ylabel('NP C')
         plt.legend()
-        plt.title('bornkt min 10, born suppression factor 800',fontsize=15)
+        # plt.title('bornkt min 10, born suppression factor 800',fontsize=15)
        
     # plt.savefig('/home/ali/Desktop/Pulled_Github_Repositories/NPCorrection_InclusiveJets/rivet+pythia/plots/suppr800_bornktmin300_100M/allbins_suppr800_bornktmin300_100M.png')
     plt.show()
