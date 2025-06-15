@@ -1,3 +1,6 @@
+## Non-perturbative Corrections for the Inclusive jet cross section
+A collection of scripts for the derivation and analysis Non-perturbative Corrections for the Inclusive jet cross section, measured at CERN CMS collaboration using Run 2 data.
+
 To see example results, go to `rivet+pythia/plots`. If you want to reproduce or learn more, keep reading
 
 
